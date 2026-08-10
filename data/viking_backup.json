@@ -1,0 +1,1852 @@
+{
+  "version": 3,
+  "updatedAt": "2026-08-10T22:33:19.514Z",
+  "stores": {
+    "profile": [
+      {
+        "id": "me",
+        "name": "Atleta VIKING",
+        "height": 175,
+        "weight": 80,
+        "category": "BJJ - Adulto",
+        "goals": "Chegar em pico físico para a próxima competição.",
+        "photos": []
+      }
+    ],
+    "workouts": [
+      {
+        "id": "A",
+        "title": "Treino A",
+        "focus": "Empurrar - Peito, Ombro, Tríceps",
+        "exercises": [
+          {
+            "id": "3ymm02kems98c5r3",
+            "name": "Supino reto",
+            "sets": 4,
+            "reps": "8-10",
+            "rest": "90s",
+            "currentLoad": 60,
+            "notes": "",
+            "history": [],
+            "muscleGroup": "Peito"
+          },
+          {
+            "id": "j2ocfnl4ms98c5r3",
+            "name": "Supino inclinado halteres",
+            "sets": 3,
+            "reps": "10",
+            "rest": "75s",
+            "currentLoad": 22,
+            "notes": "",
+            "history": [],
+            "muscleGroup": "Peito superior"
+          },
+          {
+            "id": "rpso5oirms98c5r3",
+            "name": "Desenvolvimento militar",
+            "sets": 4,
+            "reps": "8",
+            "rest": "90s",
+            "currentLoad": 40,
+            "notes": "",
+            "history": [],
+            "muscleGroup": "Ombro"
+          },
+          {
+            "id": "qm7qwq9mms98c5r3",
+            "name": "Elevação lateral",
+            "sets": 3,
+            "reps": "12",
+            "rest": "60s",
+            "currentLoad": 10,
+            "notes": "",
+            "history": [],
+            "muscleGroup": "Deltoide médio"
+          },
+          {
+            "id": "7thgndqbms98c5r3",
+            "name": "Tríceps corda",
+            "sets": 3,
+            "reps": "12",
+            "rest": "60s",
+            "currentLoad": 25,
+            "notes": "",
+            "history": [],
+            "muscleGroup": "Tríceps"
+          }
+        ]
+      },
+      {
+        "id": "B",
+        "title": "Treino B",
+        "focus": "Puxar - Costas, Bíceps, Grip",
+        "exercises": [
+          {
+            "id": "k9luzosums98c5r3",
+            "name": "Barra fixa (pull-up)",
+            "sets": 4,
+            "reps": "AMRAP",
+            "rest": "90s",
+            "currentLoad": 0,
+            "notes": "Peso corporal",
+            "history": [],
+            "muscleGroup": "Dorsal"
+          },
+          {
+            "id": "dfc76m07ms98c5r3",
+            "name": "Remada curvada barra",
+            "sets": 4,
+            "reps": "8",
+            "rest": "90s",
+            "currentLoad": 60,
+            "notes": "",
+            "history": [],
+            "muscleGroup": "Costas"
+          },
+          {
+            "id": "apdbz4knms98c5r3",
+            "name": "Puxada frontal",
+            "sets": 3,
+            "reps": "10",
+            "rest": "75s",
+            "currentLoad": 55,
+            "notes": "",
+            "history": [],
+            "muscleGroup": "Dorsal"
+          },
+          {
+            "id": "233zr15mms98c5r3",
+            "name": "Rosca direta",
+            "sets": 3,
+            "reps": "10",
+            "rest": "60s",
+            "currentLoad": 15,
+            "notes": "",
+            "history": [],
+            "muscleGroup": "Bíceps"
+          },
+          {
+            "id": "f1gdpmo0ms98c5r3",
+            "name": "Farmer walk",
+            "sets": 3,
+            "reps": "40m",
+            "rest": "90s",
+            "currentLoad": 28,
+            "notes": "Grip",
+            "history": [],
+            "muscleGroup": "Grip / Trapézio"
+          }
+        ]
+      },
+      {
+        "id": "C",
+        "title": "Treino C",
+        "focus": "Pernas + Core",
+        "exercises": [
+          {
+            "id": "r213vtndms98c5r3",
+            "name": "Agachamento livre",
+            "sets": 5,
+            "reps": "5",
+            "rest": "2min",
+            "currentLoad": 90,
+            "notes": "",
+            "history": [],
+            "muscleGroup": "Quadríceps"
+          },
+          {
+            "id": "kozbsq21ms98c5r3",
+            "name": "Peso morto romeno",
+            "sets": 4,
+            "reps": "8",
+            "rest": "90s",
+            "currentLoad": 80,
+            "notes": "",
+            "history": [],
+            "muscleGroup": "Posteriores"
+          },
+          {
+            "id": "9xr9q1pims98c5r3",
+            "name": "Afundo búlgaro",
+            "sets": 3,
+            "reps": "10 c/ perna",
+            "rest": "75s",
+            "currentLoad": 16,
+            "notes": "",
+            "history": [],
+            "muscleGroup": "Pernas unilateral"
+          },
+          {
+            "id": "vm09sc1mms98c5r3",
+            "name": "Panturrilha em pé",
+            "sets": 4,
+            "reps": "15",
+            "rest": "45s",
+            "currentLoad": 60,
+            "notes": "",
+            "history": [],
+            "muscleGroup": "Gémeos"
+          },
+          {
+            "id": "ftmwcmzrms98c5r3",
+            "name": "Prancha",
+            "sets": 3,
+            "reps": "60s",
+            "rest": "45s",
+            "currentLoad": 0,
+            "notes": "",
+            "history": [],
+            "muscleGroup": "Core"
+          }
+        ]
+      },
+      {
+        "id": "D",
+        "title": "Treino D",
+        "focus": "BJJ Specific - Força funcional",
+        "exercises": [
+          {
+            "id": "5z8yo1vfms98c5r3",
+            "name": "Peso morto sumô",
+            "sets": 4,
+            "reps": "6",
+            "rest": "2min",
+            "currentLoad": 100,
+            "notes": "",
+            "history": [],
+            "muscleGroup": "Posterior / Anca"
+          },
+          {
+            "id": "8jjisug7ms98c5r3",
+            "name": "Remada unilateral halter",
+            "sets": 4,
+            "reps": "8",
+            "rest": "75s",
+            "currentLoad": 28,
+            "notes": "",
+            "history": [],
+            "muscleGroup": "Costas"
+          },
+          {
+            "id": "d30b15mjms98c5r3",
+            "name": "Push press",
+            "sets": 4,
+            "reps": "6",
+            "rest": "90s",
+            "currentLoad": 45,
+            "notes": "",
+            "history": [],
+            "muscleGroup": "Ombro / Perna"
+          },
+          {
+            "id": "1enpnrotms98c5r3",
+            "name": "Kettlebell swing",
+            "sets": 4,
+            "reps": "15",
+            "rest": "60s",
+            "currentLoad": 24,
+            "notes": "",
+            "history": [],
+            "muscleGroup": "Posterior / Grip"
+          },
+          {
+            "id": "wfcr9xn5ms98c5r3",
+            "name": "Rope climb / Gi pull",
+            "sets": 4,
+            "reps": "1 subida",
+            "rest": "90s",
+            "currentLoad": 0,
+            "notes": "Grip específico BJJ",
+            "history": [],
+            "muscleGroup": "Grip / Dorsal"
+          }
+        ]
+      }
+    ],
+    "workoutSessions": [],
+    "exerciseLibrary": [
+      {
+        "id": "agachamento livre",
+        "name": "Agachamento livre",
+        "muscleGroup": "Quadríceps, Glúteos, Core",
+        "objective": "Força e transferência total do trem inferior.",
+        "execution": "Barra alta ou baixa, joelhos alinhados com os pés, descer até paralela ou abaixo.",
+        "commonMistakes": "Joelhos para dentro; perder o arco lombar; talões a levantar.",
+        "coachTips": "Cinta o core antes de cada rep · empurra o chão para fora."
+      },
+      {
+        "id": "barra fixa (pull-up)",
+        "name": "Barra fixa (pull-up)",
+        "muscleGroup": "Dorsal, Bíceps, Grip",
+        "objective": "Força relativa de puxar — essencial para lapela/gola no BJJ.",
+        "execution": "Pegada aberta, escápulas ativas, puxar o peito à barra, descer controlado.",
+        "commonMistakes": "Balançar; não completar amplitude; encolher ombros no topo.",
+        "coachTips": "Aperta a barra · pensa em \"trazer o peito para cima\"."
+      },
+      {
+        "id": "farmer walk",
+        "name": "Farmer walk",
+        "muscleGroup": "Grip, Core, Trapézios",
+        "objective": "Grip específico e estabilidade — transferência direta para BJJ.",
+        "execution": "Ombros baixos, core contraído, passos curtos e firmes.",
+        "commonMistakes": "Encolher ombros; perder postura; andar rápido demais.",
+        "coachTips": "Respira pelo nariz · não largues até completar a distância."
+      },
+      {
+        "id": "kettlebell swing",
+        "name": "Kettlebell swing",
+        "muscleGroup": "Posteriores, Glúteos, Grip",
+        "objective": "Potência da anca e condicionamento — mimetiza explosão de guarda.",
+        "execution": "Bisagra da anca, arremesso explosivo até altura do peito, deixar o KB cair.",
+        "commonMistakes": "Usar os braços; agachar em vez de fazer bisagra; hiperextensão lombar no topo.",
+        "coachTips": "É a anca que move o peso · aperta glúteos no topo."
+      },
+      {
+        "id": "peso morto romeno",
+        "name": "Peso morto romeno",
+        "muscleGroup": "Posteriores, Glúteos, Lombar",
+        "objective": "Força na cadeia posterior — chave para o BJJ.",
+        "execution": "Joelhos ligeiramente fletidos, empurrar a anca para trás, descer a barra colada às pernas.",
+        "commonMistakes": "Curvar a coluna; agachar em vez de fazer bisagra; barra afastada do corpo.",
+        "coachTips": "Sente o alongamento nos posteriores · não desça mais do que a mobilidade permite."
+      },
+      {
+        "id": "supino reto",
+        "name": "Supino reto",
+        "muscleGroup": "Peito, Tríceps, Ombro anterior",
+        "objective": "Força máxima do peito e empurrar horizontal.",
+        "execution": "Escápulas retraídas, pés firmes, descida controlada ao mamilo, subida explosiva.",
+        "commonMistakes": "Cotovelos abertos 90°; perder retração escapular; ricochetear a barra no peito.",
+        "coachTips": "Aperta a barra com força · respira em baixo · pensa em \"afastar o chão\"."
+      }
+    ],
+    "mobility": [
+      {
+        "id": "rotina-diaria",
+        "name": "Rotina Diária",
+        "description": "Rotina diária de prevenção",
+        "exercises": [
+          {
+            "id": "3fgty7iims98c5r5",
+            "name": "Deep squat hold",
+            "description": "Agachamento profundo estático.",
+            "time": "2 min",
+            "frequency": "Diário",
+            "benefits": "Anca, tornozelo"
+          },
+          {
+            "id": "8i2slak9ms98c5r5",
+            "name": "Thoracic bridge",
+            "description": "Ponte torácica com rotação.",
+            "time": "90s",
+            "frequency": "3x/sem",
+            "benefits": "Rotação torácica, ombros"
+          },
+          {
+            "id": "l5udckctms98c5r5",
+            "name": "Couch stretch",
+            "description": "Alongamento de flexor da anca.",
+            "time": "1 min c/ perna",
+            "frequency": "Diário",
+            "benefits": "Flexores, joelhos"
+          },
+          {
+            "id": "mbj1zltgms98c5r5",
+            "name": "Cat-Cow",
+            "description": "Alternar entre arqueado e curvado.",
+            "time": "1 min",
+            "frequency": "Diário",
+            "benefits": "Coluna, respiração"
+          },
+          {
+            "id": "rpv99u8vms98c5r5",
+            "name": "Shoulder CARs",
+            "description": "Círculos controlados de ombro.",
+            "time": "2 min",
+            "frequency": "Diário",
+            "benefits": "Saúde do ombro"
+          },
+          {
+            "id": "wzeyty3fms98c5r5",
+            "name": "90/90 Hip",
+            "description": "Sentado, rodar de lado a lado.",
+            "time": "2 min",
+            "frequency": "Diário",
+            "benefits": "Mobilidade da anca, guarda de BJJ"
+          }
+        ],
+        "createdAt": "2026-08-10T21:09:33.868Z",
+        "updatedAt": "2026-08-10T21:09:33.868Z"
+      }
+    ],
+    "mobilityLogs": [],
+    "cardio": [
+      {
+        "id": "run_base",
+        "name": "Corrida Base",
+        "objective": "Zona 2 aeróbica",
+        "description": "Ritmo conversacional, FC 130-150.",
+        "recommendedMin": 40
+      },
+      {
+        "id": "walk_recovery",
+        "name": "Caminhada Recuperação",
+        "objective": "Recuperação ativa",
+        "description": "Ritmo calmo, respiração nasal.",
+        "recommendedMin": 30
+      },
+      {
+        "id": "walk_short",
+        "name": "Caminhada Curta",
+        "objective": "Digestão / desestresse",
+        "description": "Após refeição ou ao acordar.",
+        "recommendedMin": 15
+      }
+    ],
+    "cardioSessions": [],
+    "meals": [
+      {
+        "id": "gym_bjj",
+        "name": "Dias Ginásio + BJJ",
+        "meals": [
+          {
+            "id": "lta4jc3emsnq5pgo",
+            "name": "Pequeno-almoço",
+            "items": [
+              {
+                "id": "p5c5wolnmsnq5pgn",
+                "ingredientId": "hxcs433pmsnq5pgn",
+                "quantidade": 4,
+                "unidade": "un",
+                "observacoes": "",
+                "text": "4 ovos"
+              },
+              {
+                "id": "g2lj8upemsnq5pgn",
+                "ingredientId": "w9fwjahvmsnq5pgn",
+                "quantidade": 80,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "80g aveia"
+              },
+              {
+                "id": "8qm2mbxymsnq5pgn",
+                "ingredientId": "615a366ymsnq5pgn",
+                "quantidade": 1,
+                "unidade": "un",
+                "observacoes": "",
+                "text": "1 banana"
+              },
+              {
+                "id": "mwqnw93jmsnq5pgo",
+                "ingredientId": "nx34lo0qmsnq5pgo",
+                "quantidade": null,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "café"
+              }
+            ]
+          },
+          {
+            "id": "2i922fatmsnq5pgo",
+            "name": "Snack pré-treino",
+            "items": [
+              {
+                "id": "7h6c69flmsnq5pgo",
+                "ingredientId": "7tymrptcmsnq5pgo",
+                "quantidade": null,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "Wrap com peru"
+              },
+              {
+                "id": "ogceqwyomsnq5pgo",
+                "ingredientId": "ftxcymqfmsnq5pgo",
+                "quantidade": 1,
+                "unidade": "un",
+                "observacoes": "",
+                "text": "1 fruta"
+              }
+            ]
+          },
+          {
+            "id": "en3vxkaxmsnq5pgo",
+            "name": "Almoço",
+            "items": [
+              {
+                "id": "5qno1753msnq5pgo",
+                "ingredientId": "0bl2vsl6msnq5pgo",
+                "quantidade": 180,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "180g frango"
+              },
+              {
+                "id": "uoap7u65msnq5pgo",
+                "ingredientId": "usgtt1kxmsnq5pgo",
+                "quantidade": 200,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "200g arroz"
+              },
+              {
+                "id": "e0w15p7zmsnq5pgo",
+                "ingredientId": "22vf6dh1msnq5pgo",
+                "quantidade": null,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "salada"
+              }
+            ]
+          },
+          {
+            "id": "vy8vjbohmsnq5pgo",
+            "name": "Pré-BJJ",
+            "items": [
+              {
+                "id": "7z7wth4ymsnq5pgo",
+                "ingredientId": "a84vtvecmsnq5pgo",
+                "quantidade": 1,
+                "unidade": "un",
+                "observacoes": "",
+                "text": "1 tosta integral"
+              },
+              {
+                "id": "0izj6cm9msnq5pgo",
+                "ingredientId": "ftxcymqfmsnq5pgo",
+                "quantidade": 1,
+                "unidade": "un",
+                "observacoes": "",
+                "text": "1 fruta"
+              }
+            ]
+          },
+          {
+            "id": "8s2z2xp1msnq5pgo",
+            "name": "Pós-BJJ",
+            "items": [
+              {
+                "id": "6u91moaimsnq5pgo",
+                "ingredientId": "0gpnp814msnq5pgo",
+                "quantidade": null,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "Batido whey + banana"
+              },
+              {
+                "id": "1iriy2f6msnq5pgo",
+                "ingredientId": "bvati4qgmsnq5pgo",
+                "quantidade": 20,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "20g amendoim"
+              }
+            ]
+          },
+          {
+            "id": "rahh69cnmsnq5pgo",
+            "name": "Jantar",
+            "items": [
+              {
+                "id": "7hna7w0cmsnq5pgo",
+                "ingredientId": "oex5utmomsnq5pgo",
+                "quantidade": 200,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "200g bacalhau"
+              },
+              {
+                "id": "3qqqb0iamsnq5pgo",
+                "ingredientId": "3du2zoh7msnq5pgo",
+                "quantidade": 300,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "300g batata"
+              },
+              {
+                "id": "nc479do3msnq5pgo",
+                "ingredientId": "iawkd23kmsnq5pgo",
+                "quantidade": null,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "legumes"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "gym_only",
+        "name": "Dias Só Ginásio",
+        "meals": [
+          {
+            "id": "3ky3jbtqmsnq5pgo",
+            "name": "Pequeno-almoço",
+            "items": [
+              {
+                "id": "dbp96o6fmsnq5pgo",
+                "ingredientId": "hxcs433pmsnq5pgn",
+                "quantidade": 3,
+                "unidade": "un",
+                "observacoes": "",
+                "text": "3 ovos"
+              },
+              {
+                "id": "cp75e0uqmsnq5pgo",
+                "ingredientId": "w9fwjahvmsnq5pgn",
+                "quantidade": 60,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "60g aveia"
+              },
+              {
+                "id": "08mkgzy7msnq5pgo",
+                "ingredientId": "nx34lo0qmsnq5pgo",
+                "quantidade": null,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "café"
+              }
+            ]
+          },
+          {
+            "id": "djt1lairmsnq5pgo",
+            "name": "Almoço",
+            "items": [
+              {
+                "id": "641dfkbemsnq5pgo",
+                "ingredientId": "j1jvz95jmsnq5pgo",
+                "quantidade": 180,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "180g peru"
+              },
+              {
+                "id": "ydfl3842msnq5pgo",
+                "ingredientId": "usgtt1kxmsnq5pgo",
+                "quantidade": 180,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "180g arroz"
+              },
+              {
+                "id": "u5ghw5k4msnq5pgo",
+                "ingredientId": "22vf6dh1msnq5pgo",
+                "quantidade": null,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "salada"
+              }
+            ]
+          },
+          {
+            "id": "37npw61dmsnq5pgo",
+            "name": "Snack",
+            "items": [
+              {
+                "id": "6er9394cmsnq5pgo",
+                "ingredientId": "swa5ciwamsnq5pgo",
+                "quantidade": null,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "Iogurte grego"
+              },
+              {
+                "id": "2dc48y3umsnq5pgo",
+                "ingredientId": "ftxcymqfmsnq5pgo",
+                "quantidade": 1,
+                "unidade": "un",
+                "observacoes": "",
+                "text": "1 fruta"
+              }
+            ]
+          },
+          {
+            "id": "8858ptqumsnq5pgo",
+            "name": "Jantar",
+            "items": [
+              {
+                "id": "ghv8zxcimsnq5pgo",
+                "ingredientId": "ks2qgg0lmsnq5pgo",
+                "quantidade": 180,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "180g pescada"
+              },
+              {
+                "id": "6t75eb92msnq5pgo",
+                "ingredientId": "qu1k9r6jmsnq5pgo",
+                "quantidade": 250,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "250g batata doce"
+              },
+              {
+                "id": "k0cxp8iimsnq5pgo",
+                "ingredientId": "iawkd23kmsnq5pgo",
+                "quantidade": null,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "legumes"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "rest",
+        "name": "Dias Descanso",
+        "meals": [
+          {
+            "id": "dsrtwx1imsnq5pgo",
+            "name": "Pequeno-almoço",
+            "items": [
+              {
+                "id": "kywu9v4nmsnq5pgo",
+                "ingredientId": "hxcs433pmsnq5pgn",
+                "quantidade": 3,
+                "unidade": "un",
+                "observacoes": "",
+                "text": "3 ovos"
+              },
+              {
+                "id": "15h6vahemsnq5pgo",
+                "ingredientId": "ftxcymqfmsnq5pgo",
+                "quantidade": 1,
+                "unidade": "un",
+                "observacoes": "",
+                "text": "1 fruta"
+              },
+              {
+                "id": "gl1dk6hcmsnq5pgo",
+                "ingredientId": "nx34lo0qmsnq5pgo",
+                "quantidade": null,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "café"
+              }
+            ]
+          },
+          {
+            "id": "u01fny49msnq5pgo",
+            "name": "Almoço",
+            "items": [
+              {
+                "id": "4gg0iu1smsnq5pgo",
+                "ingredientId": "69siwufhmsnq5pgo",
+                "quantidade": 150,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "150g atum"
+              },
+              {
+                "id": "vfvhbom1msnq5pgo",
+                "ingredientId": "usgtt1kxmsnq5pgo",
+                "quantidade": 150,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "150g arroz"
+              },
+              {
+                "id": "8k20eu2lmsnq5pgo",
+                "ingredientId": "rlebwf6nmsnq5pgo",
+                "quantidade": null,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "salada abundante"
+              }
+            ]
+          },
+          {
+            "id": "ncqsy71fmsnq5pgo",
+            "name": "Snack",
+            "items": [
+              {
+                "id": "7jxeba1kmsnq5pgo",
+                "ingredientId": "8y0r1lp7msnq5pgo",
+                "quantidade": 30,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "Frutos secos 30g"
+              }
+            ]
+          },
+          {
+            "id": "b4ce8u3kmsnq5pgo",
+            "name": "Jantar",
+            "items": [
+              {
+                "id": "jla5651jmsnq5pgo",
+                "ingredientId": "0bl2vsl6msnq5pgo",
+                "quantidade": 180,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "180g frango"
+              },
+              {
+                "id": "9ddut0gfmsnq5pgo",
+                "ingredientId": "083rdtwgmsnq5pgo",
+                "quantidade": null,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "legumes assados"
+              },
+              {
+                "id": "lm8l89nkmsnq5pgo",
+                "ingredientId": "ka3j25tlmsnq5pgo",
+                "quantidade": null,
+                "unidade": "g",
+                "observacoes": "",
+                "text": "azeite"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "shopping": [],
+    "shoppingLists": [
+      {
+        "id": "p5p2yyeems98c5r9",
+        "name": "Semana Normal",
+        "createdAt": "2026-07-31T17:41:55.365Z",
+        "planDays": {
+          "gym_bjj": 3,
+          "gym_only": 2,
+          "rest": 2
+        },
+        "items": [
+          {
+            "id": "npzf7fjyms98c5r9",
+            "name": "Frango",
+            "category": "Proteínas",
+            "qty": 2,
+            "unit": "kg",
+            "done": false
+          },
+          {
+            "id": "iyj89dekms98c5r9",
+            "name": "Ovos",
+            "category": "Proteínas",
+            "qty": 30,
+            "unit": "un",
+            "done": false
+          },
+          {
+            "id": "92g083n1ms98c5r9",
+            "name": "Atum",
+            "category": "Proteínas",
+            "qty": 8,
+            "unit": "latas",
+            "done": false
+          },
+          {
+            "id": "tfbvnjz8ms98c5r9",
+            "name": "Arroz",
+            "category": "Hidratos",
+            "qty": 2,
+            "unit": "kg",
+            "done": false
+          },
+          {
+            "id": "tmcv5o7pms98c5r9",
+            "name": "Batata doce",
+            "category": "Hidratos",
+            "qty": 2,
+            "unit": "kg",
+            "done": false
+          },
+          {
+            "id": "zy1w3a3bms98c5r9",
+            "name": "Aveia",
+            "category": "Hidratos",
+            "qty": 500,
+            "unit": "g",
+            "done": false
+          },
+          {
+            "id": "0fq6np0yms98c5r9",
+            "name": "Espinafres",
+            "category": "Legumes",
+            "qty": 2,
+            "unit": "sacos",
+            "done": false
+          },
+          {
+            "id": "bouzlkakms98c5r9",
+            "name": "Brócolos",
+            "category": "Legumes",
+            "qty": 1,
+            "unit": "kg",
+            "done": false
+          },
+          {
+            "id": "lbmrwe5cms98c5r9",
+            "name": "Banana",
+            "category": "Fruta",
+            "qty": 12,
+            "unit": "un",
+            "done": false
+          },
+          {
+            "id": "97ttrp6sms98c5r9",
+            "name": "Maçã",
+            "category": "Fruta",
+            "qty": 8,
+            "unit": "un",
+            "done": false
+          },
+          {
+            "id": "zw01jipcms98c5r9",
+            "name": "Azeite",
+            "category": "Gorduras",
+            "qty": 1,
+            "unit": "L",
+            "done": false
+          },
+          {
+            "id": "3ta8u95bms98c5r9",
+            "name": "Amêndoas",
+            "category": "Gorduras",
+            "qty": 250,
+            "unit": "g",
+            "done": false
+          },
+          {
+            "id": "x5ox0bosms98c5r9",
+            "name": "Água",
+            "category": "Bebidas",
+            "qty": 8,
+            "unit": "L",
+            "done": false
+          },
+          {
+            "id": "2jsj777bms98c5r9",
+            "name": "Whey",
+            "category": "Suplementos",
+            "qty": 1,
+            "unit": "kg",
+            "done": false
+          }
+        ]
+      }
+    ],
+    "quickMeals": [
+      {
+        "id": "b03lcd2lms98c5r7",
+        "name": "Omelete rápida",
+        "ingredients": [
+          "3 un ovos",
+          "Espinafres",
+          "Fiambre peru"
+        ],
+        "prepMin": 6,
+        "items": [
+          {
+            "id": "1v3awoonmsnq5pgo",
+            "ingredientId": "hxcs433pmsnq5pgn",
+            "quantidade": 3,
+            "unidade": "un",
+            "observacoes": "",
+            "text": "3 ovos"
+          },
+          {
+            "id": "r9mumst5msnq5pgo",
+            "ingredientId": "zvu8g2jqmsnq5pgo",
+            "quantidade": null,
+            "unidade": "g",
+            "observacoes": "",
+            "text": "Espinafres"
+          },
+          {
+            "id": "4rdq8vmhmsnq5pgo",
+            "ingredientId": "51cc7uc3msnq5pgo",
+            "quantidade": null,
+            "unidade": "g",
+            "observacoes": "",
+            "text": "Fiambre peru"
+          }
+        ]
+      },
+      {
+        "id": "fblnos6yms98c5r7",
+        "name": "Bowl atum & arroz",
+        "ingredients": [
+          "1 l ata atum",
+          "150 g arroz",
+          "Milho",
+          "Tomate"
+        ],
+        "prepMin": 8,
+        "items": [
+          {
+            "id": "fbw5o8x3msnq5pgo",
+            "ingredientId": "ru6mw32smsnq5pgo",
+            "quantidade": 1,
+            "unidade": "l",
+            "observacoes": "",
+            "text": "1 lata atum"
+          },
+          {
+            "id": "kfxj7pbgmsnq5pgo",
+            "ingredientId": "usgtt1kxmsnq5pgo",
+            "quantidade": 150,
+            "unidade": "g",
+            "observacoes": "",
+            "text": "150g arroz"
+          },
+          {
+            "id": "u7oxyplrmsnq5pgo",
+            "ingredientId": "hcc4cg99msnq5pgo",
+            "quantidade": null,
+            "unidade": "g",
+            "observacoes": "",
+            "text": "Milho"
+          },
+          {
+            "id": "7wrq5raimsnq5pgo",
+            "ingredientId": "sr1s9mewmsnq5pgo",
+            "quantidade": null,
+            "unidade": "g",
+            "observacoes": "",
+            "text": "Tomate"
+          }
+        ]
+      },
+      {
+        "id": "j1knv349ms98c5r7",
+        "name": "Batido pós-treino",
+        "ingredients": [
+          "1 scoop whey",
+          "1 un banana",
+          "300 ml leite",
+          "1 colher aveia"
+        ],
+        "prepMin": 3,
+        "items": [
+          {
+            "id": "6cjg78nimsnq5pgo",
+            "ingredientId": "y7amxkf8msnq5pgo",
+            "quantidade": 1,
+            "unidade": "scoop",
+            "observacoes": "",
+            "text": "1 scoop whey"
+          },
+          {
+            "id": "1781enwymsnq5pgo",
+            "ingredientId": "615a366ymsnq5pgn",
+            "quantidade": 1,
+            "unidade": "un",
+            "observacoes": "",
+            "text": "1 banana"
+          },
+          {
+            "id": "4i5xfe4dmsnq5pgo",
+            "ingredientId": "1hvam0i4msnq5pgo",
+            "quantidade": 300,
+            "unidade": "ml",
+            "observacoes": "",
+            "text": "300ml leite"
+          },
+          {
+            "id": "zkqqg2jjmsnq5pgo",
+            "ingredientId": "w9fwjahvmsnq5pgn",
+            "quantidade": 1,
+            "unidade": "colher",
+            "observacoes": "",
+            "text": "1 c. sopa aveia"
+          }
+        ]
+      },
+      {
+        "id": "labz3xhkms98c5r7",
+        "name": "Wrap peru & queijo",
+        "ingredients": [
+          "Wrap integral",
+          "100 g peru",
+          "Queijo magro",
+          "Alface"
+        ],
+        "prepMin": 5,
+        "items": [
+          {
+            "id": "nsjegsjcmsnq5pgo",
+            "ingredientId": "snq6tr13msnq5pgo",
+            "quantidade": null,
+            "unidade": "g",
+            "observacoes": "",
+            "text": "Wrap integral"
+          },
+          {
+            "id": "lf6it5udmsnq5pgo",
+            "ingredientId": "j1jvz95jmsnq5pgo",
+            "quantidade": 100,
+            "unidade": "g",
+            "observacoes": "",
+            "text": "100g peru"
+          },
+          {
+            "id": "a3ehetq4msnq5pgo",
+            "ingredientId": "m03s1b9nmsnq5pgo",
+            "quantidade": null,
+            "unidade": "g",
+            "observacoes": "",
+            "text": "Queijo magro"
+          },
+          {
+            "id": "8zf2w0mhmsnq5pgo",
+            "ingredientId": "mw8ui62fmsnq5pgo",
+            "quantidade": null,
+            "unidade": "g",
+            "observacoes": "",
+            "text": "Alface"
+          }
+        ]
+      }
+    ],
+    "ingredients": [
+      {
+        "id": "083rdtwgmsnq5pgo",
+        "nome": "legumes assados",
+        "categoria": "Legumes",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "0bl2vsl6msnq5pgo",
+        "nome": "frango",
+        "categoria": "Proteínas",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "0gpnp814msnq5pgo",
+        "nome": "Batido whey + banana",
+        "categoria": "Suplementos",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "1hvam0i4msnq5pgo",
+        "nome": "leite",
+        "categoria": "Laticínios",
+        "unidadeBase": "ml",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "22vf6dh1msnq5pgo",
+        "nome": "salada",
+        "categoria": "Legumes",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "3du2zoh7msnq5pgo",
+        "nome": "batata",
+        "categoria": "Hidratos",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "51cc7uc3msnq5pgo",
+        "nome": "Fiambre peru",
+        "categoria": "Proteínas",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "615a366ymsnq5pgn",
+        "nome": "banana",
+        "categoria": "Fruta",
+        "unidadeBase": "un",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.863Z",
+        "updatedAt": "2026-08-10T21:09:33.863Z"
+      },
+      {
+        "id": "69siwufhmsnq5pgo",
+        "nome": "atum",
+        "categoria": "Proteínas",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "7tymrptcmsnq5pgo",
+        "nome": "Wrap com peru",
+        "categoria": "Proteínas",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "8y0r1lp7msnq5pgo",
+        "nome": "Frutos secos",
+        "categoria": "Condimentos",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "a84vtvecmsnq5pgo",
+        "nome": "tosta integral",
+        "categoria": "Hidratos",
+        "unidadeBase": "un",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "bvati4qgmsnq5pgo",
+        "nome": "amendoim",
+        "categoria": "Condimentos",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "ftxcymqfmsnq5pgo",
+        "nome": "fruta",
+        "categoria": "Fruta",
+        "unidadeBase": "un",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "hcc4cg99msnq5pgo",
+        "nome": "Milho",
+        "categoria": "Hidratos",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "hxcs433pmsnq5pgn",
+        "nome": "ovos",
+        "categoria": "Proteínas",
+        "unidadeBase": "un",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.863Z",
+        "updatedAt": "2026-08-10T21:09:33.863Z"
+      },
+      {
+        "id": "iawkd23kmsnq5pgo",
+        "nome": "legumes",
+        "categoria": "Legumes",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "j1jvz95jmsnq5pgo",
+        "nome": "peru",
+        "categoria": "Proteínas",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "ka3j25tlmsnq5pgo",
+        "nome": "azeite",
+        "categoria": "Condimentos",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "ks2qgg0lmsnq5pgo",
+        "nome": "pescada",
+        "categoria": "Proteínas",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "m03s1b9nmsnq5pgo",
+        "nome": "Queijo magro",
+        "categoria": "Laticínios",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "mw8ui62fmsnq5pgo",
+        "nome": "Alface",
+        "categoria": "Legumes",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "nx34lo0qmsnq5pgo",
+        "nome": "café",
+        "categoria": "Bebidas",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "oex5utmomsnq5pgo",
+        "nome": "bacalhau",
+        "categoria": "Proteínas",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "qu1k9r6jmsnq5pgo",
+        "nome": "batata doce",
+        "categoria": "Hidratos",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "rlebwf6nmsnq5pgo",
+        "nome": "salada abundante",
+        "categoria": "Legumes",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "ru6mw32smsnq5pgo",
+        "nome": "ata atum",
+        "categoria": "Proteínas",
+        "unidadeBase": "l",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "snq6tr13msnq5pgo",
+        "nome": "Wrap integral",
+        "categoria": "Hidratos",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "sr1s9mewmsnq5pgo",
+        "nome": "Tomate",
+        "categoria": "Legumes",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "swa5ciwamsnq5pgo",
+        "nome": "Iogurte grego",
+        "categoria": "Laticínios",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "usgtt1kxmsnq5pgo",
+        "nome": "arroz",
+        "categoria": "Hidratos",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "w9fwjahvmsnq5pgn",
+        "nome": "aveia",
+        "categoria": "Hidratos",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.863Z",
+        "updatedAt": "2026-08-10T21:09:33.863Z"
+      },
+      {
+        "id": "y7amxkf8msnq5pgo",
+        "nome": "whey",
+        "categoria": "Suplementos",
+        "unidadeBase": "scoop",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      },
+      {
+        "id": "zvu8g2jqmsnq5pgo",
+        "nome": "Espinafres",
+        "categoria": "Legumes",
+        "unidadeBase": "g",
+        "macros": {
+          "kcal": null,
+          "proteina": null,
+          "hidratos": null,
+          "gordura": null,
+          "fibra": null,
+          "micros": {}
+        },
+        "precoMedio": null,
+        "notas": "",
+        "ativo": true,
+        "stock": null,
+        "validade": null,
+        "createdAt": "2026-08-10T21:09:33.864Z",
+        "updatedAt": "2026-08-10T21:09:33.864Z"
+      }
+    ],
+    "bjj": [],
+    "competitions": [],
+    "checkins": [],
+    "calendar": [],
+    "settings": [
+      {
+        "id": "ingredientCategories",
+        "value": [
+          "Proteínas",
+          "Hidratos",
+          "Legumes",
+          "Fruta",
+          "Laticínios",
+          "Bebidas",
+          "Condimentos",
+          "Suplementos",
+          "Outros"
+        ]
+      },
+      {
+        "id": "seeded_v1",
+        "value": true
+      },
+      {
+        "id": "seeded_v2",
+        "value": true
+      }
+    ]
+  }
+}
