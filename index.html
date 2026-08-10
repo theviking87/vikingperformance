@@ -655,7 +655,7 @@ function updateSyncUI(state){
   else el.textContent = 'Ainda não sincronizado';
 }
 async function syncRequest(method, body){
-  const res = await fetch('/.netlify/functions/sync', {
+  const res = await fetch('/api/sync', {
     method,
     headers: { 'Content-Type':'application/json' },
     body: body ? JSON.stringify(body) : undefined,
