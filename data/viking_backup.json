@@ -1,6 +1,6 @@
 {
   "version": 4,
-  "updatedAt": "2026-08-11T08:02:53.967Z",
+  "updatedAt": "2026-08-11T08:03:40.511Z",
   "stores": {
     "profile": [
       {
@@ -4208,10 +4208,17 @@
               "setIndex": 1,
               "weight": 0,
               "reps": 12
+            },
+            {
+              "exerciseId": "uedmrqjzmsntcbqw",
+              "exerciseName": "Subida da Prancha Ventral",
+              "setIndex": 2,
+              "weight": 0,
+              "reps": 12
             }
           ],
           "notes": "elástico azul na rotação \nelástico vermelho pallof \npeso do supino é sem barra\npeso pendlay é sem barra",
-          "savedAt": "2026-08-11T08:02:44.242Z"
+          "savedAt": "2026-08-11T08:03:30.911Z"
         }
       },
       {
