@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "updatedAt": "2026-08-11T23:34:22.835Z",
+  "updatedAt": "2026-08-11T23:37:18.467Z",
   "stores": {
     "profile": [
       {
@@ -883,7 +883,8 @@
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": "Aquecimento"
           },
           {
             "id": "qd1ozgvxmsnth0wy",
@@ -900,7 +901,8 @@
             "objective": "",
             "execution": "com KB",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": "Aquecimento"
           },
           {
             "id": "dyn9uhawmsnth116",
@@ -917,7 +919,8 @@
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "7y4v0hpomsnth15d",
@@ -929,12 +932,13 @@
             "notes": "",
             "history": [],
             "muscleGroup": "",
-            "groupId": "ss-vmyxdo04msoag8xd",
+            "groupId": "ss-sebane3rmsparvz3",
             "autoTimer": true,
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "bpuvomt1msnth19l",
@@ -946,12 +950,13 @@
             "notes": "",
             "history": [],
             "muscleGroup": "",
-            "groupId": "ss-vmyxdo04msoag8xd",
+            "groupId": "ss-sebane3rmsparvz3",
             "autoTimer": true,
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "equa9vz1msnth1dl",
@@ -968,7 +973,8 @@
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "tcw54w3fmsnth1hu",
@@ -985,7 +991,8 @@
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "56xw7jzgmsnth1m9",
@@ -1002,7 +1009,8 @@
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "3m29tenkmsnth1qh",
@@ -1019,7 +1027,8 @@
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           }
         ],
         "kind": "exercises",
@@ -3312,6 +3321,59 @@
         "totalWeight": 15290,
         "completedExercises": 6,
         "notes": "foi com 35 e não 40 na polia uni\ntrap bar pegada larga "
+      },
+      {
+        "id": "tidieptzmspas0eh",
+        "workoutId": "Legs",
+        "workoutTitle": "Base Perfomance A - Completo",
+        "date": "2026-08-11T23:34:32.962Z",
+        "startedAt": "2026-08-11T23:34:29.240Z",
+        "endedAt": "2026-08-11T23:34:32.962Z",
+        "durationSec": 4,
+        "durationMin": 0,
+        "loads": [
+          {
+            "exerciseId": "r08v6vqymsntgooi",
+            "load": 0
+          },
+          {
+            "exerciseId": "qd1ozgvxmsnth0wy",
+            "load": 0
+          },
+          {
+            "exerciseId": "dyn9uhawmsnth116",
+            "load": 0
+          },
+          {
+            "exerciseId": "7y4v0hpomsnth15d",
+            "load": 0
+          },
+          {
+            "exerciseId": "bpuvomt1msnth19l",
+            "load": 0
+          },
+          {
+            "exerciseId": "equa9vz1msnth1dl",
+            "load": 0
+          },
+          {
+            "exerciseId": "tcw54w3fmsnth1hu",
+            "load": 0
+          },
+          {
+            "exerciseId": "56xw7jzgmsnth1m9",
+            "load": 0
+          },
+          {
+            "exerciseId": "3m29tenkmsnth1qh",
+            "load": 0
+          }
+        ],
+        "setsLog": [],
+        "totalVolume": 0,
+        "totalWeight": 0,
+        "completedExercises": 0,
+        "notes": ""
       }
     ],
     "exerciseLibrary": [
