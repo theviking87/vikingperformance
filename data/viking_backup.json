@@ -1,6 +1,6 @@
 {
   "version": 4,
-  "updatedAt": "2026-08-11T07:43:27.853Z",
+  "updatedAt": "2026-08-11T07:43:42.054Z",
   "stores": {
     "profile": [
       {
@@ -4053,10 +4053,18 @@
               "weight": 20,
               "reps": 6,
               "rpe": 6
+            },
+            {
+              "exerciseId": "79u3xsngmsnt9vwe",
+              "exerciseName": "Remada Alta c/ Barra",
+              "setIndex": 1,
+              "weight": 20,
+              "reps": 6,
+              "rpe": 8
             }
           ],
           "notes": "elástico azul na rotação \nelástico vermelho pallof \npeso do supino é sem barra\npeso pendlay é sem barra",
-          "savedAt": "2026-08-11T07:43:18.089Z"
+          "savedAt": "2026-08-11T07:43:32.182Z"
         }
       },
       {
