@@ -1,6 +1,6 @@
 {
   "version": 4,
-  "updatedAt": "2026-08-11T07:21:54.605Z",
+  "updatedAt": "2026-08-11T07:24:27.731Z",
   "stores": {
     "profile": [
       {
@@ -3939,10 +3939,31 @@
               "setIndex": 1,
               "weight": 0,
               "reps": 12
+            },
+            {
+              "exerciseId": "vpdughs2msnt6v3r",
+              "exerciseName": "Rotação Externa Ombro",
+              "setIndex": 2,
+              "weight": 0,
+              "reps": 12
+            },
+            {
+              "exerciseId": "4mgx2yc3msnt8a2v",
+              "exerciseName": "Pallof Press",
+              "setIndex": 2,
+              "weight": 0,
+              "reps": 12
+            },
+            {
+              "exerciseId": "xcpce3gomsnt8nsm",
+              "exerciseName": "Gorila Row",
+              "setIndex": 2,
+              "weight": 0,
+              "reps": 12
             }
           ],
           "notes": "elástico azul na rotação \nelástico vermelho pallof ",
-          "savedAt": "2026-08-11T07:21:44.615Z"
+          "savedAt": "2026-08-11T07:24:16.388Z"
         }
       },
       {
