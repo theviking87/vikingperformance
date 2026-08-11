@@ -118,7 +118,6 @@ button{font-family:inherit;}
 .nav-sub-link.active{background:var(--sidebar-accent);color:var(--sidebar-accent-foreground);opacity:1;}
 .mobile-training-sheet{position:fixed;left:10px;right:10px;bottom:78px;z-index:40;display:none;padding:10px;background:var(--popover);border:1px solid var(--border);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.25);}
 .mobile-training-sheet.open{display:block;}
-@media(min-width:1024px){.mobile-training-sheet,.mobile-training-sheet.open{display:none!important;}}
 .mobile-training-sheet a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;}
 .mobile-training-sheet a:hover{background:var(--accent);}
 .theme-toggle-btn{margin:12px;display:flex;align-items:center;gap:10px;border-radius:8px;border:1px solid var(--sidebar-border);background:transparent;padding:9px 12px;font-size:14px;color:var(--sidebar-foreground);cursor:pointer;}
@@ -136,6 +135,7 @@ button{font-family:inherit;}
 .bottom-nav-scroll{display:flex;overflow-x:auto;}
 .bottom-nav-link{display:flex;min-width:64px;flex-shrink:0;flex-direction:column;align-items:center;gap:2px;padding:8px 12px;font-size:10px;font-weight:500;color:var(--muted-foreground);}
 .bottom-nav-link.active{color:var(--primary);}
+#mobile-training-toggle{color:var(--primary);}
 .bottom-nav-link svg{width:20px;height:20px;}
 
 /* Page header */
@@ -1506,7 +1506,7 @@ function renderShellNav(){
       const childHtml = n.children.map(c=>'<a href="'+c.to+'" class="nav-sub-link" data-nav="'+c.to+'">'+icon(c.icon,14)+'<span>'+esc(c.label)+'</span></a>').join('');
       return '<div class="nav-parent-row open" data-nav-parent="treinos"><a href="'+n.to+'" class="nav-link" data-nav="'+n.to+'">'+icon(n.icon,17)+'<span class="truncate">'+esc(n.label)+'</span></a><button type="button" class="nav-chevron" data-nav-toggle="treinos" aria-label="Expandir Treinos">'+icon('chevrondown',15)+'</button></div><div class="nav-submenu">'+childHtml+'</div>';
     }).join('');
-    const bottom = NAV.filter(n=>n.to!=='#/treinos' && n.to!=='#/perfil' && n.to!=='#/configuracoes').slice(0,7);
+    const bottom = NAV.filter(n=>n.to!=='#/treinos' && n.to!=='#/perfil');
     document.getElementById('bottom-nav-links').innerHTML = '<button type="button" class="bottom-nav-link" id="mobile-training-toggle">'+icon('dumbbell',20)+'<span>Treinos</span></button>'+bottom.filter(n=>n.to!=='#/mobilidade' && n.to!=='#/cardio').map(n=>'<a href="'+n.to+'" class="bottom-nav-link" data-nav="'+n.to+'">'+icon(n.icon,20)+'<span>'+esc(n.label.split(' ')[0])+'</span></a>').join('');
     if(!document.getElementById('mobile-training-sheet')){
       const sheet=document.createElement('div'); sheet.id='mobile-training-sheet'; sheet.className='mobile-training-sheet';
@@ -1931,6 +1931,19 @@ async function renderTreinoGrupoDetail(root, id){
 
 
 /* ---------------------------------------------------------------
+   CONFIGURAÇÃO DOS BLOCOS/FUNÇÕES DOS EXERCÍCIOS
+   --------------------------------------------------------------- */
+const DEFAULT_EXERCISE_SECTIONS = ['Aquecimento','Mobilidade','Ativação','Força','Hipertrofia','Potência','Core','Cardio','Alongamento','Volta à calma'];
+async function getExerciseSections(){
+  const row = await get('settings','exerciseSections');
+  const list = Array.isArray(row && row.value) ? row.value.map(v=>String(v||'').trim()).filter(Boolean) : [];
+  if(list.length) return Array.from(new Set(list));
+  const defaults = DEFAULT_EXERCISE_SECTIONS.slice();
+  await put('settings',{id:'exerciseSections',value:defaults});
+  return defaults;
+}
+
+/* ---------------------------------------------------------------
    WORKOUT EDITOR (partilhado: novo + editar)
    --------------------------------------------------------------- */
 function emptyExercise(){
@@ -1952,6 +1965,7 @@ function newWorkoutTemplate(groupId){ return { id:uid(), name:'', title:'', focu
 
 function renderWorkoutEditor(root, initial, mode, headerTitle, headerSub){
   let w = JSON.parse(JSON.stringify(initial));
+  let exerciseSections = DEFAULT_EXERCISE_SECTIONS.slice();
 
   function exerciseCard(ex, i){
     const prev = i>0 ? w.exercises[i-1] : null;
@@ -1995,7 +2009,7 @@ function renderWorkoutEditor(root, initial, mode, headerTitle, headerSub){
           '<div><label class="field-label">Descrição</label><textarea id="we-description" rows="2">'+esc(w.description||'')+'</textarea></div>'+
         '</div></div>'+
         '<div class="flex items-center justify-between"><h2 class="divider-label" style="margin:0;">Exercícios</h2><button class="btn btn-outline btn-sm" id="we-add-ex">'+icon('plus',14)+' Adicionar</button></div>'+
-        '<datalist id="we-section-options">'+['Aquecimento','Mobilidade','Ativação','Força','Hipertrofia','Potência','Core','Cardio','Alongamento','Volta à calma'].map(x=>'<option value="'+esc(x)+'"></option>').join('')+'</datalist>'+
+        '<datalist id="we-section-options">'+exerciseSections.map(x=>'<option value="'+esc(x)+'"></option>').join('')+'</datalist>'+
         '<div id="we-ex-list" style="display:flex;flex-direction:column;gap:12px;">'+w.exercises.map(exerciseCard).join('')+'</div>'+
         '<button class="btn btn-primary w-full" id="we-save-bottom">'+icon('save',14)+' Guardar treino</button>'+
       '</div>';
@@ -2067,7 +2081,7 @@ function renderWorkoutEditor(root, initial, mode, headerTitle, headerSub){
     root.querySelectorAll('.we-super').forEach(cb=>cb.addEventListener('change', ()=>{ readFormIntoW(); draw(); }));
   }
 
-  draw();
+  getExerciseSections().then(list=>{ exerciseSections=list; draw(); }).catch(()=>draw());
 }
 /* ---------------------------------------------------------------
    PÁGINA: TREINO EM PDF (visualizador + observações de cargas)
@@ -4523,6 +4537,18 @@ async function renderConfiguracoes(root){
         '</div>'+
       '</div></div>'+
     '</div></div>'+
+    '<h2 class="divider-label">Blocos / funções dos exercícios</h2>'+
+    '<div class="card mb-4"><div class="card-body">'+
+      '<div class="flex items-start gap-3"><div class="stat-icon-box">'+icon('layers',18)+'</div><div style="flex:1;min-width:0;">'+
+        '<div class="font-bold">Configurar blocos do treino</div>'+
+        '<p class="text-sm text-muted">Define os blocos que aparecem na seleção de função de cada exercício. Podes criar, renomear e eliminar blocos.</p>'+
+        '<div id="cfg-exercise-sections" class="grid gap-2 mt-3"></div>'+
+        '<div class="flex gap-2 mt-3">'+
+          '<input type="text" id="cfg-exercise-section-new" placeholder="Novo bloco (ex.: Grip)" style="flex:1;">'+
+          '<button class="btn btn-primary btn-sm" id="cfg-exercise-section-add">'+icon('plus',14)+' Adicionar</button>'+
+        '</div>'+
+      '</div></div>'+
+    '</div></div>'+
     '<h2 class="divider-label">Backup completo</h2>'+
     '<div class="grid sm-grid-2">'+
       '<div class="card"><div class="card-body">'+
@@ -4559,6 +4585,42 @@ async function renderConfiguracoes(root){
     '<div class="card mt-6"><div class="card-body flex items-start gap-3">'+icon('shield',20)+
       '<div style="flex:1;"><div class="font-bold">100% offline · 100% privado</div><p class="text-sm text-muted">Todos os dados vivem no teu dispositivo (IndexedDB). Nada é enviado para servidores externos.</p></div>'+
     '</div></div>';
+
+  async function renderExerciseSectionsConfig(){
+    const box = document.getElementById('cfg-exercise-sections');
+    if(!box) return;
+    const list = await getExerciseSections();
+    box.innerHTML = list.length ? list.map((name,i)=>
+      '<div class="card-body-sm" style="border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;gap:8px;">'+
+        '<div style="flex:1;font-weight:600;" class="text-sm">'+esc(name)+'</div>'+
+        '<button class="btn btn-outline btn-sm cfg-sec-edit" data-i="'+i+'">Editar</button>'+
+        '<button class="btn btn-ghost btn-sm cfg-sec-del" data-i="'+i+'">'+icon('trash',13)+'</button>'+
+      '</div>'
+    ).join('') : '<p class="text-sm text-muted">Ainda não existem blocos configurados.</p>';
+    box.querySelectorAll('.cfg-sec-edit').forEach(btn=>btn.addEventListener('click',async()=>{
+      const cur=await getExerciseSections(); const i=Number(btn.dataset.i); const old=cur[i];
+      const val=prompt('Novo nome do bloco:',old); if(val===null) return;
+      const name=val.trim(); if(!name) return toast.error('Nome obrigatório');
+      if(cur.some((x,j)=>j!==i && x.toLowerCase()===name.toLowerCase())) return toast.error('Esse bloco já existe');
+      cur[i]=name; await put('settings',{id:'exerciseSections',value:cur}); await renderExerciseSectionsConfig();
+      toast.success('Bloco atualizado');
+    }));
+    box.querySelectorAll('.cfg-sec-del').forEach(btn=>btn.addEventListener('click',async()=>{
+      const cur=await getExerciseSections(); const i=Number(btn.dataset.i); const name=cur[i];
+      if(!confirm('Eliminar o bloco "'+name+'" da configuração? Os exercícios que já usam este nome não serão apagados.')) return;
+      cur.splice(i,1); await put('settings',{id:'exerciseSections',value:cur}); await renderExerciseSectionsConfig();
+      toast.success('Bloco eliminado da configuração');
+    }));
+  }
+  await renderExerciseSectionsConfig();
+  document.getElementById('cfg-exercise-section-add').addEventListener('click',async()=>{
+    const inp=document.getElementById('cfg-exercise-section-new'); const name=(inp.value||'').trim();
+    if(!name) return toast.error('Indica o nome do bloco');
+    const cur=await getExerciseSections();
+    if(cur.some(x=>x.toLowerCase()===name.toLowerCase())) return toast.error('Esse bloco já existe');
+    cur.push(name); await put('settings',{id:'exerciseSections',value:cur}); inp.value=''; await renderExerciseSectionsConfig(); toast.success('Bloco adicionado');
+  });
+  document.getElementById('cfg-exercise-section-new').addEventListener('keydown',e=>{ if(e.key==='Enter') document.getElementById('cfg-exercise-section-add').click(); });
 
   updateSyncUI(getSyncState());
   const syncNowBtn = document.getElementById('cfg-sync-now');
