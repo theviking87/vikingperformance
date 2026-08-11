@@ -1,6 +1,6 @@
 {
   "version": 4,
-  "updatedAt": "2026-08-11T07:40:34.251Z",
+  "updatedAt": "2026-08-11T07:41:43.381Z",
   "stores": {
     "profile": [
       {
@@ -3917,7 +3917,7 @@
         "value": {
           "workoutId": "Push/Pull/Grip",
           "startedAt": "2026-08-11T07:16:25.917Z",
-          "exIdx": 5,
+          "exIdx": 7,
           "setsLog": [
             {
               "exerciseId": "vpdughs2msnt6v3r",
@@ -4048,7 +4048,7 @@
             }
           ],
           "notes": "elástico azul na rotação \nelástico vermelho pallof \npeso do supino é sem barra\npeso pendlay é sem barra",
-          "savedAt": "2026-08-11T07:40:24.457Z"
+          "savedAt": "2026-08-11T07:41:33.592Z"
         }
       },
       {
