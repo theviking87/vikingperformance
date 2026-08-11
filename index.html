@@ -379,6 +379,9 @@ const ICONS = {
   scale: '<path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>',
   lock: '<rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
   zap: '<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14Z"/>',
+  folder: '<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>',
+  arrowup: '<path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>',
+  arrowdown: '<path d="M12 5v14"/><path d="m19 12-7 7-7-7"/>',
 };
 function icon(name, size){
   size = size || 16;
@@ -522,9 +525,9 @@ const State = {
    BASE DE DADOS — IndexedDB (substitui o "idb" + db.ts)
    --------------------------------------------------------------- */
 const DB_NAME = 'viking-performance';
-const DB_VERSION = 3;
+const DB_VERSION = 4;
 const ALL_STORES = [
-  'profile','workouts','workoutSessions','exerciseLibrary',
+  'profile','workouts','workoutGroups','workoutSessions','exerciseLibrary',
   'mobility','mobilityLogs','cardio','cardioSessions',
   'meals','shopping','shoppingLists','quickMeals','ingredients',
   'bjj','competitions','checkins','calendar','settings',
@@ -538,6 +541,7 @@ function getDB(){
       const db = req.result;
       if(!db.objectStoreNames.contains('profile')) db.createObjectStore('profile', { keyPath: 'id' });
       if(!db.objectStoreNames.contains('workouts')) db.createObjectStore('workouts', { keyPath: 'id' });
+      if(!db.objectStoreNames.contains('workoutGroups')) db.createObjectStore('workoutGroups', { keyPath: 'id' });
       if(!db.objectStoreNames.contains('workoutSessions')){
         const ws = db.createObjectStore('workoutSessions', { keyPath: 'id' });
         ws.createIndex('byWorkout','workoutId'); ws.createIndex('byDate','date');
@@ -1240,7 +1244,7 @@ async function renderPdfCanvas(container, dataUrl, scale){
   }
 }
 
-async function createPdfWorkout(file){
+async function createPdfWorkout(file, groupId){
   try{
     if(!/pdf$/i.test(file.type||'') && !/\.pdf$/i.test(file.name||'')){ toast.error('Escolhe um ficheiro PDF'); return null; }
     if(file.size > 20*1024*1024){ toast.error('PDF demasiado grande (máx. 20 MB)'); return null; }
@@ -1249,7 +1253,7 @@ async function createPdfWorkout(file){
     const name = String(file.name||'Treino').replace(/\.pdf$/i,'') || 'Treino (PDF)';
     const w = { id:uid(), kind:'pdf', name, title:name, focus:'', description:'Treino em PDF',
       category:'', archived:false, exercises:[], pdfName:file.name||'treino.pdf', pdfData:dataUrl,
-      observations:'', pdfExercises:[], createdAt:now, updatedAt:now };
+      observations:'', pdfExercises:[], groupId: groupId||'', order: Date.now(), createdAt:now, updatedAt:now };
     await put('workouts', w);
     toast.success('Treino em PDF adicionado');
     return w;
@@ -1298,6 +1302,72 @@ function duplicateWorkout(w){
 function duplicateMealPlan(p){ const copy = JSON.parse(JSON.stringify(p)); copy.id = uid(); copy.name = p.name+' (cópia)'; return copy; }
 async function deleteWorkout(id){ await remove('workouts', id); toast.success('Treino eliminado'); }
 async function deleteMealPlan(id){ await remove('meals', id); toast.success('Plano eliminado'); }
+
+/* ---------------------------------------------------------------
+   GRUPOS DE TREINO
+   --------------------------------------------------------------- */
+function newGroupTemplate(){ return { id:uid(), name:'', archived:false, order:Date.now(), createdAt:new Date().toISOString() }; }
+async function toggleArchiveGroup(g){
+  return put('workoutGroups', Object.assign({}, g, { archived: !g.archived, updatedAt: new Date().toISOString() }));
+}
+async function deleteGroup(id){
+  const ws = await getAll('workouts');
+  const inGroup = ws.filter(w=>w.groupId===id);
+  for(const w of inGroup){ await putNoRender('workouts', Object.assign({}, w, { groupId:'', updatedAt:new Date().toISOString() })); }
+  await remove('workoutGroups', id);
+}
+function openGroupDialog(group){
+  const isNew = !group;
+  const g = isNew ? newGroupTemplate() : Object.assign({}, group);
+  const body = '<div style="display:flex;flex-direction:column;gap:12px;">'+
+    '<div><label class="field-label">Nome do grupo</label><input type="text" id="grp-name" value="'+esc(g.name||'')+'" placeholder="Grupo Push/Pull/Legs"></div>'+
+    '</div>';
+  const footer = '<button class="btn btn-outline" id="grp-cancel">Cancelar</button><button class="btn btn-primary" id="grp-save">Guardar</button>';
+  const wrap = openModal(isNew ? 'Novo grupo de treino' : 'Editar grupo', body, footer);
+  State.render.hold++;
+  const close = ()=>{ State.render.hold = Math.max(0, State.render.hold-1); closeModal(wrap); scheduleRerender(); };
+  wrap.querySelector('#grp-cancel').addEventListener('click', close);
+  wrap.querySelector('#grp-name').focus();
+  wrap.querySelector('#grp-save').addEventListener('click', async ()=>{
+    const name = wrap.querySelector('#grp-name').value.trim();
+    if(!name){ toast.error('Indica o nome do grupo'); return; }
+    g.name = name;
+    try{
+      await put('workoutGroups', g);
+      toast.success(isNew ? 'Grupo criado' : 'Grupo atualizado');
+      close();
+      if(isNew) location.hash = '#/treinos/grupo/'+encodeURIComponent(g.id);
+    }catch(e){ console.error(e); toast.error('Não foi possível guardar o grupo'); }
+  });
+}
+/* Reordenação: normaliza a ordem de toda a listagem visível e troca
+   os dois itens adjacentes, persistindo apenas as stores envolvidas. */
+async function persistReorderedItems(items){
+  const groupItems = items.filter(i=>i.type==='group').map(i=>i.raw);
+  const workoutItems = items.filter(i=>i.type==='workout').map(i=>i.raw);
+  if(groupItems.length) await bulkPut('workoutGroups', groupItems);
+  if(workoutItems.length) await bulkPut('workouts', workoutItems);
+}
+async function reorderTopLevel(items, index, dir){
+  const j = index + dir;
+  if(j<0 || j>=items.length) return;
+  items.forEach((it,i)=>{ it.raw.order = i; });
+  const tmp = items[index].raw.order; items[index].raw.order = items[j].raw.order; items[j].raw.order = tmp;
+  const now = new Date().toISOString();
+  items.forEach(it=>{ it.raw.updatedAt = now; });
+  try{ await persistReorderedItems(items); }
+  catch(e){ console.error(e); toast.error('Não foi possível reordenar'); }
+}
+async function reorderGroupWorkouts(list, index, dir){
+  const j = index + dir;
+  if(j<0 || j>=list.length) return;
+  list.forEach((w,i)=>{ w.order = i; });
+  const tmp = list[index].order; list[index].order = list[j].order; list[j].order = tmp;
+  const now = new Date().toISOString();
+  list.forEach(w=>{ w.updatedAt = now; });
+  try{ await bulkPut('workouts', list); }
+  catch(e){ console.error(e); toast.error('Não foi possível reordenar'); }
+}
 
 /* ---------------------------------------------------------------
    MINI CHARTS — SVG puro (substitui recharts)
@@ -1462,6 +1532,11 @@ function resolveView(parts, root){
       if(parts.length === 1) return () => renderTreinosIndex(root);
       if(parts[1] === 'novo') return () => renderTreinoNovo(root);
       if(parts[1] === 'historico') return () => renderTreinosHistorico(root);
+      if(parts[1] === 'grupo'){
+        const gid = decodeURIComponent(parts[2]||'');
+        if(parts[3] === 'novo') return () => renderTreinoNovo(root, gid);
+        return () => renderTreinoGrupoDetail(root, gid);
+      }
       const id = decodeURIComponent(parts[1]);
       if(parts[2] === 'editar') return () => renderTreinoEditar(root, id);
       if(parts[2] === 'sessao') return () => renderTreinoSessao(root, id);
@@ -1514,20 +1589,36 @@ function scheduleRerender(){
    PÁGINA: TREINOS — índice
    --------------------------------------------------------------- */
 async function renderTreinosIndex(root){
-  const [allWorkouts, sessions] = await Promise.all([getAll('workouts'), getAll('workoutSessions')]);
+  const [allWorkouts, allGroups, sessions] = await Promise.all([getAll('workouts'), getAll('workoutGroups'), getAll('workoutSessions')]);
   const tab = State.ui.treinosTab === 'arquivados' ? 'arquivados' : 'ativos';
-  const activeList = allWorkouts.filter(w=>!w.archived);
-  const archivedList = allWorkouts.filter(w=>!!w.archived);
-  const workouts = tab === 'arquivados' ? archivedList : activeList;
-  const selectedWorkouts = () => workouts.filter(w=>State.ui.treinosSelected.has(w.id));
+
+  const adhocAll = allWorkouts.filter(w=>!w.groupId);
+  const activeGroups = allGroups.filter(g=>!g.archived);
+  const archivedGroups = allGroups.filter(g=>!!g.archived);
+  const activeAdhoc = adhocAll.filter(w=>!w.archived);
+  const archivedAdhoc = adhocAll.filter(w=>!!w.archived);
+  const activeCount = activeGroups.length + activeAdhoc.length;
+  const archivedCount = archivedGroups.length + archivedAdhoc.length;
+
+  const groupsForTab = tab === 'arquivados' ? archivedGroups : activeGroups;
+  const adhocForTab = tab === 'arquivados' ? archivedAdhoc : activeAdhoc;
+
+  /* Listagem combinada (grupos + treinos ad-hoc), ordenável */
+  const items = [
+    ...groupsForTab.map(g=>({ type:'group', id:g.id, order:(g.order||0), raw:g })),
+    ...adhocForTab.map(w=>({ type:'workout', id:w.id, order:(w.order||0), raw:w })),
+  ].sort((a,b)=> (a.order-b.order) || String(a.id).localeCompare(String(b.id)));
+
+  const selectedWorkouts = () => adhocForTab.filter(w=>State.ui.treinosSelected.has(w.id));
 
   root.innerHTML =
-    pageHeader('Treinos','Templates de treino') +
+    pageHeader('Treinos','Grupos e templates de treino') +
     '<div class="tabs-list grid-2 mb-4" id="tr-tabs">'+
-      '<button class="tab-btn '+(tab==='ativos'?'active':'')+'" data-t="ativos">Ativos ('+activeList.length+')</button>'+
-      '<button class="tab-btn '+(tab==='arquivados'?'active':'')+'" data-t="arquivados">Arquivados ('+archivedList.length+')</button>'+
+      '<button class="tab-btn '+(tab==='ativos'?'active':'')+'" data-t="ativos">Ativos ('+activeCount+')</button>'+
+      '<button class="tab-btn '+(tab==='arquivados'?'active':'')+'" data-t="arquivados">Arquivados ('+archivedCount+')</button>'+
     '</div>'+
     '<div class="flex flex-wrap items-center gap-2 mb-4">'+
+      '<button class="btn btn-primary btn-sm" id="tr-new-group">'+icon('folder',14)+' Novo grupo</button>'+
       '<button class="btn btn-primary btn-sm" id="tr-new">'+icon('plus',14)+' Novo treino</button>'+
       '<button class="btn btn-outline btn-sm" id="tr-new-pdf">'+icon('upload',14)+' Novo treino (PDF)</button>'+
       '<input type="file" accept="application/pdf" id="tr-pdf-file" class="hidden">'+
@@ -1540,8 +1631,33 @@ async function renderTreinosIndex(root){
       '<div style="margin-left:auto;"><a href="#/treinos/historico" class="btn btn-ghost btn-sm">'+icon('history',14)+' Histórico</a></div>'+
     '</div>'+
     '<div class="grid sm-grid-2">'+
-      (workouts.length===0 ? '<p class="text-sm text-muted" style="grid-column:1/-1;">'+(tab==='arquivados'?'Sem treinos arquivados.':'Sem treinos. Cria o teu primeiro treino, adiciona um PDF ou importa um ficheiro.')+'</p>' : '')+
-      workouts.map(w=>{
+      (items.length===0 ? '<p class="text-sm text-muted" style="grid-column:1/-1;">'+(tab==='arquivados'?'Sem grupos ou treinos arquivados.':'Sem grupos ou treinos. Cria um grupo, um treino, adiciona um PDF ou importa um ficheiro.')+'</p>' : '')+
+      items.map((it,i)=>{
+        const arrows =
+          '<button class="btn btn-ghost btn-sm tr-up" data-i="'+i+'" '+(i===0?'disabled':'')+'>'+icon('arrowup',13)+'</button>'+
+          '<button class="btn btn-ghost btn-sm tr-down" data-i="'+i+'" '+(i===items.length-1?'disabled':'')+'>'+icon('arrowdown',13)+'</button>';
+        if(it.type==='group'){
+          const g = it.raw;
+          const count = allWorkouts.filter(w=>w.groupId===g.id).length;
+          return '<div class="card" data-gid="'+esc(g.id)+'">'+
+            '<div class="card-body-sm">'+
+              '<div class="flex items-start gap-3">'+
+                '<div class="stat-icon-box">'+icon('folder',18)+'</div>'+
+                '<a href="#/treinos/grupo/'+encodeURIComponent(g.id)+'" class="min-w-0" style="flex:1;">'+
+                  '<div class="truncate font-bold">'+esc(g.name||'Grupo sem nome')+'</div>'+
+                  '<div class="mt-1 uppercase">'+count+' treino(s)</div>'+
+                '</a>'+
+              '</div>'+
+              '<div class="flex flex-wrap gap-1 mt-3">'+
+                '<a href="#/treinos/grupo/'+encodeURIComponent(g.id)+'" class="btn btn-primary btn-sm">'+icon('play',13)+' Abrir</a>'+
+                arrows+
+                '<button class="btn btn-ghost btn-sm gr-rename" data-id="'+esc(g.id)+'">'+icon('pencil',13)+' Renomear</button>'+
+                '<button class="btn btn-ghost btn-sm gr-arch" data-id="'+esc(g.id)+'">'+icon(g.archived?'history':'check',13)+' '+(g.archived?'Restaurar':'Arquivar')+'</button>'+
+                '<button class="btn btn-ghost btn-sm btn-danger-text gr-del" data-id="'+esc(g.id)+'">'+icon('trash',13)+' Eliminar</button>'+
+              '</div>'+
+            '</div></div>';
+        }
+        const w = it.raw;
         const count = sessions.filter(s=>s.workoutId===w.id).length;
         const displayName = w.name || w.title;
         const displayDesc = w.description || w.focus;
@@ -1561,12 +1677,16 @@ async function renderTreinosIndex(root){
                 ? '<a href="#/treinos/'+encodeURIComponent(w.id)+'" class="btn btn-primary btn-sm">'+icon('play',13)+' Abrir PDF</a>'
                 : '<a href="#/treinos/'+encodeURIComponent(w.id)+'/sessao" class="btn btn-primary btn-sm">'+icon('play',13)+' Iniciar</a>'+
                   '<a href="#/treinos/'+encodeURIComponent(w.id)+'/editar" class="btn btn-outline btn-sm">'+icon('pencil',13)+' Editar</a>')+
+              arrows+
               '<button class="btn btn-ghost btn-sm tr-arch" data-id="'+esc(w.id)+'">'+icon(w.archived?'history':'check',13)+' '+(w.archived?'Restaurar':'Arquivar')+'</button>'+
               (isPdf ? '' : '<button class="btn btn-ghost btn-sm tr-dup" data-id="'+esc(w.id)+'">'+icon('copy',13)+' Duplicar</button>'+
                 '<button class="btn btn-ghost btn-sm tr-exp" data-id="'+esc(w.id)+'">'+icon('download',13)+' PDF</button>'+
                 '<button class="btn btn-ghost btn-sm tr-exp-json" data-id="'+esc(w.id)+'">'+icon('fileJson',13)+' JSON</button>')+
               '<button class="btn btn-ghost btn-sm btn-danger-text tr-del" data-id="'+esc(w.id)+'">'+icon('trash',13)+' Eliminar</button>'+
             '</div>'+
+            (tab==='ativos' && activeGroups.length>0 ? '<div class="mt-2"><label class="field-label" style="font-size:9px;">Mover para grupo</label><select class="tr-move-group" data-id="'+esc(w.id)+'"><option value="">— sem grupo —</option>'+
+              activeGroups.map(g=>'<option value="'+esc(g.id)+'">'+esc(g.name||'Grupo sem nome')+'</option>').join('')+
+              '</select></div>' : '')+
           '</div></div>';
       }).join('')+
     '</div>';
@@ -1581,6 +1701,7 @@ async function renderTreinosIndex(root){
     if(cb.checked) State.ui.treinosSelected.add(id); else State.ui.treinosSelected.delete(id);
     renderTreinosIndex(root);
   }));
+  const newGroupBtn = document.getElementById('tr-new-group'); if(newGroupBtn) newGroupBtn.addEventListener('click', ()=>openGroupDialog(null));
   const newBtn = document.getElementById('tr-new'); if(newBtn) newBtn.addEventListener('click', ()=>{ location.hash = '#/treinos/novo'; });
   const newPdfBtn = document.getElementById('tr-new-pdf');
   if(newPdfBtn) newPdfBtn.addEventListener('click', ()=>document.getElementById('tr-pdf-file').click());
@@ -1597,13 +1718,41 @@ async function renderTreinosIndex(root){
     if(f) await importWorkoutJSON(f);
     e.target.value = '';
   });
-  const exportable = workouts.filter(w=>w.kind !== 'pdf');
+  const exportable = adhocForTab.filter(w=>w.kind !== 'pdf');
   const expAllBtn = document.getElementById('tr-export-all'); if(expAllBtn) expAllBtn.addEventListener('click', ()=>exportWorkoutPDF(exportable));
   document.getElementById('tr-export-all-json').addEventListener('click', ()=>exportWorkoutJSON(exportable));
   const expSelBtn = document.getElementById('tr-export-sel'); if(expSelBtn) expSelBtn.addEventListener('click', ()=>exportWorkoutPDF(selectedWorkouts().filter(w=>w.kind!=='pdf')));
   const expSelJsonBtn = document.getElementById('tr-export-sel-json'); if(expSelJsonBtn) expSelJsonBtn.addEventListener('click', ()=>exportWorkoutJSON(selectedWorkouts().filter(w=>w.kind!=='pdf')));
+  root.querySelectorAll('.tr-up').forEach(b=>b.addEventListener('click', ()=>reorderTopLevel(items, Number(b.dataset.i), -1)));
+  root.querySelectorAll('.tr-down').forEach(b=>b.addEventListener('click', ()=>reorderTopLevel(items, Number(b.dataset.i), 1)));
+  root.querySelectorAll('.gr-rename').forEach(b=>b.addEventListener('click', ()=>{
+    openGroupDialog(allGroups.find(x=>x.id===b.dataset.id));
+  }));
+  root.querySelectorAll('.gr-arch').forEach(b=>b.addEventListener('click', async ()=>{
+    const g = allGroups.find(x=>x.id===b.dataset.id);
+    if(!g) return;
+    try{
+      await toggleArchiveGroup(g);
+      toast.success(g.archived ? 'Grupo restaurado' : 'Grupo arquivado');
+    }catch(err){ console.error(err); toast.error('Não foi possível arquivar o grupo'); }
+  }));
+  root.querySelectorAll('.gr-del').forEach(b=>b.addEventListener('click', async ()=>{
+    const g = allGroups.find(x=>x.id===b.dataset.id);
+    if(!g) return;
+    if(!confirm('Eliminar o grupo "'+(g.name||'sem nome')+'"? Os treinos dentro dele passam a treinos ad-hoc (sem grupo) e não são eliminados.')) return;
+    try{ await deleteGroup(g.id); toast.success('Grupo eliminado'); }
+    catch(err){ console.error(err); toast.error('Não foi possível eliminar o grupo'); }
+  }));
+  root.querySelectorAll('.tr-move-group').forEach(sel=>sel.addEventListener('change', async ()=>{
+    const w = adhocForTab.find(x=>x.id===sel.dataset.id);
+    if(!w) return;
+    try{
+      await put('workouts', Object.assign({}, w, { groupId: sel.value||'', order: Date.now(), updatedAt: new Date().toISOString() }));
+      toast.success(sel.value ? 'Treino movido para o grupo' : 'Treino sem grupo');
+    }catch(err){ console.error(err); toast.error('Não foi possível mover o treino'); }
+  }));
   root.querySelectorAll('.tr-arch').forEach(b=>b.addEventListener('click', async ()=>{
-    const w = workouts.find(x=>x.id===b.dataset.id);
+    const w = adhocForTab.find(x=>x.id===b.dataset.id);
     if(!w) return;
     try{
       await put('workouts', Object.assign({}, w, { archived: !w.archived, updatedAt: new Date().toISOString() }));
@@ -1612,20 +1761,133 @@ async function renderTreinosIndex(root){
     }catch(err){ console.error(err); toast.error('Não foi possível arquivar'); }
   }));
   root.querySelectorAll('.tr-dup').forEach(b=>b.addEventListener('click', async ()=>{
-    const w = workouts.find(x=>x.id===b.dataset.id);
+    const w = adhocForTab.find(x=>x.id===b.dataset.id);
     await put('workouts', duplicateWorkout(w));
     toast.success('Treino duplicado');
   }));
   root.querySelectorAll('.tr-exp').forEach(b=>b.addEventListener('click', ()=>{
-    exportWorkoutPDF([workouts.find(x=>x.id===b.dataset.id)]);
+    exportWorkoutPDF([adhocForTab.find(x=>x.id===b.dataset.id)]);
   }));
   root.querySelectorAll('.tr-exp-json').forEach(b=>b.addEventListener('click', ()=>{
-    exportWorkoutJSON([workouts.find(x=>x.id===b.dataset.id)]);
+    exportWorkoutJSON([adhocForTab.find(x=>x.id===b.dataset.id)]);
   }));
   root.querySelectorAll('.tr-del').forEach(b=>b.addEventListener('click', async ()=>{
-    const w = workouts.find(x=>x.id===b.dataset.id);
+    const w = adhocForTab.find(x=>x.id===b.dataset.id);
     if(!confirm('Eliminar "'+(w.name||w.title)+'"? O histórico de sessões é preservado.')) return;
     State.ui.treinosSelected.delete(w.id);
+    await deleteWorkout(w.id);
+  }));
+}
+
+/* ---------------------------------------------------------------
+   PÁGINA: DETALHE DO GRUPO — lista os treinos dentro do grupo
+   --------------------------------------------------------------- */
+async function renderTreinoGrupoDetail(root, id){
+  const [group, allWorkouts, allGroups, sessions] = await Promise.all([
+    get('workoutGroups', id), getAll('workouts'), getAll('workoutGroups'), getAll('workoutSessions')
+  ]);
+  if(!group){ root.innerHTML = pageHeader('Grupo não encontrado')+backLink('#/treinos','Todos os treinos'); return; }
+
+  const list = allWorkouts.filter(w=>w.groupId===id).sort((a,b)=> ((a.order||0)-(b.order||0)) || String(a.id).localeCompare(String(b.id)));
+  const otherGroups = allGroups.filter(g=>g.id!==id && !g.archived);
+
+  root.innerHTML =
+    backLink('#/treinos','Todos os treinos') +
+    pageHeader(group.name||'Grupo sem nome', list.length+' treino(s)'+(group.archived?' · arquivado':'')) +
+    '<div class="flex flex-wrap items-center gap-2 mb-4">'+
+      '<button class="btn btn-primary btn-sm" id="grw-new">'+icon('plus',14)+' Novo treino</button>'+
+      '<button class="btn btn-outline btn-sm" id="grw-new-pdf">'+icon('upload',14)+' Novo treino (PDF)</button>'+
+      '<input type="file" accept="application/pdf" id="grw-pdf-file" class="hidden">'+
+      '<button class="btn btn-outline btn-sm" id="grw-rename">'+icon('pencil',14)+' Renomear grupo</button>'+
+      '<button class="btn btn-outline btn-sm" id="grw-arch">'+icon(group.archived?'history':'check',14)+' '+(group.archived?'Restaurar grupo':'Arquivar grupo')+'</button>'+
+      '<button class="btn btn-ghost btn-sm btn-danger-text" id="grw-del">'+icon('trash',14)+' Eliminar grupo</button>'+
+    '</div>'+
+    '<div class="grid sm-grid-2">'+
+      (list.length===0 ? '<p class="text-sm text-muted" style="grid-column:1/-1;">Sem treinos neste grupo. Cria um novo ou move um treino existente para aqui.</p>' : '')+
+      list.map((w,i)=>{
+        const count = sessions.filter(s=>s.workoutId===w.id).length;
+        const displayName = w.name || w.title;
+        const displayDesc = w.description || w.focus;
+        const isPdf = w.kind === 'pdf';
+        return '<div class="card" data-wid="'+esc(w.id)+'">'+
+          '<div class="card-body-sm">'+
+            '<div class="flex items-start gap-3">'+
+              '<a href="#/treinos/'+encodeURIComponent(w.id)+'" class="min-w-0" style="flex:1;">'+
+                '<div class="truncate font-bold">'+(isPdf?'<span class="chip">PDF</span> ':'')+esc(displayName)+'</div>'+
+                '<div class="truncate text-xs text-muted">'+esc(displayDesc||'—')+'</div>'+
+                '<div class="mt-1 uppercase">'+(w.category?esc(w.category)+' · ':'')+count+' sessões'+(isPdf?'':' · '+w.exercises.length+' exercícios')+'</div>'+
+              '</a>'+
+            '</div>'+
+            '<div class="flex flex-wrap gap-1 mt-3">'+
+              (isPdf
+                ? '<a href="#/treinos/'+encodeURIComponent(w.id)+'" class="btn btn-primary btn-sm">'+icon('play',13)+' Abrir PDF</a>'
+                : '<a href="#/treinos/'+encodeURIComponent(w.id)+'/sessao" class="btn btn-primary btn-sm">'+icon('play',13)+' Iniciar</a>'+
+                  '<a href="#/treinos/'+encodeURIComponent(w.id)+'/editar" class="btn btn-outline btn-sm">'+icon('pencil',13)+' Editar</a>')+
+              '<button class="btn btn-ghost btn-sm grw-up" data-i="'+i+'" '+(i===0?'disabled':'')+'>'+icon('arrowup',13)+'</button>'+
+              '<button class="btn btn-ghost btn-sm grw-down" data-i="'+i+'" '+(i===list.length-1?'disabled':'')+'>'+icon('arrowdown',13)+'</button>'+
+              '<button class="btn btn-ghost btn-sm grw-arch" data-id="'+esc(w.id)+'">'+icon(w.archived?'history':'check',13)+' '+(w.archived?'Restaurar':'Arquivar')+'</button>'+
+              (isPdf ? '' : '<button class="btn btn-ghost btn-sm grw-dup" data-id="'+esc(w.id)+'">'+icon('copy',13)+' Duplicar</button>')+
+              '<button class="btn btn-ghost btn-sm btn-danger-text grw-del" data-id="'+esc(w.id)+'">'+icon('trash',13)+' Eliminar</button>'+
+            '</div>'+
+            '<div class="mt-2"><label class="field-label" style="font-size:9px;">Grupo</label><select class="grw-move" data-id="'+esc(w.id)+'">'+
+              '<option value="">— remover do grupo —</option>'+
+              '<option value="'+esc(id)+'" selected>'+esc(group.name||'Este grupo')+'</option>'+
+              otherGroups.map(g=>'<option value="'+esc(g.id)+'">'+esc(g.name||'Grupo sem nome')+'</option>').join('')+
+              '</select></div>'+
+          '</div></div>';
+      }).join('')+
+    '</div>';
+
+  document.getElementById('grw-new').addEventListener('click', ()=>{ location.hash = '#/treinos/grupo/'+encodeURIComponent(id)+'/novo'; });
+  const newPdfBtn = document.getElementById('grw-new-pdf');
+  if(newPdfBtn) newPdfBtn.addEventListener('click', ()=>document.getElementById('grw-pdf-file').click());
+  document.getElementById('grw-pdf-file').addEventListener('change', async (e)=>{
+    const f = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if(!f) return;
+    const created = await createPdfWorkout(f, id);
+    if(created) location.hash = '#/treinos/'+encodeURIComponent(created.id);
+  });
+  document.getElementById('grw-rename').addEventListener('click', ()=>openGroupDialog(group));
+  document.getElementById('grw-arch').addEventListener('click', async ()=>{
+    try{
+      await toggleArchiveGroup(group);
+      toast.success(group.archived ? 'Grupo restaurado' : 'Grupo arquivado');
+    }catch(err){ console.error(err); toast.error('Não foi possível arquivar o grupo'); }
+  });
+  document.getElementById('grw-del').addEventListener('click', async ()=>{
+    if(!confirm('Eliminar o grupo "'+(group.name||'sem nome')+'"? Os treinos dentro dele passam a treinos ad-hoc (sem grupo) e não são eliminados.')) return;
+    try{ await deleteGroup(id); toast.success('Grupo eliminado'); location.hash = '#/treinos'; }
+    catch(err){ console.error(err); toast.error('Não foi possível eliminar o grupo'); }
+  });
+  root.querySelectorAll('.grw-up').forEach(b=>b.addEventListener('click', ()=>reorderGroupWorkouts(list, Number(b.dataset.i), -1)));
+  root.querySelectorAll('.grw-down').forEach(b=>b.addEventListener('click', ()=>reorderGroupWorkouts(list, Number(b.dataset.i), 1)));
+  root.querySelectorAll('.grw-move').forEach(sel=>sel.addEventListener('change', async ()=>{
+    const w = list.find(x=>x.id===sel.dataset.id);
+    if(!w) return;
+    try{
+      await put('workouts', Object.assign({}, w, { groupId: sel.value||'', order: Date.now(), updatedAt: new Date().toISOString() }));
+      toast.success(sel.value ? 'Treino movido' : 'Treino sem grupo');
+    }catch(err){ console.error(err); toast.error('Não foi possível mover o treino'); }
+  }));
+  root.querySelectorAll('.grw-arch').forEach(b=>b.addEventListener('click', async ()=>{
+    const w = list.find(x=>x.id===b.dataset.id);
+    if(!w) return;
+    try{
+      await put('workouts', Object.assign({}, w, { archived: !w.archived, updatedAt: new Date().toISOString() }));
+      toast.success(w.archived ? 'Treino restaurado' : 'Treino arquivado');
+    }catch(err){ console.error(err); toast.error('Não foi possível arquivar'); }
+  }));
+  root.querySelectorAll('.grw-dup').forEach(b=>b.addEventListener('click', async ()=>{
+    const w = list.find(x=>x.id===b.dataset.id);
+    const copy = duplicateWorkout(w);
+    copy.groupId = id; copy.order = Date.now();
+    await put('workouts', copy);
+    toast.success('Treino duplicado');
+  }));
+  root.querySelectorAll('.grw-del').forEach(b=>b.addEventListener('click', async ()=>{
+    const w = list.find(x=>x.id===b.dataset.id);
+    if(!w || !confirm('Eliminar "'+(w.name||w.title)+'"? O histórico de sessões é preservado.')) return;
     await deleteWorkout(w.id);
   }));
 }
@@ -1648,7 +1910,7 @@ function supersetBlocks(list){
   });
   return out;
 }
-function newWorkoutTemplate(){ return { id:uid(), name:'', title:'', focus:'', description:'', category:'', exercises:[emptyExercise()] }; }
+function newWorkoutTemplate(groupId){ return { id:uid(), name:'', title:'', focus:'', description:'', category:'', groupId: groupId||'', order: Date.now(), exercises:[emptyExercise()] }; }
 
 function renderWorkoutEditor(root, initial, mode, headerTitle, headerSub){
   let w = JSON.parse(JSON.stringify(initial));
@@ -1747,11 +2009,11 @@ function renderWorkoutEditor(root, initial, mode, headerTitle, headerSub){
     const toSave = Object.assign({}, w, { name:nm, title:nm, focus: w.description || w.category || '' });
     await put('workouts', toSave);
     toast.success(mode==='create' ? 'Treino criado' : 'Alterações guardadas');
-    location.hash = '#/treinos';
+    location.hash = toSave.groupId ? '#/treinos/grupo/'+encodeURIComponent(toSave.groupId) : '#/treinos';
   }
 
   function bind(){
-    document.getElementById('we-back').addEventListener('click', ()=>{ location.hash = '#/treinos'; });
+    document.getElementById('we-back').addEventListener('click', ()=>{ location.hash = w.groupId ? '#/treinos/grupo/'+encodeURIComponent(w.groupId) : '#/treinos'; });
     document.getElementById('we-save-top').addEventListener('click', save);
     document.getElementById('we-save-bottom').addEventListener('click', save);
     document.getElementById('we-add-ex').addEventListener('click', ()=>{ readFormIntoW(); w.exercises.push(emptyExercise()); draw(); });
@@ -1975,8 +2237,8 @@ async function renderTreinoPdfDetail(root, w){
   });
 }
 
-async function renderTreinoNovo(root){
-  renderWorkoutEditor(root, newWorkoutTemplate(), 'create', 'Novo treino', 'Cria um template');
+async function renderTreinoNovo(root, groupId){
+  renderWorkoutEditor(root, newWorkoutTemplate(groupId), 'create', 'Novo treino', groupId ? 'Cria um template dentro do grupo' : 'Cria um template');
 }
 async function renderTreinoEditar(root, id){
   const data = await get('workouts', id);
@@ -4387,7 +4649,8 @@ const VIKING = {
   },
   render: { router, scheduleRerender, renderShellNav, pageHeader, backLink, openModal, closeModal, bindTabs, lineChartSVG, barChartSVG, setTheme, getTheme, toggleTheme },
   treino: {
-    renderTreinosIndex, renderTreinoDetail, renderTreinoPdfDetail, createPdfWorkout, renderTreinoNovo, renderTreinoEditar, renderTreinoSessao, renderTreinosHistorico,
+    renderTreinosIndex, renderTreinoGrupoDetail, renderTreinoDetail, renderTreinoPdfDetail, createPdfWorkout, renderTreinoNovo, renderTreinoEditar, renderTreinoSessao, renderTreinosHistorico,
+    newGroupTemplate, openGroupDialog, toggleArchiveGroup, deleteGroup, reorderTopLevel, reorderGroupWorkouts,
     renderMobilidade, renderCardio, renderCardioHistorico, duplicateWorkout, deleteWorkout,
     mobilidade: { normalizeMobilityRoutine, normalizeMobilityExercise, migrateMobilityData, openMobilityRoutineDialog, openMobilityExerciseDialog },
     sessao: { getActiveSessionDraft, saveActiveSessionDraft, clearActiveSessionDraft, offerSessionRecovery, acquireWakeLock, releaseWakeLock, lockSessionNavigation, unlockSessionNavigation },
