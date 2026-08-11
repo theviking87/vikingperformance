@@ -1,6 +1,6 @@
 {
   "version": 4,
-  "updatedAt": "2026-08-11T07:51:12.731Z",
+  "updatedAt": "2026-08-11T07:53:04.171Z",
   "stores": {
     "profile": [
       {
@@ -3917,7 +3917,7 @@
         "value": {
           "workoutId": "Push/Pull/Grip",
           "startedAt": "2026-08-11T07:16:25.917Z",
-          "exIdx": 5,
+          "exIdx": 10,
           "setsLog": [
             {
               "exerciseId": "vpdughs2msnt6v3r",
@@ -4140,10 +4140,26 @@
               "weight": 0,
               "reps": 6,
               "rpe": 3
+            },
+            {
+              "exerciseId": "8qf55ithmsnt9vjj",
+              "exerciseName": "Barra Fixa",
+              "setIndex": 4,
+              "weight": 0,
+              "reps": 6,
+              "rpe": 1
+            },
+            {
+              "exerciseId": "meenyv9pmsnt9vo7",
+              "exerciseName": "Paralelas",
+              "setIndex": 4,
+              "weight": 0,
+              "reps": 6,
+              "rpe": 3
             }
           ],
           "notes": "elástico azul na rotação \nelástico vermelho pallof \npeso do supino é sem barra\npeso pendlay é sem barra",
-          "savedAt": "2026-08-11T07:51:03.040Z"
+          "savedAt": "2026-08-11T07:52:54.416Z"
         }
       },
       {
