@@ -1,6 +1,6 @@
 {
   "version": 4,
-  "updatedAt": "2026-08-11T07:43:42.054Z",
+  "updatedAt": "2026-08-11T07:45:04.405Z",
   "stores": {
     "profile": [
       {
@@ -4061,10 +4061,26 @@
               "weight": 20,
               "reps": 6,
               "rpe": 8
+            },
+            {
+              "exerciseId": "lqvjjno5msnt9vsn",
+              "exerciseName": "Desenvolvimento Militar c/ Halter",
+              "setIndex": 2,
+              "weight": 20,
+              "reps": 6,
+              "rpe": 5
+            },
+            {
+              "exerciseId": "79u3xsngmsnt9vwe",
+              "exerciseName": "Remada Alta c/ Barra",
+              "setIndex": 2,
+              "weight": 20,
+              "reps": 6,
+              "rpe": 8
             }
           ],
           "notes": "elástico azul na rotação \nelástico vermelho pallof \npeso do supino é sem barra\npeso pendlay é sem barra",
-          "savedAt": "2026-08-11T07:43:32.182Z"
+          "savedAt": "2026-08-11T07:44:54.707Z"
         }
       },
       {
