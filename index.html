@@ -105,6 +105,22 @@ button{font-family:inherit;}
 .nav-link:hover{background:color-mix(in oklch, var(--sidebar-accent) 60%, transparent);opacity:1;}
 .nav-link.active{background:var(--sidebar-accent);color:var(--sidebar-accent-foreground);opacity:1;}
 .nav-link svg{flex-shrink:0;width:17px;height:17px;}
+.nav-parent-row{display:flex;align-items:center;border-radius:8px;}
+.nav-parent-row>.nav-link{flex:1;}
+.nav-chevron{width:28px;height:32px;border:0;background:transparent;color:var(--sidebar-foreground);opacity:.65;cursor:pointer;border-radius:6px;}
+.nav-chevron:hover{background:var(--sidebar-accent);opacity:1;}
+.nav-chevron svg{width:15px!important;height:15px!important;transition:transform .15s;}
+.nav-parent-row.open .nav-chevron svg{transform:rotate(180deg);}
+.nav-submenu{display:none;flex-direction:column;gap:2px;margin:2px 0 6px 18px;padding-left:10px;border-left:1px solid var(--sidebar-border);}
+.nav-parent-row.open+.nav-submenu{display:flex;}
+.nav-sub-link{display:flex;align-items:center;gap:8px;border-radius:7px;padding:7px 9px;font-size:12px;color:var(--sidebar-foreground);opacity:.65;}
+.nav-sub-link:hover{background:var(--sidebar-accent);opacity:1;}
+.nav-sub-link.active{background:var(--sidebar-accent);color:var(--sidebar-accent-foreground);opacity:1;}
+.mobile-training-sheet{position:fixed;left:10px;right:10px;bottom:78px;z-index:40;display:none;padding:10px;background:var(--popover);border:1px solid var(--border);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.25);}
+.mobile-training-sheet.open{display:block;}
+@media(min-width:1024px){.mobile-training-sheet,.mobile-training-sheet.open{display:none!important;}}
+.mobile-training-sheet a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;}
+.mobile-training-sheet a:hover{background:var(--accent);}
 .theme-toggle-btn{margin:12px;display:flex;align-items:center;gap:10px;border-radius:8px;border:1px solid var(--sidebar-border);background:transparent;padding:9px 12px;font-size:14px;color:var(--sidebar-foreground);cursor:pointer;}
 .theme-toggle-btn:hover{background:var(--sidebar-accent);}
 
@@ -525,10 +541,10 @@ const State = {
    BASE DE DADOS — IndexedDB (substitui o "idb" + db.ts)
    --------------------------------------------------------------- */
 const DB_NAME = 'viking-performance';
-const DB_VERSION = 4;
+const DB_VERSION = 5;
 const ALL_STORES = [
   'profile','workouts','workoutGroups','workoutSessions','exerciseLibrary',
-  'mobility','mobilityLogs','cardio','cardioSessions',
+  'mobility','mobilityGroups','mobilityLogs','cardio','cardioGroups','cardioSessions',
   'meals','shopping','shoppingLists','quickMeals','ingredients',
   'bjj','competitions','checkins','calendar','settings',
 ];
@@ -547,8 +563,10 @@ function getDB(){
         ws.createIndex('byWorkout','workoutId'); ws.createIndex('byDate','date');
       }
       if(!db.objectStoreNames.contains('mobility')) db.createObjectStore('mobility', { keyPath: 'id' });
+      if(!db.objectStoreNames.contains('mobilityGroups')) db.createObjectStore('mobilityGroups', { keyPath: 'id' });
       if(!db.objectStoreNames.contains('mobilityLogs')) db.createObjectStore('mobilityLogs', { keyPath: 'id' }).createIndex('byDate','date');
       if(!db.objectStoreNames.contains('cardio')) db.createObjectStore('cardio', { keyPath: 'id' });
+      if(!db.objectStoreNames.contains('cardioGroups')) db.createObjectStore('cardioGroups', { keyPath: 'id' });
       if(!db.objectStoreNames.contains('cardioSessions')) db.createObjectStore('cardioSessions', { keyPath: 'id' }).createIndex('byDate','date');
       if(!db.objectStoreNames.contains('meals')) db.createObjectStore('meals', { keyPath: 'id' });
       if(!db.objectStoreNames.contains('ingredients')){
@@ -796,6 +814,9 @@ function normalizeImportedRow(store, row){
        migração automática agrupa-os numa rotina sem perder dados */
     return isLegacyMobilityExercise(r) ? r : normalizeMobilityRoutine(r);
   }
+  if(store === 'mobilityGroups') return normalizeActivityGroup(r);
+  if(store === 'cardio') return normalizeCardioRoutine(r);
+  if(store === 'cardioGroups') return normalizeActivityGroup(r);
   return r;
 }
 async function importAll(data){
@@ -1442,9 +1463,11 @@ function barChartSVG(data, key, opts){
 const NAV = [
   { to:'#/', label:'Dashboard', icon:'dashboard' },
   { to:'#/perfil', label:'Perfil', icon:'user' },
-  { to:'#/treinos', label:'Treinos', icon:'dumbbell' },
-  { to:'#/mobilidade', label:'Mobilidade', icon:'activity' },
-  { to:'#/cardio', label:'Cardio', icon:'heart' },
+  { to:'#/treinos', label:'Treinos', icon:'dumbbell', children:[
+    { to:'#/treinos', label:'Treinos', icon:'dumbbell' },
+    { to:'#/mobilidade', label:'Mobilidade', icon:'activity' },
+    { to:'#/cardio', label:'Cardio', icon:'heart' },
+  ] },
   { to:'#/alimentacao', label:'Alimentação', icon:'food' },
   { to:'#/compras', label:'Compras', icon:'cart' },
   { to:'#/diario', label:'Diário BJJ', icon:'book' },
@@ -1454,6 +1477,7 @@ const NAV = [
   { to:'#/calendario', label:'Calendário', icon:'calendar' },
   { to:'#/configuracoes', label:'Configurações', icon:'settings' },
 ];
+const MOBILE_NAV = NAV.filter(n=>n.to!=='#/perfil' || true);
 function getTheme(){ return localStorage.getItem('viking-theme') || 'dark'; }
 function setTheme(t){
   localStorage.setItem('viking-theme', t);
@@ -1471,19 +1495,32 @@ function currentPath(){
 function isActiveNav(navTo){
   const p = currentPath();
   if(navTo === '#/') return p === '#/';
+  if(navTo === '#/treinos') return p === '#/treinos' || p.indexOf('#/treinos/') === 0 || p.indexOf('#/mobilidade') === 0 || p.indexOf('#/cardio') === 0;
   return p === navTo || p.indexOf(navTo+'/') === 0;
 }
-/* O markup da navegação é estático: constrói-se uma vez e em cada
-   mudança de rota apenas se alterna a classe .active. */
+/* Navegação com Treinos como menu-pai; Mobilidade e Cardio vivem dentro dele. */
 function renderShellNav(){
   if(!State.render.navBuilt){
-    document.getElementById('sidebar-nav').innerHTML =
-      NAV.map(n => '<a href="'+n.to+'" class="nav-link" data-nav="'+n.to+'">'+icon(n.icon,17)+'<span class="truncate">'+esc(n.label)+'</span></a>').join('');
-    document.getElementById('bottom-nav-links').innerHTML =
-      NAV.map(n => '<a href="'+n.to+'" class="bottom-nav-link" data-nav="'+n.to+'">'+icon(n.icon,20)+'<span>'+esc(n.label.split(' ')[0])+'</span></a>').join('');
+    document.getElementById('sidebar-nav').innerHTML = NAV.map(n=>{
+      if(!n.children) return '<a href="'+n.to+'" class="nav-link" data-nav="'+n.to+'">'+icon(n.icon,17)+'<span class="truncate">'+esc(n.label)+'</span></a>';
+      const childHtml = n.children.map(c=>'<a href="'+c.to+'" class="nav-sub-link" data-nav="'+c.to+'">'+icon(c.icon,14)+'<span>'+esc(c.label)+'</span></a>').join('');
+      return '<div class="nav-parent-row open" data-nav-parent="treinos"><a href="'+n.to+'" class="nav-link" data-nav="'+n.to+'">'+icon(n.icon,17)+'<span class="truncate">'+esc(n.label)+'</span></a><button type="button" class="nav-chevron" data-nav-toggle="treinos" aria-label="Expandir Treinos">'+icon('chevrondown',15)+'</button></div><div class="nav-submenu">'+childHtml+'</div>';
+    }).join('');
+    const bottom = NAV.filter(n=>n.to!=='#/treinos' && n.to!=='#/perfil' && n.to!=='#/configuracoes').slice(0,7);
+    document.getElementById('bottom-nav-links').innerHTML = '<button type="button" class="bottom-nav-link" id="mobile-training-toggle">'+icon('dumbbell',20)+'<span>Treinos</span></button>'+bottom.filter(n=>n.to!=='#/mobilidade' && n.to!=='#/cardio').map(n=>'<a href="'+n.to+'" class="bottom-nav-link" data-nav="'+n.to+'">'+icon(n.icon,20)+'<span>'+esc(n.label.split(' ')[0])+'</span></a>').join('');
+    if(!document.getElementById('mobile-training-sheet')){
+      const sheet=document.createElement('div'); sheet.id='mobile-training-sheet'; sheet.className='mobile-training-sheet';
+      sheet.innerHTML='<a href="#/treinos">'+icon('dumbbell',16)+' Treinos</a><a href="#/mobilidade">'+icon('activity',16)+' Mobilidade</a><a href="#/cardio">'+icon('heart',16)+' Cardio</a>';
+      document.body.appendChild(sheet);
+    }
+    document.getElementById('mobile-training-toggle').addEventListener('click',()=>document.getElementById('mobile-training-sheet').classList.toggle('open'));
+    document.querySelectorAll('#mobile-training-sheet a').forEach(a=>a.addEventListener('click',()=>document.getElementById('mobile-training-sheet').classList.remove('open')));
+    document.querySelectorAll('[data-nav-toggle="treinos"]').forEach(btn=>btn.addEventListener('click',()=>btn.closest('.nav-parent-row').classList.toggle('open')));
     State.render.navBuilt = true;
   }
   document.querySelectorAll('[data-nav]').forEach(a => a.classList.toggle('active', isActiveNav(a.getAttribute('data-nav'))));
+  const parent=document.querySelector('[data-nav-parent="treinos"]'); if(parent) parent.classList.toggle('open', isActiveNav('#/treinos'));
+  const sheet=document.getElementById('mobile-training-sheet'); if(sheet) sheet.classList.toggle('open', currentPath().indexOf('#/mobilidade')===0 || currentPath().indexOf('#/cardio')===0);
 }
 
 function pageHeader(title, subtitle, actionsHtml){
@@ -1897,9 +1934,10 @@ async function renderTreinoGrupoDetail(root, id){
    WORKOUT EDITOR (partilhado: novo + editar)
    --------------------------------------------------------------- */
 function emptyExercise(){
-  return { id:uid(), name:'', sets:3, reps:'10', rest:'90s', autoTimer:true, currentLoad:0, notes:'', history:[], muscleGroup:'', groupId:'', objective:'', execution:'', commonMistakes:'', coachTips:'' };
+  return { id:uid(), name:'', sets:3, reps:'10', rest:'90s', autoTimer:true, currentLoad:0, notes:'', history:[], muscleGroup:'', groupId:'', exerciseSection:'', objective:'', execution:'', commonMistakes:'', coachTips:'' };
 }
-/* Agrupa em super séries: exercícios consecutivos com o mesmo groupId */
+/* Agrupa em super séries: exercícios consecutivos com o mesmo groupId.
+   NÃO usar para a organização funcional dos exercícios. */
 function supersetBlocks(list){
   const out = [];
   (list||[]).forEach(ex => {
@@ -1935,6 +1973,7 @@ function renderWorkoutEditor(root, initial, mode, headerTitle, headerSub){
         '<div><label class="field-label" style="font-size:9px;">Grupo muscular</label><input type="text" class="we-muscle" value="'+esc(ex.muscleGroup||'')+'"></div>'+
         '<div><label class="field-label" style="font-size:9px;">Objetivo</label><input type="text" class="we-objective" value="'+esc(ex.objective||'')+'"></div>'+
       '</div>'+
+      '<div><label class="field-label" style="font-size:9px;">Bloco / função no treino</label><input type="text" class="we-section" list="we-section-options" value="'+esc(ex.exerciseSection||'')+'" placeholder="Ex.: Aquecimento, Força, Core…"></div>'+
       '<div><label class="field-label" style="font-size:9px;">Descrição técnica / execução</label><textarea rows="2" class="we-execution">'+esc(ex.execution||'')+'</textarea></div>'+
       '<div><label class="field-label" style="font-size:9px;">Erros comuns</label><textarea rows="2" class="we-mistakes">'+esc(ex.commonMistakes||'')+'</textarea></div>'+
       '<div><label class="field-label" style="font-size:9px;">Dicas</label><textarea rows="2" class="we-tips">'+esc(ex.coachTips||'')+'</textarea></div>'+
@@ -1956,6 +1995,7 @@ function renderWorkoutEditor(root, initial, mode, headerTitle, headerSub){
           '<div><label class="field-label">Descrição</label><textarea id="we-description" rows="2">'+esc(w.description||'')+'</textarea></div>'+
         '</div></div>'+
         '<div class="flex items-center justify-between"><h2 class="divider-label" style="margin:0;">Exercícios</h2><button class="btn btn-outline btn-sm" id="we-add-ex">'+icon('plus',14)+' Adicionar</button></div>'+
+        '<datalist id="we-section-options">'+['Aquecimento','Mobilidade','Ativação','Força','Hipertrofia','Potência','Core','Cardio','Alongamento','Volta à calma'].map(x=>'<option value="'+esc(x)+'"></option>').join('')+'</datalist>'+
         '<div id="we-ex-list" style="display:flex;flex-direction:column;gap:12px;">'+w.exercises.map(exerciseCard).join('')+'</div>'+
         '<button class="btn btn-primary w-full" id="we-save-bottom">'+icon('save',14)+' Guardar treino</button>'+
       '</div>';
@@ -1974,6 +2014,7 @@ function renderWorkoutEditor(root, initial, mode, headerTitle, headerSub){
       reps: c.querySelector('.we-reps').value,
       rest: c.querySelector('.we-rest').value,
       muscleGroup: c.querySelector('.we-muscle').value,
+      exerciseSection: c.querySelector('.we-section').value.trim(),
       objective: c.querySelector('.we-objective').value,
       execution: c.querySelector('.we-execution').value,
       commonMistakes: c.querySelector('.we-mistakes').value,
@@ -2246,6 +2287,20 @@ async function renderTreinoEditar(root, id){
   renderWorkoutEditor(root, data, 'edit', 'Editar treino', data.name||data.title);
 }
 
+/* Agrupa apenas visualmente os exercícios pela sua função dentro do treino.
+   Não usa nem altera groupId, que continua reservado para grupos/superséries. */
+function exerciseSectionBlocks(list){
+  const out = [];
+  (list||[]).forEach(ex=>{
+    const name = String(ex.exerciseSection||'').trim();
+    const key = name || '';
+    const last = out[out.length-1];
+    if(last && last.key === key) last.items.push(ex);
+    else out.push({ key, items:[ex] });
+  });
+  return out;
+}
+
 /* ---------------------------------------------------------------
    PÁGINA: DETALHE DO TREINO
    --------------------------------------------------------------- */
@@ -2265,15 +2320,19 @@ async function renderTreinoDetail(root, id){
       pageHeader(w.name || w.title, w.description || w.focus) +
       '<div class="grid lg-grid-3">'+
         '<div style="grid-column:span 2;display:flex;flex-direction:column;gap:12px;" id="td-ex-list">'+
-          w.exercises.map((ex,i)=>
-            '<div class="card" data-i="'+i+'"><div class="card-body">'+
-              '<div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:start;">'+
-                '<div class="min-w-0"><div class="truncate font-bold">'+esc(ex.name)+'</div>'+((ex.groupId && ((i>0 && w.exercises[i-1].groupId===ex.groupId) || (i+1<w.exercises.length && w.exercises[i+1].groupId===ex.groupId))) ? '<span class="chip mt-1">Super série</span>' : '')+'<div class="mt-1 text-xs text-muted">'+ex.sets+' séries · '+esc(ex.reps)+' reps · descanso '+esc(ex.rest)+'</div></div>'+
-                '<div style="text-align:right;flex-shrink:0;"><div class="uppercase">Carga</div><input type="number" class="td-load" value="'+esc(ex.currentLoad)+'" style="width:96px;text-align:right;font-weight:700;"></div>'+
-              '</div>'+
-              '<textarea rows="2" class="td-notes mt-3" placeholder="Notas do exercício...">'+esc(ex.notes)+'</textarea>'+
-              (ex.history.length>0 ? '<div class="mt-3"><div class="uppercase mb-1">Histórico</div><div class="flex flex-wrap gap-1">'+ex.history.slice(-8).map(h=>'<span class="chip">'+fmtDateShort(h.date)+' · '+h.load+'kg</span>').join('')+'</div></div>' : '')+
-            '</div></div>'
+          exerciseSectionBlocks(w.exercises).map(block=>
+            (block.key ? '<div class="divider-label" style="margin:8px 0 0;">'+esc(block.key)+'</div>' : '')+
+            block.items.map(ex=>{
+              const i = w.exercises.indexOf(ex);
+              return '<div class="card" data-i="'+i+'"><div class="card-body">'+
+                '<div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:start;">'+
+                  '<div class="min-w-0"><div class="truncate font-bold">'+esc(ex.name)+'</div>'+((ex.groupId && ((i>0 && w.exercises[i-1].groupId===ex.groupId) || (i+1<w.exercises.length && w.exercises[i+1].groupId===ex.groupId))) ? '<span class="chip mt-1">Super série</span>' : '')+'<div class="mt-1 text-xs text-muted">'+ex.sets+' séries · '+esc(ex.reps)+' reps · descanso '+esc(ex.rest)+'</div></div>'+
+                  '<div style="text-align:right;flex-shrink:0;"><div class="uppercase">Carga</div><input type="number" class="td-load" value="'+esc(ex.currentLoad)+'" style="width:96px;text-align:right;font-weight:700;"></div>'+
+                '</div>'+
+                '<textarea rows="2" class="td-notes mt-3" placeholder="Notas do exercício...">'+esc(ex.notes)+'</textarea>'+
+                (ex.history.length>0 ? '<div class="mt-3"><div class="uppercase mb-1">Histórico</div><div class="flex flex-wrap gap-1">'+ex.history.slice(-8).map(h=>'<span class="chip">'+fmtDateShort(h.date)+' · '+h.load+'kg</span>').join('')+'</div></div>' : '')+
+              '</div></div>';
+            }).join('')
           ).join('')+
           '<div class="flex gap-2"><button class="btn btn-outline flex-1" id="td-save">Guardar alterações</button><button class="btn btn-primary flex-1" id="td-complete">'+icon('check',15)+' Treino concluído</button></div>'+
         '</div>'+
@@ -2498,11 +2557,20 @@ async function renderTreinoSessao(root, id){
       '</div></div>';
     }
 
+    const currentSection = String(block.map(e=>e.exerciseSection||'').find(Boolean) || '').trim();
+    const sectionNames = [...new Set(block.map(e=>String(e.exerciseSection||'').trim()).filter(Boolean))];
+    const sectionLabel = sectionNames.length === 1 ? sectionNames[0] : (sectionNames.length > 1 ? sectionNames.join(' · ') : '');
+    const nextSectionNames = nextBlock ? [...new Set(nextBlock.map(e=>String(e.exerciseSection||'').trim()).filter(Boolean))] : [];
+    const nextSectionLabel = nextSectionNames.length === 1 ? nextSectionNames[0] : (nextSectionNames.length > 1 ? nextSectionNames.join(' · ') : '');
     root.innerHTML =
       '<div class="flex items-center justify-between mb-3">'+
         '<span class="chip">'+icon('lock',12)+' Treino em curso · navegação bloqueada</span>'+
         '<button class="btn btn-outline btn-sm" id="ss-abort">'+icon('x',13)+' Terminar treino</button>'+
       '</div>'+
+      (sectionLabel ? '<div class="card mb-4" style="border-left:4px solid var(--primary);background:color-mix(in oklch, var(--primary) 8%, transparent);"><div class="card-body-sm">'+
+        '<div class="uppercase text-xs text-muted" style="font-weight:800;letter-spacing:.08em;">Bloco / função atual</div>'+
+        '<div class="text-lg font-bold mt-1">'+esc(sectionLabel)+'</div>'+
+      '</div></div>' : '')+
       '<div class="mb-4">'+
         '<div class="flex items-center justify-between uppercase mb-1"><span>'+(isSuper?'Super série':'Exercício')+' '+(bi+1)+' de '+bs.length+'</span><span>'+doneAll+' de '+totalSetsAll+' séries</span></div>'+
         '<div class="progress-track"><div class="progress-fill" style="width:'+progressPct+'%"></div></div>'+
@@ -2567,7 +2635,7 @@ async function renderTreinoSessao(root, id){
             '<div class="text-sm font-bold mb-2">Próximo</div>'+
             (nextBlock ?
               '<button class="btn btn-outline w-full" id="ss-next-ex" style="justify-content:space-between;text-align:left;">'+
-                '<span><div class="text-xs text-muted">'+(nextBlock.length>1?'Próxima super série':'Próximo exercício')+'</div><div class="font-bold">'+esc(nextBlock.map(e=>e.name).join(' + '))+'</div></span>'+icon('chevronright',16)+
+                '<span><div class="text-xs text-muted">'+(nextBlock.length>1?'Próxima super série':'Próximo exercício')+(nextSectionLabel?' · '+esc(nextSectionLabel):'')+'</div><div class="font-bold">'+esc(nextBlock.map(e=>e.name).join(' + '))+'</div></span>'+icon('chevronright',16)+
               '</button>' : '<p class="text-xs text-muted">Último exercício.</p>')+
           '</div></div>'+
         '</div>'+
@@ -2771,7 +2839,34 @@ function normalizeMobilityRoutine(r){
   if(!o.id) o.id = uid();
   o.name = o.name || 'Rotina';
   o.description = o.description || '';
+  o.groupId = o.groupId || '';
+  o.archived = !!o.archived;
+  o.order = Number.isFinite(Number(o.order)) ? Number(o.order) : Date.now();
   o.exercises = (Array.isArray(o.exercises) ? o.exercises : []).map(normalizeMobilityExercise);
+  o.createdAt = o.createdAt || new Date().toISOString();
+  o.updatedAt = new Date().toISOString();
+  return o;
+}
+function normalizeActivityGroup(g){
+  const o = Object.assign({}, g || {});
+  if(!o.id) o.id = uid();
+  o.name = o.name || 'Grupo';
+  o.archived = !!o.archived;
+  o.order = Number.isFinite(Number(o.order)) ? Number(o.order) : Date.now();
+  o.createdAt = o.createdAt || new Date().toISOString();
+  o.updatedAt = new Date().toISOString();
+  return o;
+}
+function normalizeCardioRoutine(r){
+  const o = Object.assign({}, r || {});
+  if(!o.id) o.id = uid();
+  o.name = o.name || 'Cardio';
+  o.objective = o.objective || '';
+  o.description = o.description || '';
+  o.recommendedMin = Number(o.recommendedMin)||0;
+  o.groupId = o.groupId || '';
+  o.archived = !!o.archived;
+  o.order = Number.isFinite(Number(o.order)) ? Number(o.order) : Date.now();
   o.createdAt = o.createdAt || new Date().toISOString();
   o.updatedAt = new Date().toISOString();
   return o;
@@ -2801,109 +2896,78 @@ async function migrateMobilityData(){
   notify();
 }
 
+async function newActivityGroupTemplate(){ return { id:uid(), name:'', archived:false, order:Date.now(), createdAt:new Date().toISOString(), updatedAt:new Date().toISOString() }; }
+async function openActivityGroupDialog(store, group, title){
+  const isNew=!group; const g=normalizeActivityGroup(group?clone(group):newActivityGroupTemplate());
+  const body='<div><label class="field-label">Nome do grupo</label><input type="text" id="ag-name" value="'+esc(g.name||'')+'" placeholder="Ex.: Preparação, Zona 2, Recuperação…"></div>';
+  const wrap=openModal(isNew?('Novo grupo · '+title):('Editar grupo · '+title), body, '<button class="btn btn-outline" id="ag-cancel">Cancelar</button><button class="btn btn-primary" id="ag-save">Guardar</button>');
+  State.render.hold++; const close=()=>{State.render.hold=Math.max(0,State.render.hold-1);closeModal(wrap);scheduleRerender();};
+  wrap.querySelector('#ag-cancel').addEventListener('click',close); wrap.querySelector('#ag-name').focus();
+  wrap.querySelector('#ag-save').addEventListener('click',async()=>{ const name=wrap.querySelector('#ag-name').value.trim(); if(!name){toast.error('Indica o nome do grupo');return;} g.name=name; g.updatedAt=new Date().toISOString(); try{await put(store,g);toast.success(isNew?'Grupo criado':'Grupo atualizado');close();}catch(e){console.error(e);toast.error('Não foi possível guardar o grupo');} });
+}
+async function deleteActivityGroup(store, itemStore, id){
+  const rows=await getAll(itemStore);
+  for(const r of rows.filter(x=>x.groupId===id)){ r.groupId=''; r.updatedAt=new Date().toISOString(); await putNoRender(itemStore,r); }
+  await remove(store,id);
+}
+async function toggleActivityGroupArchive(store, group){ group.archived=!group.archived; group.updatedAt=new Date().toISOString(); await put(store,group); }
+function activityGroupSelect(groups, selected){ return '<select class="act-group-select"><option value="">— sem grupo —</option>'+groups.filter(g=>!g.archived).map(g=>'<option value="'+esc(g.id)+'" '+(g.id===selected?'selected':'')+'>'+esc(g.name)+'</option>').join('')+'</select>'; }
+
 async function renderMobilidade(root){
-  const [rowsRaw, logs] = await Promise.all([getAll('mobility'), getAll('mobilityLogs')]);
+  const [rowsRaw, logs, groupsRaw] = await Promise.all([getAll('mobility'), getAll('mobilityLogs'), getAll('mobilityGroups')]);
   const routines = rowsRaw.filter(r=>!isLegacyMobilityExercise(r)).map(normalizeMobilityRoutine);
+  const groups = groupsRaw.map(normalizeActivityGroup);
   const doneToday = (id) => logs.some(l=>l.exerciseId===id && isToday(l.date));
-
+  const activeGroups=groups.filter(g=>!g.archived).sort((a,b)=>(a.order-b.order));
+  const archivedGroups=groups.filter(g=>g.archived).sort((a,b)=>(a.order-b.order));
+  const activeRoutines=routines.filter(r=>!r.archived);
+  const archivedRoutines=routines.filter(r=>r.archived);
   function exerciseRow(rt, exx){
-    const done = doneToday(exx.id);
-    const total = logs.filter(l=>l.exerciseId===exx.id).length;
-    return '<div class="card" style="'+(done?'border-color:color-mix(in oklch, var(--primary) 60%, var(--border));':'')+'">'+
-      '<div class="card-body-sm">'+
-        '<div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;">'+
-          '<div class="min-w-0">'+
-            '<div class="font-bold">'+esc(exx.name||'Exercício')+'</div>'+
-            (exx.description ? '<p class="mt-1 text-sm text-muted">'+esc(exx.description)+'</p>' : '')+
-            '<div class="flex flex-wrap gap-1 mt-3">'+
-              (exx.time ? '<span class="chip">'+icon('timer',12)+' '+esc(exx.time)+'</span>' : '')+
-              (exx.frequency ? '<span class="chip">'+icon('history',12)+' '+esc(exx.frequency)+'</span>' : '')+
-            '</div>'+
-            (exx.benefits ? '<div class="mt-2 text-xs text-muted">Benefícios: '+esc(exx.benefits)+'</div>' : '')+
-            '<div class="mt-1 uppercase">'+total+' vezes concluído</div>'+
-            '<div class="flex flex-wrap gap-1 mt-3">'+
-              '<button class="btn btn-ghost btn-sm mob-ex-edit" data-r="'+esc(rt.id)+'" data-e="'+esc(exx.id)+'">'+icon('pencil',13)+' Editar</button>'+
-              '<button class="btn btn-ghost btn-sm btn-danger-text mob-ex-del" data-r="'+esc(rt.id)+'" data-e="'+esc(exx.id)+'">'+icon('trash',13)+' Eliminar</button>'+
-            '</div>'+
-          '</div>'+
-          '<button class="btn '+(done?'btn-primary':'btn-outline')+' btn-sm mob-toggle" data-id="'+esc(exx.id)+'" style="height:fit-content;">'+icon('check',16)+'</button>'+
-        '</div>'+
-      '</div></div>';
+    const done=doneToday(exx.id), total=logs.filter(l=>l.exerciseId===exx.id).length;
+    return '<div class="card" style="'+(done?'border-color:color-mix(in oklch, var(--primary) 60%, var(--border));':'')+'"><div class="card-body-sm"><div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;"><div class="min-w-0"><div class="font-bold">'+esc(exx.name||'Exercício')+'</div>'+(exx.description?'<p class="mt-1 text-sm text-muted">'+esc(exx.description)+'</p>':'')+'<div class="flex flex-wrap gap-1 mt-3">'+(exx.time?'<span class="chip">'+icon('timer',12)+' '+esc(exx.time)+'</span>':'')+(exx.frequency?'<span class="chip">'+icon('history',12)+' '+esc(exx.frequency)+'</span>':'')+'</div>'+(exx.benefits?'<div class="mt-2 text-xs text-muted">Benefícios: '+esc(exx.benefits)+'</div>':'')+'<div class="mt-1 uppercase">'+total+' vezes concluído</div><div class="flex flex-wrap gap-1 mt-3"><button class="btn btn-ghost btn-sm mob-ex-edit" data-r="'+esc(rt.id)+'" data-e="'+esc(exx.id)+'">'+icon('pencil',13)+' Editar</button><button class="btn btn-ghost btn-sm btn-danger-text mob-ex-del" data-r="'+esc(rt.id)+'" data-e="'+esc(exx.id)+'">'+icon('trash',13)+' Eliminar</button></div></div><button class="btn '+(done?'btn-primary':'btn-outline')+' btn-sm mob-toggle" data-id="'+esc(exx.id)+'" style="height:fit-content;">'+icon('check',16)+'</button></div></div></div>';
   }
-
-  root.innerHTML =
-    pageHeader('Mobilidade','Rotinas de prevenção') +
-    '<div class="flex flex-wrap items-center gap-2 mb-4">'+
-      '<button class="btn btn-primary btn-sm" id="mob-new">'+icon('plus',14)+' Nova rotina</button>'+
-    '</div>'+
-    (routines.length===0 ? '<p class="text-sm text-muted">Sem rotinas. Cria a tua primeira rotina de mobilidade.</p>' : '')+
-    '<div style="display:flex;flex-direction:column;gap:16px;">'+
-      routines.map(rt=>{
-        const doneCount = rt.exercises.filter(e=>doneToday(e.id)).length;
-        return '<div class="card" data-rid="'+esc(rt.id)+'"><div class="card-body">'+
-          '<div class="flex flex-wrap items-start justify-between gap-3">'+
-            '<div class="min-w-0">'+
-              '<div class="font-bold">'+esc(rt.name)+'</div>'+
-              (rt.description ? '<p class="mt-1 text-sm text-muted">'+esc(rt.description)+'</p>' : '')+
-              '<div class="mt-1 uppercase">'+rt.exercises.length+' exercícios · '+doneCount+'/'+rt.exercises.length+' hoje</div>'+
-            '</div>'+
-            '<div class="flex flex-wrap gap-1">'+
-              '<button class="btn btn-outline btn-sm mob-ex-new" data-r="'+esc(rt.id)+'">'+icon('plus',13)+' Exercício</button>'+
-              '<button class="btn btn-ghost btn-sm mob-edit" data-r="'+esc(rt.id)+'">'+icon('pencil',13)+' Editar</button>'+
-              '<button class="btn btn-ghost btn-sm btn-danger-text mob-del" data-r="'+esc(rt.id)+'">'+icon('trash',13)+' Eliminar</button>'+
-            '</div>'+
-          '</div>'+
-          '<div class="grid sm-grid-2 mt-4">'+
-            (rt.exercises.length===0 ? '<p class="text-sm text-muted" style="grid-column:1/-1;">Sem exercícios nesta rotina.</p>' :
-              rt.exercises.map(exx=>exerciseRow(rt, exx)).join(''))+
-          '</div>'+
-        '</div></div>';
-      }).join('')+
-    '</div>';
-
-  const findRoutine = (id) => routines.find(r=>r.id===id);
-
-  root.querySelectorAll('.mob-toggle').forEach(btn=>btn.addEventListener('click', async ()=>{
-    try{
-      const id = btn.dataset.id;
-      const existing = logs.find(l=>l.exerciseId===id && isToday(l.date));
-      if(existing){ await remove('mobilityLogs', existing.id); toast('Marca removida'); }
-      else { await put('mobilityLogs', { id:uid(), exerciseId:id, date:new Date().toISOString() }); toast.success('Exercício concluído'); }
-    }catch(e){ console.error(e); toast.error('Não foi possível guardar a marca'); }
-  }));
-
-  const newBtn = document.getElementById('mob-new');
-  if(newBtn) newBtn.addEventListener('click', ()=>openMobilityRoutineDialog(null));
-  root.querySelectorAll('.mob-edit').forEach(b=>b.addEventListener('click', ()=>openMobilityRoutineDialog(findRoutine(b.dataset.r))));
-  root.querySelectorAll('.mob-del').forEach(b=>b.addEventListener('click', async ()=>{
-    const rt = findRoutine(b.dataset.r);
-    if(!rt || !confirm('Eliminar a rotina "'+rt.name+'" e os seus exercícios? O histórico é preservado.')) return;
-    try{ await remove('mobility', rt.id); toast.success('Rotina eliminada'); }
-    catch(e){ console.error(e); toast.error('Não foi possível eliminar a rotina'); }
-  }));
-  root.querySelectorAll('.mob-ex-new').forEach(b=>b.addEventListener('click', ()=>openMobilityExerciseDialog(findRoutine(b.dataset.r), null)));
-  root.querySelectorAll('.mob-ex-edit').forEach(b=>b.addEventListener('click', ()=>{
-    const rt = findRoutine(b.dataset.r);
-    openMobilityExerciseDialog(rt, rt && rt.exercises.find(e=>e.id===b.dataset.e));
-  }));
-  root.querySelectorAll('.mob-ex-del').forEach(b=>b.addEventListener('click', async ()=>{
-    const rt = findRoutine(b.dataset.r);
-    const exx = rt && rt.exercises.find(e=>e.id===b.dataset.e);
-    if(!rt || !exx || !confirm('Eliminar o exercício "'+(exx.name||'sem nome')+'"?')) return;
-    try{
-      rt.exercises = rt.exercises.filter(e=>e.id!==exx.id);
-      await put('mobility', normalizeMobilityRoutine(rt));
-      toast.success('Exercício eliminado');
-    }catch(e){ console.error(e); toast.error('Não foi possível eliminar o exercício'); }
-  }));
+  function routineCard(rt, groupList){
+    const doneCount=rt.exercises.filter(e=>doneToday(e.id)).length;
+    return '<div class="card" data-rid="'+esc(rt.id)+'"><div class="card-body"><div class="flex flex-wrap items-start justify-between gap-3"><div class="min-w-0"><div class="font-bold">'+esc(rt.name)+'</div>'+(rt.description?'<p class="mt-1 text-sm text-muted">'+esc(rt.description)+'</p>':'')+'<div class="mt-1 uppercase">'+rt.exercises.length+' exercícios · '+doneCount+'/'+rt.exercises.length+' hoje</div></div><div class="flex flex-wrap gap-1"><button class="btn btn-outline btn-sm mob-ex-new" data-r="'+esc(rt.id)+'">'+icon('plus',13)+' Exercício</button><button class="btn btn-ghost btn-sm mob-edit" data-r="'+esc(rt.id)+'">'+icon('pencil',13)+' Editar</button><button class="btn btn-ghost btn-sm mob-arch" data-r="'+esc(rt.id)+'">'+icon(rt.archived?'history':'check',13)+' '+(rt.archived?'Restaurar':'Arquivar')+'</button><button class="btn btn-ghost btn-sm btn-danger-text mob-del" data-r="'+esc(rt.id)+'">'+icon('trash',13)+' Eliminar</button></div></div><div class="mt-3" style="max-width:360px"><label class="field-label">Grupo</label>'+activityGroupSelect(groupList,rt.groupId)+'</div><div class="grid sm-grid-2 mt-4">'+(rt.exercises.length===0?'<p class="text-sm text-muted" style="grid-column:1/-1;">Sem exercícios nesta rotina.</p>':rt.exercises.map(exx=>exerciseRow(rt,exx)).join(''))+'</div></div></div>';
+  }
+  function groupCard(g, allRoutines){
+    const list=allRoutines.filter(r=>r.groupId===g.id);
+    return '<div class="card"><div class="card-body"><div class="flex flex-wrap items-start justify-between gap-3"><div><div class="font-bold">'+esc(g.name)+'</div><div class="mt-1 uppercase">'+list.length+' rotina(s)</div></div><div class="flex flex-wrap gap-1"><button class="btn btn-ghost btn-sm mob-gr-edit" data-id="'+esc(g.id)+'">'+icon('pencil',13)+' Renomear</button><button class="btn btn-ghost btn-sm mob-gr-arch" data-id="'+esc(g.id)+'">'+icon(g.archived?'history':'check',13)+' '+(g.archived?'Restaurar':'Arquivar')+'</button><button class="btn btn-ghost btn-sm btn-danger-text mob-gr-del" data-id="'+esc(g.id)+'">'+icon('trash',13)+' Eliminar</button></div></div><div style="display:flex;flex-direction:column;gap:12px;margin-top:14px;">'+(list.length?list.map(r=>routineCard(r,groups)).join(''):'<p class="text-sm text-muted">Sem rotinas neste grupo.</p>')+'</div></div></div>';
+  }
+  root.innerHTML=pageHeader('Mobilidade','Rotinas de prevenção')+'<div class="tabs-list grid-2 mb-4" id="mob-tabs"><button class="tab-btn active" data-t="ativos">Ativos</button><button class="tab-btn" data-t="arquivados">Arquivados</button></div><div class="flex flex-wrap items-center gap-2 mb-4"><button class="btn btn-primary btn-sm" id="mob-new-group">'+icon('folder',14)+' Novo grupo</button><button class="btn btn-primary btn-sm" id="mob-new">'+icon('plus',14)+' Nova rotina</button></div><div id="mob-content"></div>';
+  function draw(tab){
+    const isArch=tab==='arquivados'; const gs=isArch?archivedGroups:activeGroups; const rs=(isArch?archivedRoutines:activeRoutines); const ungrouped=rs.filter(r=>!r.groupId).sort((a,b)=>a.order-b.order);
+    const html=(gs.length?gs.map(g=>groupCard(g,rs)).join(''):'')+(ungrouped.length?'<div class="divider-label" style="margin-top:20px;">Sem grupo</div><div style="display:flex;flex-direction:column;gap:12px;">'+ungrouped.map(r=>routineCard(r,groups)).join('')+'</div>':'');
+    document.getElementById('mob-content').innerHTML=html||'<p class="text-sm text-muted">Sem rotinas. Cria uma rotina ou um grupo.</p>';
+    bindMobContent(tab);
+  }
+  async function bindMobContent(){
+    document.querySelectorAll('.mob-toggle').forEach(btn=>btn.addEventListener('click',async()=>{const id=btn.dataset.id;const existing=logs.find(l=>l.exerciseId===id&&isToday(l.date)); if(existing){await remove('mobilityLogs',existing.id);toast('Marca removida');}else{await put('mobilityLogs',{id:uid(),exerciseId:id,date:new Date().toISOString()});toast.success('Exercício concluído');}}));
+    root.querySelectorAll('.mob-edit').forEach(b=>b.addEventListener('click',()=>openMobilityRoutineDialog(routines.find(r=>r.id===b.dataset.r))));
+    root.querySelectorAll('.mob-ex-new').forEach(b=>b.addEventListener('click',()=>openMobilityExerciseDialog(routines.find(r=>r.id===b.dataset.r),null)));
+    root.querySelectorAll('.mob-ex-edit').forEach(b=>b.addEventListener('click',()=>{const rt=routines.find(r=>r.id===b.dataset.r);openMobilityExerciseDialog(rt,rt&&rt.exercises.find(e=>e.id===b.dataset.e));}));
+    root.querySelectorAll('.mob-ex-del').forEach(b=>b.addEventListener('click',async()=>{const rt=routines.find(r=>r.id===b.dataset.r);const exx=rt&&rt.exercises.find(e=>e.id===b.dataset.e);if(!rt||!exx||!confirm('Eliminar o exercício "'+(exx.name||'sem nome')+'"?'))return;rt.exercises=rt.exercises.filter(e=>e.id!==exx.id);await put('mobility',normalizeMobilityRoutine(rt));}));
+    root.querySelectorAll('.act-group-select').forEach(sel=>sel.addEventListener('change',async()=>{const rt=routines.find(r=>r.id===sel.closest('[data-rid]')?.dataset.rid);if(!rt)return;rt.groupId=sel.value||'';rt.order=Date.now();await put('mobility',normalizeMobilityRoutine(rt));}));
+    root.querySelectorAll('.mob-arch').forEach(b=>b.addEventListener('click',async()=>{const rt=routines.find(r=>r.id===b.dataset.r);if(!rt)return;rt.archived=!rt.archived;await put('mobility',normalizeMobilityRoutine(rt));}));
+    root.querySelectorAll('.mob-del').forEach(b=>b.addEventListener('click',async()=>{const rt=routines.find(r=>r.id===b.dataset.r);if(!rt||!confirm('Eliminar a rotina "'+rt.name+'"? O histórico é preservado.'))return;await remove('mobility',rt.id);}));
+    root.querySelectorAll('.mob-gr-edit').forEach(b=>b.addEventListener('click',()=>openActivityGroupDialog('mobilityGroups',groups.find(g=>g.id===b.dataset.id),'Mobilidade')));
+    root.querySelectorAll('.mob-gr-arch').forEach(b=>b.addEventListener('click',async()=>{const g=groups.find(g=>g.id===b.dataset.id);if(!g)return;await toggleActivityGroupArchive('mobilityGroups',g);}));
+    root.querySelectorAll('.mob-gr-del').forEach(b=>b.addEventListener('click',async()=>{const g=groups.find(g=>g.id===b.dataset.id);if(!g||!confirm('Eliminar o grupo "'+g.name+'"? As rotinas ficam sem grupo.'))return;await deleteActivityGroup('mobilityGroups','mobility',g.id);}));
+  }
+  document.getElementById('mob-tabs').querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{document.getElementById('mob-tabs').querySelectorAll('.tab-btn').forEach(x=>x.classList.toggle('active',x===btn));draw(btn.dataset.t);}));
+  document.getElementById('mob-new-group').addEventListener('click',()=>openActivityGroupDialog('mobilityGroups',null,'Mobilidade'));
+  document.getElementById('mob-new').addEventListener('click',()=>openMobilityRoutineDialog(null));
+  draw('ativos');
 }
 
-function openMobilityRoutineDialog(routine){
+async function openMobilityRoutineDialog(routine){
   const isNew = !routine;
   const r = normalizeMobilityRoutine(routine ? clone(routine) : { name:'', description:'', exercises:[] });
+  const groups = (await getAll('mobilityGroups')).map(normalizeActivityGroup).filter(g=>!g.archived);
   const body =
     '<div style="display:flex;flex-direction:column;gap:12px;">'+
       '<div><label class="field-label">Nome</label><input type="text" id="mr-name" value="'+esc(isNew?'':r.name)+'" placeholder="Rotina Diária"></div>'+
+      '<div><label class="field-label">Grupo</label>'+activityGroupSelect(groups,r.groupId)+'</div>'+
       '<div><label class="field-label">Descrição</label><textarea id="mr-desc" rows="2" placeholder="Objetivo da rotina">'+esc(r.description)+'</textarea></div>'+
     '</div>';
   const footer = '<button class="btn btn-outline" id="mr-cancel">Cancelar</button><button class="btn btn-primary" id="mr-save">Guardar</button>';
@@ -2915,6 +2979,8 @@ function openMobilityRoutineDialog(routine){
     const name = wrap.querySelector('#mr-name').value.trim();
     if(!name){ toast.error('Indica o nome da rotina'); return; }
     r.name = name;
+    r.groupId = wrap.querySelector('.act-group-select').value || '';
+    r.order = r.order || Date.now();
     r.description = wrap.querySelector('#mr-desc').value.trim();
     try{
       await put('mobility', normalizeMobilityRoutine(r));
@@ -2970,36 +3036,53 @@ function cardioFmt(sec){
   return (h>0?h+':':'')+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
 }
 async function renderCardio(root){
-  const [routines, sessions] = await Promise.all([getAll('cardio'), getAll('cardioSessions')]);
-
-  root.innerHTML =
-    pageHeader('Cardio','Zona 2 e recuperação ativa') +
-    '<div class="flex flex-wrap items-center justify-between gap-3 mb-4">'+
-      '<div class="flex gap-2">'+
-        '<a href="#/cardio/historico" class="btn btn-outline btn-sm">'+icon('history',14)+' Histórico</a>'+
-        '<button class="btn btn-primary btn-sm" id="cd-manual-open">'+icon('plus',14)+' Cardio manual</button>'+
-      '</div>'+
-      '<div class="flex gap-2">'+
-        '<button class="btn btn-outline btn-sm" id="cd-export">'+icon('download',13)+' Exportar Sessões</button>'+
-        '<button class="btn btn-outline btn-sm" id="cd-import">'+icon('upload',13)+' Importar Sessões</button>'+
-        '<input type="file" accept="application/json" id="cd-import-file" class="hidden">'+
-      '</div>'+
-    '</div>'+
-    '<div style="display:flex;flex-direction:column;gap:16px;" id="cd-list">'+
-      routines.map(r=>cardioRoutineCard(r, sessions.filter(s=>s.routineId===r.id))).join('')+
-    '</div>';
-
-  document.getElementById('cd-export').addEventListener('click', ()=>exportStore('cardioSessions','Sessões'));
-  document.getElementById('cd-import').addEventListener('click', ()=>document.getElementById('cd-import-file').click());
-  document.getElementById('cd-import-file').addEventListener('change', (e)=>{
-    const f = e.target.files && e.target.files[0];
-    if(f) importStore('cardioSessions', f, 'replace');
-    e.target.value = '';
-  });
-  document.getElementById('cd-manual-open').addEventListener('click', ()=>openManualCardioDialog(routines));
-
-  routines.forEach(r => bindCardioRoutine(r));
+  const [routinesRaw, sessions, groupsRaw] = await Promise.all([getAll('cardio'), getAll('cardioSessions'), getAll('cardioGroups')]);
+  const routines=routinesRaw.map(normalizeCardioRoutine);
+  const groups=groupsRaw.map(normalizeActivityGroup);
+  window.__cardioGroupsCache = groups;
+  const activeGroups=groups.filter(g=>!g.archived).sort((a,b)=>a.order-b.order);
+  const archivedGroups=groups.filter(g=>g.archived).sort((a,b)=>a.order-b.order);
+  const activeRoutines=routines.filter(r=>!r.archived);
+  const archivedRoutines=routines.filter(r=>r.archived);
+  root.innerHTML=pageHeader('Cardio','Zona 2 e recuperação ativa')+'<div class="tabs-list grid-2 mb-4" id="cd-tabs"><button class="tab-btn active" data-t="ativos">Ativos</button><button class="tab-btn" data-t="arquivados">Arquivados</button></div><div class="flex flex-wrap items-center justify-between gap-3 mb-4"><div class="flex flex-wrap gap-2"><button class="btn btn-primary btn-sm" id="cd-new-group">'+icon('folder',14)+' Novo grupo</button><button class="btn btn-primary btn-sm" id="cd-new-routine">'+icon('plus',14)+' Novo cardio</button><a href="#/cardio/historico" class="btn btn-outline btn-sm">'+icon('history',14)+' Histórico</a><button class="btn btn-outline btn-sm" id="cd-manual-open">'+icon('plus',14)+' Cardio manual</button></div><div class="flex gap-2"><button class="btn btn-outline btn-sm" id="cd-export">'+icon('download',13)+' Exportar Sessões</button><button class="btn btn-outline btn-sm" id="cd-import">'+icon('upload',13)+' Importar Sessões</button><input type="file" accept="application/json" id="cd-import-file" class="hidden"></div></div><div id="cd-list" style="display:flex;flex-direction:column;gap:16px;"></div>';
+  function draw(tab){
+    const isArch=tab==='arquivados'; const gs=isArch?archivedGroups:activeGroups; const rs=isArch?archivedRoutines:activeRoutines; const ungrouped=rs.filter(r=>!r.groupId).sort((a,b)=>a.order-b.order);
+    const groupHtml=gs.map(g=>{const list=rs.filter(r=>r.groupId===g.id);return '<div class="card"><div class="card-body"><div class="flex flex-wrap items-start justify-between gap-3"><div><div class="font-bold">'+esc(g.name)+'</div><div class="mt-1 uppercase">'+list.length+' cardio(s)</div></div><div class="flex flex-wrap gap-1"><button class="btn btn-ghost btn-sm cd-gr-edit" data-id="'+esc(g.id)+'">'+icon('pencil',13)+' Renomear</button><button class="btn btn-ghost btn-sm cd-gr-arch" data-id="'+esc(g.id)+'">'+icon(g.archived?'history':'check',13)+' '+(g.archived?'Restaurar':'Arquivar')+'</button><button class="btn btn-ghost btn-sm btn-danger-text cd-gr-del" data-id="'+esc(g.id)+'">'+icon('trash',13)+' Eliminar</button></div></div><div style="display:flex;flex-direction:column;gap:12px;margin-top:14px;">'+(list.length?list.map(r=>cardioRoutineCard(r,sessions.filter(s=>s.routineId===r.id))).join(''):'<p class="text-sm text-muted">Sem cardio neste grupo.</p>')+'</div></div></div>';}).join('');
+    const ungroupHtml=ungrouped.length?'<div class="divider-label">Sem grupo</div>'+ungrouped.map(r=>cardioRoutineCard(r,sessions.filter(s=>s.routineId===r.id))).join(''):'';
+    document.getElementById('cd-list').innerHTML=groupHtml+ungroupHtml;
+    bindCardioRoutineControls(rs);
+  }
+  function bindCardioRoutineControls(rs){
+    rs.forEach(r=>bindCardioRoutine(r));
+    root.querySelectorAll('.cd-routine-edit').forEach(b=>b.addEventListener('click',()=>openCardioRoutineDialog(routines.find(r=>r.id===b.dataset.id))));
+    root.querySelectorAll('.cd-routine-del').forEach(b=>b.addEventListener('click',async()=>{const r=routines.find(x=>x.id===b.dataset.id);if(!r||!confirm('Eliminar o cardio "'+r.name+'"? O histórico é preservado.'))return;await remove('cardio',r.id);}));
+    root.querySelectorAll('.cd-routine-arch').forEach(b=>b.addEventListener('click',async()=>{const r=routines.find(x=>x.id===b.dataset.id);if(!r)return;r.archived=!r.archived;await put('cardio',normalizeCardioRoutine(r));}));
+    root.querySelectorAll('.act-group-select').forEach(sel=>sel.addEventListener('change',async()=>{const r=routines.find(x=>x.id===sel.closest('[data-routine]')?.dataset.routine);if(!r)return;r.groupId=sel.value||'';r.order=Date.now();await put('cardio',normalizeCardioRoutine(r));}));
+    root.querySelectorAll('.cd-gr-edit').forEach(b=>b.addEventListener('click',()=>openActivityGroupDialog('cardioGroups',groups.find(g=>g.id===b.dataset.id),'Cardio')));
+    root.querySelectorAll('.cd-gr-arch').forEach(b=>b.addEventListener('click',async()=>{const g=groups.find(g=>g.id===b.dataset.id);if(!g)return;await toggleActivityGroupArchive('cardioGroups',g);}));
+    root.querySelectorAll('.cd-gr-del').forEach(b=>b.addEventListener('click',async()=>{const g=groups.find(g=>g.id===b.dataset.id);if(!g||!confirm('Eliminar o grupo "'+g.name+'"? Os cardios ficam sem grupo.'))return;await deleteActivityGroup('cardioGroups','cardio',g.id);}));
+  }
+  document.getElementById('cd-tabs').querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{document.getElementById('cd-tabs').querySelectorAll('.tab-btn').forEach(x=>x.classList.toggle('active',x===btn));draw(btn.dataset.t);}));
+  document.getElementById('cd-new-group').addEventListener('click',()=>openActivityGroupDialog('cardioGroups',null,'Cardio'));
+  document.getElementById('cd-new-routine').addEventListener('click',()=>openCardioRoutineDialog(null));
+  document.getElementById('cd-export').addEventListener('click',()=>exportStore('cardioSessions','Sessões'));
+  document.getElementById('cd-import').addEventListener('click',()=>document.getElementById('cd-import-file').click());
+  document.getElementById('cd-import-file').addEventListener('change',(e)=>{const f=e.target.files&&e.target.files[0];if(f)importStore('cardioSessions',f,'replace');e.target.value='';});
+  document.getElementById('cd-manual-open').addEventListener('click',()=>openManualCardioDialog(routines));
+  draw('ativos');
 }
+function openCardioRoutineDialog(routine){
+  const isNew=!routine; const r=normalizeCardioRoutine(routine?clone(routine):{name:'',objective:'',description:'',recommendedMin:30});
+  getAll('cardioGroups').then(gs=>{
+    const groups=gs.map(normalizeActivityGroup).filter(g=>!g.archived);
+    const body='<div style="display:flex;flex-direction:column;gap:12px;"><div><label class="field-label">Nome</label><input type="text" id="cr-name" value="'+esc(r.name)+'" placeholder="Corrida Base"></div><div><label class="field-label">Grupo</label>'+activityGroupSelect(groups,r.groupId)+'</div><div><label class="field-label">Objetivo</label><input type="text" id="cr-objective" value="'+esc(r.objective||'')+'" placeholder="Zona 2 aeróbica"></div><div><label class="field-label">Descrição</label><textarea id="cr-desc" rows="2">'+esc(r.description||'')+'</textarea></div><div><label class="field-label">Duração recomendada (min)</label><input type="number" min="1" id="cr-min" value="'+esc(r.recommendedMin||30)+'"></div></div>';
+    const wrap=openModal(isNew?'Novo cardio':'Editar cardio',body,'<button class="btn btn-outline" id="cr-cancel">Cancelar</button><button class="btn btn-primary" id="cr-save">Guardar</button>');
+    State.render.hold++; const close=()=>{State.render.hold=Math.max(0,State.render.hold-1);closeModal(wrap);scheduleRerender();};
+    wrap.querySelector('#cr-cancel').addEventListener('click',close);
+    wrap.querySelector('#cr-save').addEventListener('click',async()=>{r.name=wrap.querySelector('#cr-name').value.trim();if(!r.name){toast.error('Indica o nome do cardio');return;}r.groupId=wrap.querySelector('.act-group-select').value||'';r.objective=wrap.querySelector('#cr-objective').value.trim();r.description=wrap.querySelector('#cr-desc').value.trim();r.recommendedMin=Number(wrap.querySelector('#cr-min').value)||0;r.order=r.order||Date.now();try{await put('cardio',normalizeCardioRoutine(r));toast.success(isNew?'Cardio criado':'Cardio atualizado');close();}catch(e){console.error(e);toast.error('Não foi possível guardar o cardio');}});
+  });
+}
+
 function cardioRoutineCard(routine, sess){
   return '<div class="card" data-routine="'+esc(routine.id)+'"><div class="card-body">'+
     '<div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;">'+
@@ -3017,6 +3100,8 @@ function cardioRoutineCard(routine, sess){
         '</div>'+
       '</div>'+
     '</div>'+
+    '<div class="mt-3" style="max-width:360px"><label class="field-label">Grupo</label>'+activityGroupSelect((window.__cardioGroupsCache||[]).filter(g=>!g.archived),routine.groupId)+'</div>'+
+    '<div class="flex flex-wrap gap-1 mt-3"><button class="btn btn-ghost btn-sm cd-routine-edit" data-id="'+esc(routine.id)+'">'+icon('pencil',13)+' Editar</button><button class="btn btn-ghost btn-sm cd-routine-arch" data-id="'+esc(routine.id)+'">'+icon(routine.archived?'history':'check',13)+' '+(routine.archived?'Restaurar':'Arquivar')+'</button><button class="btn btn-ghost btn-sm btn-danger-text cd-routine-del" data-id="'+esc(routine.id)+'">'+icon('trash',13)+' Eliminar</button></div>'+
     (sess.length>0 ? '<div class="mt-4"><div class="uppercase mb-1">Histórico recente</div><div class="flex flex-wrap gap-1">'+sess.slice(-6).map(s=>'<span class="chip">'+fmtDateShort(s.date)+' · '+cardioFmt(s.durationSec)+'</span>').join('')+'</div></div>' : '')+
   '</div></div>';
 }
