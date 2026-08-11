@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "updatedAt": "2026-08-11T23:33:31.705Z",
+  "updatedAt": "2026-08-11T23:34:10.146Z",
   "stores": {
     "profile": [
       {
@@ -1057,7 +1057,8 @@
             "objective": "",
             "execution": "Aquecimento",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "4mgx2yc3msnt8a2v",
@@ -1080,7 +1081,8 @@
             "objective": "",
             "execution": "Aquecimento",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": "Aquecimento"
           },
           {
             "id": "xcpce3gomsnt8nsm",
@@ -1103,7 +1105,8 @@
             "objective": "",
             "execution": "Aqueciemento",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": "Aquecimento"
           },
           {
             "id": "2low3q0pmsnt9mo7",
@@ -1126,7 +1129,8 @@
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "kovm0rwgmsnt9vfr",
@@ -1149,7 +1153,8 @@
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "8qf55ithmsnt9vjj",
@@ -1167,12 +1172,13 @@
               }
             ],
             "muscleGroup": "",
-            "groupId": "ss-ifm9zcfkmsoaf7ip",
+            "groupId": "ss-w80q3q12mspar7h9",
             "autoTimer": true,
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "meenyv9pmsnt9vo7",
@@ -1190,12 +1196,13 @@
               }
             ],
             "muscleGroup": "",
-            "groupId": "ss-ifm9zcfkmsoaf7ip",
+            "groupId": "ss-w80q3q12mspar7h9",
             "autoTimer": true,
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "lqvjjno5msnt9vsn",
@@ -1213,12 +1220,13 @@
               }
             ],
             "muscleGroup": "",
-            "groupId": "ss-soohz5hsmsoaf7ip",
+            "groupId": "ss-28o76ddvmspar7h9",
             "autoTimer": true,
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "79u3xsngmsnt9vwe",
@@ -1236,12 +1244,13 @@
               }
             ],
             "muscleGroup": "",
-            "groupId": "ss-soohz5hsmsoaf7ip",
+            "groupId": "ss-28o76ddvmspar7h9",
             "autoTimer": true,
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "uedmrqjzmsntcbqw",
@@ -1264,7 +1273,8 @@
             "objective": "",
             "execution": "posicao de prancha, maos estilo diamond, cotovelos no chao, esticar cotovelo até posicao de flexao. ",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "kk0eejsmmsntcby8",
@@ -1282,12 +1292,13 @@
               }
             ],
             "muscleGroup": "",
-            "groupId": "ss-24lsniqwmsoaf7ip",
+            "groupId": "ss-tl9t8ng7mspar7h9",
             "autoTimer": true,
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "evrd1a7cmsntcc68",
@@ -1305,12 +1316,13 @@
               }
             ],
             "muscleGroup": "",
-            "groupId": "ss-24lsniqwmsoaf7ip",
+            "groupId": "ss-tl9t8ng7mspar7h9",
             "autoTimer": true,
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           }
         ],
         "kind": "exercises",
@@ -4363,6 +4375,17 @@
     "checkins": [],
     "calendar": [],
     "settings": [
+      {
+        "id": "activeWorkoutSession",
+        "value": {
+          "workoutId": "Legs",
+          "startedAt": "2026-08-11T23:34:00.511Z",
+          "exIdx": 0,
+          "setsLog": [],
+          "notes": "",
+          "savedAt": "2026-08-11T23:34:00.512Z"
+        }
+      },
       {
         "id": "equiv_carb",
         "value": [
