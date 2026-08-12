@@ -120,6 +120,23 @@ button{font-family:inherit;}
 .mobile-training-sheet.open{display:block;}
 .mobile-training-sheet a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;}
 .mobile-training-sheet a:hover{background:var(--accent);}
+@media(min-width:1024px){.mobile-training-sheet{display:none!important;}}
+
+.exercise-lib-card{overflow:hidden;transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease;}
+.exercise-lib-card:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,.16);border-color:color-mix(in oklch,var(--primary) 35%,var(--border));}
+.exercise-lib-media{position:relative;height:172px;background:linear-gradient(135deg,var(--secondary),color-mix(in oklch,var(--card) 55%,var(--secondary)));overflow:hidden;}
+.exercise-lib-media img{width:100%;height:100%;object-fit:cover;display:block;}
+.exercise-lib-placeholder{height:100%;display:grid;place-items:center;color:var(--muted-foreground);}
+.exercise-lib-badge{position:absolute;top:10px;left:10px;background:color-mix(in oklch,var(--background) 82%,transparent);backdrop-filter:blur(6px);border:1px solid var(--border);border-radius:999px;padding:4px 8px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;}
+.exercise-lib-body{padding:14px;}
+.exercise-lib-title{font-size:16px;font-weight:800;line-height:1.2;}
+.exercise-lib-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px;}
+.exercise-lib-meta .chip{font-size:10px;}
+.exercise-lib-actions{display:flex;gap:8px;align-items:center;margin-top:14px;}
+.exercise-lib-actions .btn{flex:1;}
+.exercise-lib-video{flex:0 0 auto!important;display:inline-flex;align-items:center;justify-content:center;gap:6px;}
+.exercise-lib-media-link{position:absolute;right:10px;bottom:10px;}
+.exercise-lib-editor-section{border:1px solid var(--border);border-radius:10px;padding:12px;background:color-mix(in oklch,var(--card) 92%,var(--background));}
 .theme-toggle-btn{margin:12px;display:flex;align-items:center;gap:10px;border-radius:8px;border:1px solid var(--sidebar-border);background:transparent;padding:9px 12px;font-size:14px;color:var(--sidebar-foreground);cursor:pointer;}
 .theme-toggle-btn:hover{background:var(--sidebar-accent);}
 
@@ -1467,6 +1484,7 @@ const NAV = [
   { to:'#/perfil', label:'Perfil', icon:'user' },
   { to:'#/treinos', label:'Treinos', icon:'dumbbell', children:[
     { to:'#/treinos', label:'Treinos', icon:'dumbbell' },
+    { to:'#/biblioteca-exercicios', label:'Biblioteca de Exercícios', icon:'book' },
     { to:'#/mobilidade', label:'Mobilidade', icon:'activity' },
     { to:'#/cardio', label:'Cardio', icon:'heart' },
   ] },
@@ -1497,7 +1515,7 @@ function currentPath(){
 function isActiveNav(navTo){
   const p = currentPath();
   if(navTo === '#/') return p === '#/';
-  if(navTo === '#/treinos') return p === '#/treinos' || p.indexOf('#/treinos/') === 0 || p.indexOf('#/mobilidade') === 0 || p.indexOf('#/cardio') === 0;
+  if(navTo === '#/treinos') return p === '#/treinos' || p.indexOf('#/treinos/') === 0 || p.indexOf('#/biblioteca-exercicios') === 0 || p.indexOf('#/mobilidade') === 0 || p.indexOf('#/cardio') === 0;
   return p === navTo || p.indexOf(navTo+'/') === 0;
 }
 /* Navegação com Treinos como menu-pai; Mobilidade e Cardio vivem dentro dele. */
@@ -1512,7 +1530,7 @@ function renderShellNav(){
     document.getElementById('bottom-nav-links').innerHTML = '<button type="button" class="bottom-nav-link" id="mobile-training-toggle" data-nav="#/treinos">'+icon('dumbbell',20)+'<span>Treinos</span></button>'+bottom.filter(n=>n.to!=='#/mobilidade' && n.to!=='#/cardio').map(n=>'<a href="'+n.to+'" class="bottom-nav-link" data-nav="'+n.to+'">'+icon(n.icon,20)+'<span>'+esc(n.label.split(' ')[0])+'</span></a>').join('');
     if(!document.getElementById('mobile-training-sheet')){
       const sheet=document.createElement('div'); sheet.id='mobile-training-sheet'; sheet.className='mobile-training-sheet';
-      sheet.innerHTML='<a href="#/treinos">'+icon('dumbbell',16)+' Treinos</a><a href="#/mobilidade">'+icon('activity',16)+' Mobilidade</a><a href="#/cardio">'+icon('heart',16)+' Cardio</a>';
+      sheet.innerHTML='<a href="#/treinos">'+icon('dumbbell',16)+' Treinos</a><a href="#/biblioteca-exercicios">'+icon('book',16)+' Biblioteca de Exercícios</a><a href="#/mobilidade">'+icon('activity',16)+' Mobilidade</a><a href="#/cardio">'+icon('heart',16)+' Cardio</a>';
       document.body.appendChild(sheet);
     }
     document.getElementById('mobile-training-toggle').addEventListener('click',()=>document.getElementById('mobile-training-sheet').classList.toggle('open'));
@@ -1522,7 +1540,7 @@ function renderShellNav(){
   }
   document.querySelectorAll('[data-nav]').forEach(a => a.classList.toggle('active', isActiveNav(a.getAttribute('data-nav'))));
   const parent=document.querySelector('[data-nav-parent="treinos"]'); if(parent) parent.classList.toggle('open', isActiveNav('#/treinos'));
-  const sheet=document.getElementById('mobile-training-sheet'); if(sheet) sheet.classList.toggle('open', currentPath().indexOf('#/mobilidade')===0 || currentPath().indexOf('#/cardio')===0);
+  const sheet=document.getElementById('mobile-training-sheet'); if(sheet) sheet.classList.toggle('open', currentPath().indexOf('#/biblioteca-exercicios')===0 || currentPath().indexOf('#/mobilidade')===0 || currentPath().indexOf('#/cardio')===0);
 }
 
 function pageHeader(title, subtitle, actionsHtml){
@@ -1557,6 +1575,7 @@ function resolveView(parts, root){
   if(parts.length === 0) return () => renderDashboard(root);
   switch(parts[0]){
     case 'perfil': return () => renderPerfil(root);
+    case 'biblioteca-exercicios': return () => renderExerciseLibrary(root);
     case 'mobilidade': return () => renderMobilidade(root);
     case 'cardio': return () => (parts[1] === 'historico' ? renderCardioHistorico(root) : renderCardio(root));
     case 'alimentacao': return () => renderAlimentacao(root);
@@ -1946,6 +1965,54 @@ async function getExerciseSections(){
 }
 
 /* ---------------------------------------------------------------
+   BIBLIOTECA DE EXERCÍCIOS — catálogo independente
+   --------------------------------------------------------------- */
+function normalizeLibraryExercise(e){
+  return Object.assign({id:uid(),name:'',category:'Força',muscleGroup:'',equipment:'',objective:'',execution:'',commonMistakes:'',coachTips:'',photoData:'',videoUrl:'',createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()}, e||{}, {id:(e&&e.id)||uid()});
+}
+function libraryCategoryList(items){return Array.from(new Set(items.map(x=>String(x.category||'Outros').trim()||'Outros'))).sort((a,b)=>a.localeCompare(b,'pt'));}
+function fileToDataURL(file){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(String(r.result||''));r.onerror=reject;r.readAsDataURL(file);});}
+function openLibraryEditor(initial,onSaved){
+  const e=normalizeLibraryExercise(initial||{}); let photo=e.photoData||'';
+  const wrap=openModal(initial?'Editar exercício':'Novo exercício',
+    '<div style="display:flex;flex-direction:column;gap:12px;">'+
+      '<div class="exercise-lib-editor-section">'+
+        '<div class="text-xs text-muted mb-2">IDENTIFICAÇÃO</div>'+ 
+        '<label class="field-label">Nome<input id="le-name" value="'+esc(e.name)+'" placeholder="Ex.: Supino reto"></label>'+ 
+        '<div class="grid sm-grid-2 gap-3"><label class="field-label">Categoria<input id="le-category" value="'+esc(e.category||'Força')+'" placeholder="Força, BJJ, Mobilidade…"></label><label class="field-label">Equipamento<input id="le-equipment" value="'+esc(e.equipment||'')+'" placeholder="Barra, halteres, peso corporal…"></label></div>'+ 
+        '<div class="grid sm-grid-2 gap-3"><label class="field-label">Grupo muscular<input id="le-muscle" value="'+esc(e.muscleGroup||'')+'" placeholder="Peito, costas, quadríceps…"></label><label class="field-label">Objetivo<input id="le-objective" value="'+esc(e.objective||'')+'" placeholder="Força, potência, técnica…"></label></div>'+ 
+      '</div>'+ 
+      '<div class="exercise-lib-editor-section">'+
+        '<div class="text-xs text-muted mb-2">FICHA TÉCNICA</div>'+ 
+        '<label class="field-label">Execução<textarea id="le-execution" rows="3" placeholder="Como executar o exercício…">'+esc(e.execution||'')+'</textarea></label>'+ 
+        '<label class="field-label">Erros comuns<textarea id="le-mistakes" rows="2" placeholder="Erros a evitar…">'+esc(e.commonMistakes||'')+'</textarea></label>'+ 
+        '<label class="field-label">Dicas<textarea id="le-tips" rows="2" placeholder="Dicas do treinador…">'+esc(e.coachTips||'')+'</textarea></label>'+ 
+      '</div>'+ 
+      '<div class="exercise-lib-editor-section">'+
+        '<div class="text-xs text-muted mb-2">MÍDIA</div>'+ 
+        '<label class="field-label">Link do vídeo de demonstração<input type="url" id="le-video" value="'+esc(e.videoUrl||'')+'" placeholder="https://youtu.be/... ou outro link de vídeo"></label>'+ 
+        '<div class="mt-2"><div class="field-label">Foto / demonstração</div><input type="file" id="le-photo" accept="image/*"><div id="le-photo-preview" class="mt-2">'+(photo?'<img src="'+esc(photo)+'" alt="" style="width:100%;max-width:360px;height:190px;border-radius:10px;display:block;object-fit:cover;border:1px solid var(--border);">':'<div class="text-xs text-muted" style="padding:14px;border:1px dashed var(--border);border-radius:10px;text-align:center;">Sem fotografia. Podes adicionar uma imagem de demonstração.</div>')+'</div></div>'+ 
+      '</div>'+ 
+    '</div>', '<button class="btn btn-outline" id="le-cancel">Cancelar</button><button class="btn btn-primary" id="le-save">Guardar</button>');
+  const fi=wrap.querySelector('#le-photo');
+  fi.addEventListener('change',async()=>{const f=fi.files&&fi.files[0];if(!f)return;if(f.size>2.5*1024*1024){toast.error('Imagem demasiado grande (máx. 2,5 MB)');fi.value='';return;}photo=await fileToDataURL(f);wrap.querySelector('#le-photo-preview').innerHTML='<img src="'+esc(photo)+'" alt="" style="width:100%;max-width:360px;height:190px;border-radius:10px;display:block;object-fit:cover;border:1px solid var(--border);">';});
+  wrap.querySelector('#le-cancel').addEventListener('click',()=>closeModal(wrap));
+  wrap.querySelector('#le-save').addEventListener('click',async()=>{const name=wrap.querySelector('#le-name').value.trim();if(!name)return toast.error('Nome obrigatório');const old=await get('exerciseLibrary',e.id);const out=Object.assign({},old||e,{id:e.id,name,category:wrap.querySelector('#le-category').value.trim()||'Outros',equipment:wrap.querySelector('#le-equipment').value.trim(),muscleGroup:wrap.querySelector('#le-muscle').value.trim(),objective:wrap.querySelector('#le-objective').value.trim(),execution:wrap.querySelector('#le-execution').value.trim(),commonMistakes:wrap.querySelector('#le-mistakes').value.trim(),coachTips:wrap.querySelector('#le-tips').value.trim(),photoData:photo||'',videoUrl:wrap.querySelector('#le-video').value.trim(),updatedAt:new Date().toISOString(),createdAt:(old&&old.createdAt)||e.createdAt});await put('exerciseLibrary',out);closeModal(wrap);toast.success(initial?'Exercício atualizado':'Exercício criado');if(onSaved)onSaved();});
+}
+
+function renderExerciseLibrary(root){
+  getAll('exerciseLibrary').then(raw=>{
+    const items=raw.map(normalizeLibraryExercise).filter(x=>x.name); let query='',category='Todos';    function card(ex){
+      const photo=ex.photoData?'<img src="'+esc(ex.photoData)+'" alt="" class="exercise-lib-image">':'<div class="exercise-lib-placeholder">'+icon('dumbbell',34)+'</div>';
+      const video=ex.videoUrl?'<a class="btn btn-outline btn-sm exercise-lib-video" href="'+esc(ex.videoUrl)+'" target="_blank" rel="noopener noreferrer">'+icon('play',13)+' Vídeo</a>':'';
+      return '<div class="card exercise-lib-card"><div class="exercise-lib-media">'+photo+'<span class="exercise-lib-badge">'+esc(ex.category||'Outros')+'</span>'+(video?'<div class="exercise-lib-media-link">'+video+'</div>':'')+'</div><div class="exercise-lib-body"><div class="exercise-lib-title">'+esc(ex.name)+'</div><div class="exercise-lib-meta">'+(ex.muscleGroup?'<span class="chip">'+esc(ex.muscleGroup)+'</span>':'')+(ex.equipment?'<span class="chip">'+esc(ex.equipment)+'</span>':'')+(ex.objective?'<span class="chip">'+esc(ex.objective)+'</span>':'')+'</div><div class="exercise-lib-actions"><button class="btn btn-outline btn-sm el-edit" data-id="'+esc(ex.id)+'">Editar</button><button class="btn btn-ghost btn-sm btn-danger-text el-del" data-id="'+esc(ex.id)+'">Eliminar</button></div></div></div>';
+    }
+    function draw(){const cats=libraryCategoryList(items),q=query.trim().toLowerCase(),list=items.filter(x=>(category==='Todos'||(x.category||'Outros')===category)&&(!q||[x.name,x.category,x.muscleGroup,x.equipment,x.objective].join(' ').toLowerCase().includes(q)));root.innerHTML=pageHeader('Biblioteca de Exercícios','Catálogo central de exercícios · reutiliza nos teus treinos','<button class="btn btn-primary btn-sm" id="el-new">'+icon('plus',14)+' Novo exercício</button>')+'<div class="flex flex-wrap gap-2 mb-4"><input id="el-search" placeholder="Pesquisar exercício, músculo, equipamento…" value="'+esc(query)+'" style="flex:1;min-width:220px;"><select id="el-cat" style="min-width:160px;"><option value="Todos">Todas as categorias</option>'+cats.map(c=>'<option value="'+esc(c)+'" '+(c===category?'selected':'')+'>'+esc(c)+'</option>').join('')+'</select></div>'+(list.length?'<div class="grid sm-grid-2 lg-grid-3 gap-3">'+list.map(card).join('')+'</div>':'<div class="card"><div class="card-body text-center text-muted">Nenhum exercício encontrado.</div></div>');const inp=document.getElementById('el-search');inp.addEventListener('input',e=>{query=e.target.value;draw();setTimeout(()=>{const i=document.getElementById('el-search');i.focus();i.setSelectionRange(i.value.length,i.value.length);},0);});document.getElementById('el-cat').addEventListener('change',e=>{category=e.target.value;draw();});document.getElementById('el-new').addEventListener('click',()=>openLibraryEditor(null,()=>draw()));root.querySelectorAll('.el-edit').forEach(b=>b.addEventListener('click',()=>{const ex=items.find(x=>x.id===b.dataset.id);if(ex)openLibraryEditor(ex,()=>draw());}));root.querySelectorAll('.el-del').forEach(b=>b.addEventListener('click',async()=>{const ex=items.find(x=>x.id===b.dataset.id);if(!ex)return;if(!confirm('Eliminar "'+ex.name+'" da biblioteca? Os treinos que já o utilizam não serão apagados.'))return;await remove('exerciseLibrary',ex.id);toast.success('Exercício removido da biblioteca');renderExerciseLibrary(root);}));}
+    draw();
+  });
+}
+function openExerciseLibraryPicker(onSelect){getAll('exerciseLibrary').then(raw=>{const items=raw.map(normalizeLibraryExercise).filter(x=>x.name).sort((a,b)=>a.name.localeCompare(b.name,'pt'));if(!items.length)return toast.error('A biblioteca está vazia');const wrap=openModal('Adicionar exercício da biblioteca','<input id="elp-search" placeholder="Pesquisar exercício…" style="width:100%;margin-bottom:12px;"><div id="elp-list" style="display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow:auto;"></div>','<button class="btn btn-outline" id="elp-cancel">Cancelar</button>');function draw(q=''){const qq=q.trim().toLowerCase(),list=items.filter(x=>[x.name,x.category,x.muscleGroup,x.equipment].join(' ').toLowerCase().includes(qq));wrap.querySelector('#elp-list').innerHTML=list.length?list.map(x=>'<button type="button" class="card-body-sm elp-item" data-id="'+esc(x.id)+'" style="display:flex;align-items:center;gap:10px;text-align:left;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--foreground);cursor:pointer;">'+(x.photoData?'<img src="'+esc(x.photoData)+'" style="width:44px;height:44px;border-radius:6px;object-fit:cover;flex:none;">':'<div class="stat-icon-box" style="width:44px;height:44px;flex:none;">'+icon('dumbbell',18)+'</div>')+'<span style="min-width:0;"><strong>'+esc(x.name)+'</strong><br><span class="text-xs text-muted">'+esc(x.category||'')+(x.muscleGroup?' · '+esc(x.muscleGroup):'')+'</span></span></button>').join(''):'<p class="text-sm text-muted">Nenhum exercício encontrado.</p>';wrap.querySelectorAll('.elp-item').forEach(b=>b.addEventListener('click',()=>{const x=items.find(i=>i.id===b.dataset.id);if(x){closeModal(wrap);onSelect(x);}}));}wrap.querySelector('#elp-search').addEventListener('input',e=>draw(e.target.value));wrap.querySelector('#elp-cancel').addEventListener('click',()=>closeModal(wrap));draw();});}
+/* ---------------------------------------------------------------
    WORKOUT EDITOR (partilhado: novo + editar)
    --------------------------------------------------------------- */
 function emptyExercise(){
@@ -1974,7 +2041,7 @@ function renderWorkoutEditor(root, initial, mode, headerTitle, headerSub){
     const linked = !!(prev && ex.groupId && (prev.groupId||'') === ex.groupId);
     return '<div class="card we-ex" data-i="'+i+'"><div class="card-body-sm" style="display:flex;flex-direction:column;gap:10px;">'+
       '<div class="flex items-start gap-2">'+
-        '<div style="display:grid;place-items:center;height:30px;width:30px;flex-shrink:0;border-radius:6px;background:var(--primary);color:var(--primary-foreground);font-size:12px;font-weight:900;">'+(i+1)+'</div>'+
+        '<div style="display:grid;place-items:center;height:30px;width:30px;flex-shrink:0;border-radius:6px;background:var(--primary);color:var(--primary-foreground);font-size:12px;font-weight:900;">'+(i+1)+'</div>'+(ex.photoData?'<img src="'+esc(ex.photoData)+'" alt="" style="width:42px;height:42px;border-radius:7px;object-fit:cover;flex:none;">':'')+
         '<input type="text" class="we-name" value="'+esc(ex.name)+'" placeholder="Nome do exercício" style="font-weight:600;flex:1;">'+
         '<button class="btn btn-ghost btn-icon we-remove" aria-label="Remover">'+icon('trash',15)+'</button>'+
       '</div>'+
@@ -2010,7 +2077,7 @@ function renderWorkoutEditor(root, initial, mode, headerTitle, headerSub){
           '</div>'+
           '<div><label class="field-label">Descrição</label><textarea id="we-description" rows="2">'+esc(w.description||'')+'</textarea></div>'+
         '</div></div>'+
-        '<div class="flex items-center justify-between"><h2 class="divider-label" style="margin:0;">Exercícios</h2><button class="btn btn-outline btn-sm" id="we-add-ex">'+icon('plus',14)+' Adicionar</button></div>'+
+        '<div class="flex items-center justify-between"><h2 class="divider-label" style="margin:0;">Exercícios</h2><div class="flex gap-2"><button class="btn btn-primary btn-sm" id="we-add-library">'+icon('book',14)+' Biblioteca</button><button class="btn btn-outline btn-sm" id="we-add-ex">'+icon('plus',14)+' Manual</button></div></div>'+
         '<datalist id="we-section-options">'+exerciseSections.map(x=>'<option value="'+esc(x)+'"></option>').join('')+'</datalist>'+
         '<div id="we-ex-list" style="display:flex;flex-direction:column;gap:12px;">'+w.exercises.map(exerciseCard).join('')+'</div>'+
         '<button class="btn btn-primary w-full" id="we-save-bottom">'+icon('save',14)+' Guardar treino</button>'+
@@ -2074,6 +2141,7 @@ function renderWorkoutEditor(root, initial, mode, headerTitle, headerSub){
     document.getElementById('we-save-top').addEventListener('click', save);
     document.getElementById('we-save-bottom').addEventListener('click', save);
     document.getElementById('we-add-ex').addEventListener('click', ()=>{ readFormIntoW(); w.exercises.push(emptyExercise()); draw(); });
+    document.getElementById('we-add-library').addEventListener('click', ()=>{ readFormIntoW(); openExerciseLibraryPicker((lib)=>{ const inst=Object.assign(emptyExercise(),{name:lib.name,libraryId:lib.id,muscleGroup:lib.muscleGroup||'',objective:lib.objective||'',execution:lib.execution||'',commonMistakes:lib.commonMistakes||'',coachTips:lib.coachTips||'',photoData:lib.photoData||'',videoUrl:lib.videoUrl||''}); w.exercises.push(inst); draw(); }); });
     root.querySelectorAll('.we-remove').forEach(btn=>btn.addEventListener('click', ()=>{
       readFormIntoW();
       const i = Number(btn.closest('.we-ex').dataset.i);
@@ -2534,7 +2602,7 @@ async function renderTreinoSessao(root, id){
     return 0;
   }
   function currentBlock(){ const bs = blocks(); return bs[currentBlockIndex(bs)] || []; }
-  function techFor(ex){ return Object.assign({}, library.find(l=>l.id === (ex.name||'').toLowerCase()) || {}, ex); }
+  function techFor(ex){ return Object.assign({}, library.find(l=>l.id === ex.libraryId) || library.find(l=>l.id === (ex.name||'').toLowerCase()) || {}, ex); }
 
   function draw(){
     const bs = blocks();
@@ -2559,7 +2627,7 @@ async function renderTreinoSessao(root, id){
           '<div class="min-w-0"><div class="truncate font-bold">'+(isSuper ? letters[k]+') ' : '')+esc(ex.name)+'</div>'+
             '<div class="text-xs text-muted">'+esc(tech.muscleGroup || '')+(tech.muscleGroup?' · ':'')+totalSets+' × '+esc(ex.reps)+'</div></div>'+
           '<span class="chip">'+Math.min(done+1,totalSets)+'/'+totalSets+'</span>'+
-        '</div>'+
+        '</div>'+(tech.photoData?'<div class="mb-3"><img src="'+esc(tech.photoData)+'" alt="" style="width:100%;max-height:220px;object-fit:contain;border-radius:8px;background:var(--secondary);"></div>':'')+
         '<div class="grid grid-3 gap-3">'+
           '<label class="block"><div class="uppercase mb-1">Peso (kg)</div><input type="number" inputmode="decimal" class="ss-weight" data-k="'+k+'" value="'+esc(ex.currentLoad||0)+'" style="font-size:18px;font-weight:700;"></label>'+
           '<label class="block"><div class="uppercase mb-1">Reps</div><input type="number" inputmode="numeric" class="ss-reps" data-k="'+k+'" value="" style="font-size:18px;font-weight:700;"></label>'+
@@ -4822,6 +4890,7 @@ const VIKING = {
     },
   },
   compras: { renderCompras, buildShoppingItems, groupShoppingItems, prettyQty, unitInfo },
+  biblioteca: { renderExerciseLibrary, openExerciseLibraryPicker, openLibraryEditor },
   registos: { renderDiario, renderCompeticoes, renderCheckin, renderEstatisticas },
   calendario: { renderCalendario },
   config: { renderConfiguracoes, renderPerfil },
