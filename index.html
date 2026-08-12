@@ -135,6 +135,8 @@ button{font-family:inherit;}
 .bottom-nav-scroll{display:flex;overflow-x:auto;}
 .bottom-nav-link{display:flex;min-width:64px;flex-shrink:0;flex-direction:column;align-items:center;gap:2px;padding:8px 12px;font-size:10px;font-weight:500;color:var(--muted-foreground);}
 .bottom-nav-link.active{color:var(--primary);}
+.bottom-nav-link{background:transparent;border:0;appearance:none;-webkit-appearance:none;}
+#mobile-training-toggle{background:transparent;border:0;color:var(--primary);}
 #mobile-training-toggle{color:var(--primary);}
 .bottom-nav-link svg{width:20px;height:20px;}
 
@@ -1506,8 +1508,8 @@ function renderShellNav(){
       const childHtml = n.children.map(c=>'<a href="'+c.to+'" class="nav-sub-link" data-nav="'+c.to+'">'+icon(c.icon,14)+'<span>'+esc(c.label)+'</span></a>').join('');
       return '<div class="nav-parent-row open" data-nav-parent="treinos"><a href="'+n.to+'" class="nav-link" data-nav="'+n.to+'">'+icon(n.icon,17)+'<span class="truncate">'+esc(n.label)+'</span></a><button type="button" class="nav-chevron" data-nav-toggle="treinos" aria-label="Expandir Treinos">'+icon('chevrondown',15)+'</button></div><div class="nav-submenu">'+childHtml+'</div>';
     }).join('');
-    const bottom = NAV.filter(n=>n.to!=='#/treinos' && n.to!=='#/perfil');
-    document.getElementById('bottom-nav-links').innerHTML = '<button type="button" class="bottom-nav-link" id="mobile-training-toggle">'+icon('dumbbell',20)+'<span>Treinos</span></button>'+bottom.filter(n=>n.to!=='#/mobilidade' && n.to!=='#/cardio').map(n=>'<a href="'+n.to+'" class="bottom-nav-link" data-nav="'+n.to+'">'+icon(n.icon,20)+'<span>'+esc(n.label.split(' ')[0])+'</span></a>').join('');
+    const bottom = NAV.filter(n=>n.to!=='#/treinos');
+    document.getElementById('bottom-nav-links').innerHTML = '<button type="button" class="bottom-nav-link" id="mobile-training-toggle" data-nav="#/treinos">'+icon('dumbbell',20)+'<span>Treinos</span></button>'+bottom.filter(n=>n.to!=='#/mobilidade' && n.to!=='#/cardio').map(n=>'<a href="'+n.to+'" class="bottom-nav-link" data-nav="'+n.to+'">'+icon(n.icon,20)+'<span>'+esc(n.label.split(' ')[0])+'</span></a>').join('');
     if(!document.getElementById('mobile-training-sheet')){
       const sheet=document.createElement('div'); sheet.id='mobile-training-sheet'; sheet.className='mobile-training-sheet';
       sheet.innerHTML='<a href="#/treinos">'+icon('dumbbell',16)+' Treinos</a><a href="#/mobilidade">'+icon('activity',16)+' Mobilidade</a><a href="#/cardio">'+icon('heart',16)+' Cardio</a>';
@@ -4671,8 +4673,8 @@ async function renderConfiguracoes(root){
    PÁGINA: DASHBOARD
    --------------------------------------------------------------- */
 async function renderDashboard(root){
-  const [checkins, sessions, workouts, comps, bjj] = await Promise.all([
-    getAll('checkins'), getAll('workoutSessions'), getAll('workouts'), getAll('competitions'), getAll('bjj'),
+  const [checkins, sessions, workouts, comps, bjj, profile] = await Promise.all([
+    getAll('checkins'), getAll('workoutSessions'), getAll('workouts'), getAll('competitions'), getAll('bjj'), get('profile','me'),
   ]);
   const latestCheckin = [...checkins].sort((a,b)=>b.date.localeCompare(a.date))[0];
   const latestBjj = [...bjj].sort((a,b)=>b.date.localeCompare(a.date))[0];
@@ -4701,8 +4703,12 @@ async function renderDashboard(root){
   root.innerHTML =
     '<div class="card" style="margin-bottom:16px;overflow:hidden;position:relative;background:linear-gradient(135deg,color-mix(in oklch,var(--primary) 18%,var(--card)),var(--card));">'+
       '<div class="card-body" style="padding:24px;position:relative;z-index:1;">'+
-        '<div class="flex flex-wrap items-end justify-between gap-4">'+
-          '<div><div class="uppercase">VIKING · Performance</div><h1 style="font-size:32px;line-height:1.05;font-weight:900;margin:6px 0 0;letter-spacing:-.03em;">'+(latestCheckin ? 'Preparado para treinar.' : 'O teu centro de performance.')+'</h1><p class="text-sm text-muted" style="margin:8px 0 0;">'+fmtFullDate(new Date().toISOString())+'</p></div>'+          '<a href="#/treinos" class="btn btn-primary">'+icon('play',14)+' Ir para treino</a>'+        '</div>'+      '</div>'+    '</div>'+    '<div class="grid lg-grid-3 gap-3 mb-4">'+      '<div class="card" style="grid-column:span 2;">'+        '<div class="card-body"><div class="flex flex-wrap items-start justify-between gap-4">'+          '<div><div class="uppercase">Estado de hoje</div><div style="font-size:28px;font-weight:900;margin-top:4px;">'+(readiness?readiness+'%':'—')+'</div><div class="text-sm text-muted mt-1">prontidão estimada a partir de energia e sono</div></div>'+          '<div class="grid grid-2" style="min-width:220px;gap:10px;">'+            stat('zap','Energia',energy?energy+'/10':'—','último registo',energy?energy*10:0)+            stat('moon','Sono',sleep?sleep+' h':'—','último registo',sleep?Math.min(100,(sleep/8)*100):0)+          '</div>'+        '</div>'+        '<div class="progress-track mt-4"><div class="progress-fill" style="width:'+(readiness||0)+'%"></div></div>'+      '</div></div>'+      '</div></div>'+    '<div class="grid grid-2 sm-grid-4 gap-3 mb-4">'+      stat('scale','Peso atual',weight?weight+' kg':'—',latestCheckin?'há '+timeAgo(latestCheckin.date):'Sem check-in')+      stat('calendar','Último treino',lastWorkout?lastWorkout.title:'—',lastSession?(daysSince===0?'Hoje':daysSince===1?'Ontem':'há '+daysSince+' dias'):'Sem treinos')+      stat('trophy','Competição',nextComp?nextComp.name:'—',nextComp?fmtDate(nextComp.date,true):'Sem agenda')+      stat('activity','Sessões',String(sessions.length),lastSession?'histórico total':'Ainda sem sessões')+    '</div>'+    '<div class="grid lg-grid-2 gap-3 mb-4">'+      '<div class="card"><div class="card-body">'+        '<div class="flex items-center justify-between mb-3"><div><div class="uppercase">Último check BJJ</div><div class="text-sm text-muted mt-1">Leitura rápida da tua condição</div></div><a href="#/diario" class="link-primary">Abrir diário</a></div>'+        (latestBjj ? '<div class="grid grid-3 gap-2">'+
+        '<div class="flex flex-wrap items-center justify-between gap-4">'+
+          '<div class="flex items-center gap-4">'+
+            '<a href="#/perfil" aria-label="Abrir perfil" style="width:68px;height:68px;border-radius:50%;overflow:hidden;display:grid;place-items:center;flex:0 0 auto;border:2px solid color-mix(in oklch,var(--primary) 45%,var(--border));background:var(--muted);text-decoration:none;">'+
+              (profile && profile.profilePhoto ? '<img src="'+esc(profile.profilePhoto)+'" alt="Foto de perfil" style="width:100%;height:100%;object-fit:cover;">' : icon('user',28))+
+            '</a>'+
+            '<div><div class="uppercase">VIKING · Performance</div><h1 style="font-size:32px;line-height:1.05;font-weight:900;margin:6px 0 0;letter-spacing:-.03em;">'+(profile && profile.name ? 'Olá, '+esc(profile.name)+'.' : (latestCheckin ? 'Preparado para treinar.' : 'O teu centro de performance.'))+'</h1><p class="text-sm text-muted" style="margin:8px 0 0;">'+fmtFullDate(new Date().toISOString())+'</p></div>'+          '</div>'+          '<a href="#/treinos" class="btn btn-primary">'+icon('play',14)+' Ir para treino</a>'+        '</div>'+      '</div>'+    '</div>'+    '<div class="grid lg-grid-3 gap-3 mb-4">'+      '<div class="card" style="grid-column:span 2;">'+        '<div class="card-body"><div class="flex flex-wrap items-start justify-between gap-4">'+          '<div><div class="uppercase">Estado de hoje</div><div style="font-size:28px;font-weight:900;margin-top:4px;">'+(readiness?readiness+'%':'—')+'</div><div class="text-sm text-muted mt-1">prontidão estimada a partir de energia e sono</div></div>'+          '<div class="grid grid-2" style="min-width:220px;gap:10px;">'+            stat('zap','Energia',energy?energy+'/10':'—','último registo',energy?energy*10:0)+            stat('moon','Sono',sleep?sleep+' h':'—','último registo',sleep?Math.min(100,(sleep/8)*100):0)+          '</div>'+        '</div>'+        '<div class="progress-track mt-4"><div class="progress-fill" style="width:'+(readiness||0)+'%"></div></div>'+      '</div></div>'+      '</div></div>'+    '<div class="grid grid-2 sm-grid-4 gap-3 mb-4">'+      stat('scale','Peso atual',weight?weight+' kg':'—',latestCheckin?'há '+timeAgo(latestCheckin.date):'Sem check-in')+      stat('calendar','Último treino',lastWorkout?lastWorkout.title:'—',lastSession?(daysSince===0?'Hoje':daysSince===1?'Ontem':'há '+daysSince+' dias'):'Sem treinos')+      stat('trophy','Competição',nextComp?nextComp.name:'—',nextComp?fmtDate(nextComp.date,true):'Sem agenda')+      stat('activity','Sessões',String(sessions.length),lastSession?'histórico total':'Ainda sem sessões')+    '</div>'+    '<div class="grid lg-grid-2 gap-3 mb-4">'+      '<div class="card"><div class="card-body">'+        '<div class="flex items-center justify-between mb-3"><div><div class="uppercase">Último check BJJ</div><div class="text-sm text-muted mt-1">Leitura rápida da tua condição</div></div><a href="#/diario" class="link-primary">Abrir diário</a></div>'+        (latestBjj ? '<div class="grid grid-3 gap-2">'+
           '<div class="card"><div class="card-body-sm"><div class="text-xs text-muted">Energia</div><div style="font-size:22px;font-weight:900;margin-top:4px;">'+esc(latestBjj.energy)+'/10</div></div></div>'+
           '<div class="card"><div class="card-body-sm"><div class="text-xs text-muted">Grip</div><div style="font-size:22px;font-weight:900;margin-top:4px;">'+esc(latestBjj.grip)+'/10</div></div></div>'+
           '<div class="card"><div class="card-body-sm"><div class="text-xs text-muted">Cardio</div><div style="font-size:22px;font-weight:900;margin-top:4px;">'+esc(latestBjj.cardio)+'/10</div></div></div>'+          '</div><div class="text-xs text-muted mt-3">Registo de '+fmtDateShort(latestBjj.date)+'</div>' : '<p class="text-sm text-muted">Ainda sem registos no diário BJJ.</p>')+      '</div></div>'+      '<div class="card"><div class="card-body">'+        '<div class="flex items-center justify-between mb-3"><div><div class="uppercase">Acesso rápido</div><div class="text-sm text-muted mt-1">Tudo o que precisas para começar</div></div></div>'+        '<div class="grid sm-grid-2 gap-2">'+          quick('dumbbell','Treinos','Planos, grupos e execução','#/treinos',true)+          quick('activity','Diário BJJ','Registos e condição','#/diario',false)+          quick('cart','Compras','Lista de compras','#/compras',false)+          quick('food','Alimentação','Plano alimentar','#/alimentacao',false)+        '</div>'+      '</div></div>'+    '</div>'+    '<div class="card"><div class="card-body-sm flex items-center justify-between gap-3 flex-wrap">'+      '<div><div class="font-bold">Biblioteca de Treinos</div><div class="text-xs text-muted mt-1">A tua documentação de treino está no Google Drive.</div></div>'+      '<a class="btn btn-primary" href="https://drive.google.com/drive/folders/1xQQfgaziE6ONxYvcaf1GzCHH6IJqWHZo" target="_blank" rel="noopener noreferrer">'+icon('folder',14)+' Abrir biblioteca</a>'+    '</div></div>';
@@ -4713,12 +4719,19 @@ async function renderDashboard(root){
    --------------------------------------------------------------- */
 async function renderPerfil(root){
   let form = await get('profile','me');
-  if(!form) form = { id:'me', name:'', height:0, weight:0, category:'', goals:'', photos:[] };
+  if(!form) form = { id:'me', name:'', height:0, weight:0, category:'', goals:'', profilePhoto:'', photos:[] };
+  if(form.profilePhoto === undefined) form.profilePhoto = '';
 
   root.innerHTML =
     pageHeader('Perfil','Os teus dados de atleta') +
     '<div class="grid lg-grid-2">'+
       '<div class="card"><div class="card-body" style="display:flex;flex-direction:column;gap:14px;">'+
+        '<div class="flex items-center gap-4">'+
+          '<div id="pf-avatar-preview" style="width:84px;height:84px;border-radius:50%;overflow:hidden;flex:0 0 auto;border:2px solid var(--border);background:var(--muted);display:grid;place-items:center;">'+
+            (form.profilePhoto ? '<img src="'+esc(form.profilePhoto)+'" alt="Foto de perfil" style="width:100%;height:100%;object-fit:cover;">' : icon('user',30))+
+          '</div>'+
+          '<div style="min-width:0;flex:1;"><div class="font-bold">Foto de perfil</div><div class="text-xs text-muted mt-1">Aparece no Dashboard e fica guardada localmente.</div><label class="btn btn-outline btn-sm mt-2" style="cursor:pointer;">Escolher foto<input type="file" accept="image/*" id="pf-profile-photo-input" class="hidden"></label></div>'+
+        '</div>'+
         '<div><label class="field-label">Nome</label><input type="text" id="pf-name" value="'+esc(form.name)+'"></div>'+
         '<div class="grid grid-2">'+
           '<div><label class="field-label">Altura (cm)</label><input type="number" id="pf-height" value="'+esc(form.height)+'"></div>'+
@@ -4746,9 +4759,24 @@ async function renderPerfil(root){
       weight: Number(document.getElementById('pf-weight').value)||0,
       category: document.getElementById('pf-category').value,
       goals: document.getElementById('pf-goals').value,
+      profilePhoto: form.profilePhoto || '',
     });
     await put('profile', updated);
     toast.success('Perfil atualizado');
+  });
+  document.getElementById('pf-profile-photo-input').addEventListener('change', (e)=>{
+    const file = e.target.files && e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = async ()=>{
+      const next = Object.assign({}, form, { profilePhoto: reader.result });
+      form = next;
+      await put('profile', next);
+      const box = document.getElementById('pf-avatar-preview');
+      if(box) box.innerHTML = '<img src="'+esc(reader.result)+'" alt="Foto de perfil" style="width:100%;height:100%;object-fit:cover;">';
+      toast.success('Foto de perfil guardada');
+    };
+    reader.readAsDataURL(file);
   });
   document.getElementById('pf-photo-input').addEventListener('change', (e)=>{
     const file = e.target.files && e.target.files[0];
