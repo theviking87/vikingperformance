@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "updatedAt": "2026-08-13T06:38:29.032Z",
+  "updatedAt": "2026-08-13T06:38:53.378Z",
   "stores": {
     "profile": [
       {
@@ -591,7 +591,7 @@
             "name": "Air Bike | Row | Run",
             "sets": 10,
             "reps": "40s",
-            "rest": "20s",
+            "rest": "20",
             "currentLoad": 0,
             "notes": "",
             "history": [],
@@ -601,7 +601,8 @@
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "ibrkvll2msntnlv7",
@@ -618,7 +619,8 @@
             "objective": "",
             "execution": "Prender elastico e saida explosiva para a lateral",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "nla31vmtmsntnlzo",
@@ -635,7 +637,8 @@
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "i2354s78msntnm4b",
@@ -647,12 +650,13 @@
             "notes": "",
             "history": [],
             "muscleGroup": "",
-            "groupId": "ss-m44gdxulmsoahkpb",
+            "groupId": "ss-96wsab9hmsr5d9zb",
             "autoTimer": true,
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "o4o14vvhmsntnm8j",
@@ -664,12 +668,13 @@
             "notes": "",
             "history": [],
             "muscleGroup": "",
-            "groupId": "ss-m44gdxulmsoahkpb",
+            "groupId": "ss-96wsab9hmsr5d9zb",
             "autoTimer": true,
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "n1qkswrpmsntnmcr",
@@ -686,7 +691,8 @@
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "z784x7tjmsntnmgz",
@@ -703,7 +709,8 @@
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "lbuqlzqmmsntnml7",
@@ -715,12 +722,13 @@
             "notes": "",
             "history": [],
             "muscleGroup": "",
-            "groupId": "ss-qnbw0pc0msoahkpb",
+            "groupId": "ss-at0z7zaemsr5d9zb",
             "autoTimer": true,
             "objective": "",
             "execution": "",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           },
           {
             "id": "ieas3cx8msntnmpf",
@@ -732,12 +740,13 @@
             "notes": "",
             "history": [],
             "muscleGroup": "",
-            "groupId": "ss-qnbw0pc0msoahkpb",
+            "groupId": "ss-at0z7zaemsr5d9zb",
             "autoTimer": true,
             "objective": "",
             "execution": "3 a 4 rounds",
             "commonMistakes": "",
-            "coachTips": ""
+            "coachTips": "",
+            "exerciseSection": ""
           }
         ],
         "kind": "exercises",
@@ -4544,6 +4553,17 @@
     "checkins": [],
     "calendar": [],
     "settings": [
+      {
+        "id": "activeWorkoutSession",
+        "value": {
+          "workoutId": "CORE+Cond",
+          "startedAt": "2026-08-13T06:38:42.876Z",
+          "exIdx": 0,
+          "setsLog": [],
+          "notes": "",
+          "savedAt": "2026-08-13T06:38:42.886Z"
+        }
+      },
       {
         "id": "equiv_carb",
         "value": [
