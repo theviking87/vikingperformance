@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "updatedAt": "2026-08-13T07:24:49.868Z",
+  "updatedAt": "2026-08-13T07:27:04.211Z",
   "stores": {
     "profile": [
       {
@@ -4784,10 +4784,24 @@
               "setIndex": 1,
               "weight": 0,
               "reps": 12
+            },
+            {
+              "exerciseId": "lbuqlzqmmsntnml7",
+              "exerciseName": "Plate GRound to Over Head",
+              "setIndex": 2,
+              "weight": 10,
+              "reps": 12
+            },
+            {
+              "exerciseId": "ieas3cx8msntnmpf",
+              "exerciseName": "Burpees to Plate Sprints",
+              "setIndex": 2,
+              "weight": 0,
+              "reps": 12
             }
           ],
           "notes": "só fiz 5 rounds no remo\nelástico roxo",
-          "savedAt": "2026-08-13T07:24:39.029Z"
+          "savedAt": "2026-08-13T07:26:53.740Z"
         }
       },
       {
