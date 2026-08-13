@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "updatedAt": "2026-08-13T06:38:07.527Z",
+  "updatedAt": "2026-08-13T06:38:29.032Z",
   "stores": {
     "profile": [
       {
@@ -2665,6 +2665,59 @@
         "notes": ""
       },
       {
+        "id": "nimnltf0msr5ct41",
+        "workoutId": "CORE+Cond",
+        "workoutTitle": "Base Performance C - Completo",
+        "date": "2026-08-13T06:38:17.948Z",
+        "startedAt": "2026-08-13T05:43:47.799Z",
+        "endedAt": "2026-08-13T06:38:17.948Z",
+        "durationSec": 3270,
+        "durationMin": 55,
+        "loads": [
+          {
+            "exerciseId": "u2l4grr6msntmld9",
+            "load": 0
+          },
+          {
+            "exerciseId": "ibrkvll2msntnlv7",
+            "load": 0
+          },
+          {
+            "exerciseId": "nla31vmtmsntnlzo",
+            "load": 0
+          },
+          {
+            "exerciseId": "i2354s78msntnm4b",
+            "load": 0
+          },
+          {
+            "exerciseId": "o4o14vvhmsntnm8j",
+            "load": 0
+          },
+          {
+            "exerciseId": "n1qkswrpmsntnmcr",
+            "load": 0
+          },
+          {
+            "exerciseId": "z784x7tjmsntnmgz",
+            "load": 0
+          },
+          {
+            "exerciseId": "lbuqlzqmmsntnml7",
+            "load": 0
+          },
+          {
+            "exerciseId": "ieas3cx8msntnmpf",
+            "load": 0
+          }
+        ],
+        "setsLog": [],
+        "totalVolume": 0,
+        "totalWeight": 0,
+        "completedExercises": 0,
+        "notes": ""
+      },
+      {
         "id": "o48a84sumsdo6bxq",
         "workoutId": "A",
         "workoutTitle": "TREINO A - LEG",
@@ -4491,17 +4544,6 @@
     "checkins": [],
     "calendar": [],
     "settings": [
-      {
-        "id": "activeWorkoutSession",
-        "value": {
-          "workoutId": "CORE+Cond",
-          "startedAt": "2026-08-13T05:43:47.799Z",
-          "exIdx": 0,
-          "setsLog": [],
-          "notes": "",
-          "savedAt": "2026-08-13T06:37:56.658Z"
-        }
-      },
       {
         "id": "equiv_carb",
         "value": [
