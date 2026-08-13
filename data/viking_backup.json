@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "updatedAt": "2026-08-13T06:48:06.676Z",
+  "updatedAt": "2026-08-13T06:49:15.644Z",
   "stores": {
     "profile": [
       {
@@ -4636,10 +4636,17 @@
               "setIndex": 1,
               "weight": 0,
               "reps": 10
+            },
+            {
+              "exerciseId": "ibrkvll2msntnlv7",
+              "exerciseName": "Rotação de Tronco na Polia ou Elastico",
+              "setIndex": 2,
+              "weight": 0,
+              "reps": 10
             }
           ],
           "notes": "só fiz 5 rounds no remo\nelástico roxo",
-          "savedAt": "2026-08-13T06:47:56.362Z"
+          "savedAt": "2026-08-13T06:49:05.329Z"
         }
       },
       {
