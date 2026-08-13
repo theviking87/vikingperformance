@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "updatedAt": "2026-08-13T06:52:40.478Z",
+  "updatedAt": "2026-08-13T06:54:30.766Z",
   "stores": {
     "profile": [
       {
@@ -4657,10 +4657,17 @@
               "setIndex": 1,
               "weight": 0,
               "reps": 20
+            },
+            {
+              "exerciseId": "nla31vmtmsntnlzo",
+              "exerciseName": "One Arm Farmer Carry KB",
+              "setIndex": 2,
+              "weight": 0,
+              "reps": 20
             }
           ],
           "notes": "só fiz 5 rounds no remo\nelástico roxo",
-          "savedAt": "2026-08-13T06:52:30.132Z"
+          "savedAt": "2026-08-13T06:54:20.198Z"
         }
       },
       {
