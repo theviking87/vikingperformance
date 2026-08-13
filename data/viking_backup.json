@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "updatedAt": "2026-08-13T07:00:17.786Z",
+  "updatedAt": "2026-08-13T07:02:52.747Z",
   "stores": {
     "profile": [
       {
@@ -4685,10 +4685,24 @@
               "setIndex": 1,
               "weight": 40,
               "reps": 20
+            },
+            {
+              "exerciseId": "i2354s78msntnm4b",
+              "exerciseName": "Zombie Zrunch c/ anilha ",
+              "setIndex": 2,
+              "weight": 0,
+              "reps": 10
+            },
+            {
+              "exerciseId": "o4o14vvhmsntnm8j",
+              "exerciseName": "Zercher Hold",
+              "setIndex": 2,
+              "weight": 0,
+              "reps": 20
             }
           ],
           "notes": "só fiz 5 rounds no remo\nelástico roxo",
-          "savedAt": "2026-08-13T07:00:07.355Z"
+          "savedAt": "2026-08-13T07:02:42.162Z"
         }
       },
       {
