@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "updatedAt": "2026-08-13T07:27:04.211Z",
+  "updatedAt": "2026-08-13T07:40:49.548Z",
   "stores": {
     "profile": [
       {
@@ -594,7 +594,13 @@
             "rest": "20",
             "currentLoad": 0,
             "notes": "",
-            "history": [],
+            "history": [
+              {
+                "date": "2026-08-13T07:29:59.087Z",
+                "load": 0,
+                "note": "só fiz 5 rounds no remo\nelástico roxo"
+              }
+            ],
             "muscleGroup": "",
             "groupId": "",
             "autoTimer": true,
@@ -612,7 +618,13 @@
             "rest": "90s",
             "currentLoad": 0,
             "notes": "",
-            "history": [],
+            "history": [
+              {
+                "date": "2026-08-13T07:29:59.087Z",
+                "load": 0,
+                "note": "só fiz 5 rounds no remo\nelástico roxo"
+              }
+            ],
             "muscleGroup": "",
             "groupId": "",
             "autoTimer": true,
@@ -630,7 +642,13 @@
             "rest": "90s",
             "currentLoad": 0,
             "notes": "",
-            "history": [],
+            "history": [
+              {
+                "date": "2026-08-13T07:29:59.087Z",
+                "load": 0,
+                "note": "só fiz 5 rounds no remo\nelástico roxo"
+              }
+            ],
             "muscleGroup": "",
             "groupId": "",
             "autoTimer": true,
@@ -648,7 +666,13 @@
             "rest": "90s",
             "currentLoad": 0,
             "notes": "",
-            "history": [],
+            "history": [
+              {
+                "date": "2026-08-13T07:29:59.087Z",
+                "load": 0,
+                "note": "só fiz 5 rounds no remo\nelástico roxo"
+              }
+            ],
             "muscleGroup": "",
             "groupId": "ss-96wsab9hmsr5d9zb",
             "autoTimer": true,
@@ -666,7 +690,13 @@
             "rest": "90s",
             "currentLoad": 0,
             "notes": "",
-            "history": [],
+            "history": [
+              {
+                "date": "2026-08-13T07:29:59.087Z",
+                "load": 0,
+                "note": "só fiz 5 rounds no remo\nelástico roxo"
+              }
+            ],
             "muscleGroup": "",
             "groupId": "ss-96wsab9hmsr5d9zb",
             "autoTimer": true,
@@ -682,9 +712,15 @@
             "sets": 4,
             "reps": "6",
             "rest": "90s",
-            "currentLoad": 0,
+            "currentLoad": 20,
             "notes": "",
-            "history": [],
+            "history": [
+              {
+                "date": "2026-08-13T07:29:59.087Z",
+                "load": 20,
+                "note": "só fiz 5 rounds no remo\nelástico roxo"
+              }
+            ],
             "muscleGroup": "",
             "groupId": "",
             "autoTimer": true,
@@ -700,9 +736,15 @@
             "sets": 4,
             "reps": "6",
             "rest": "90s",
-            "currentLoad": 0,
+            "currentLoad": 100,
             "notes": "",
-            "history": [],
+            "history": [
+              {
+                "date": "2026-08-13T07:29:59.087Z",
+                "load": 100,
+                "note": "só fiz 5 rounds no remo\nelástico roxo"
+              }
+            ],
             "muscleGroup": "",
             "groupId": "",
             "autoTimer": true,
@@ -718,9 +760,15 @@
             "sets": 1,
             "reps": "12",
             "rest": "60s",
-            "currentLoad": 0,
+            "currentLoad": 10,
             "notes": "",
-            "history": [],
+            "history": [
+              {
+                "date": "2026-08-13T07:29:59.087Z",
+                "load": 10,
+                "note": "só fiz 5 rounds no remo\nelástico roxo"
+              }
+            ],
             "muscleGroup": "",
             "groupId": "ss-at0z7zaemsr5d9zb",
             "autoTimer": true,
@@ -738,7 +786,13 @@
             "rest": "60s",
             "currentLoad": 0,
             "notes": "",
-            "history": [],
+            "history": [
+              {
+                "date": "2026-08-13T07:29:59.087Z",
+                "load": 0,
+                "note": "só fiz 5 rounds no remo\nelástico roxo"
+              }
+            ],
             "muscleGroup": "",
             "groupId": "ss-at0z7zaemsr5d9zb",
             "autoTimer": true,
@@ -3437,6 +3491,313 @@
         "totalWeight": 0,
         "completedExercises": 0,
         "notes": ""
+      },
+      {
+        "id": "ym3nsezymsr779yw",
+        "workoutId": "CORE+Cond",
+        "workoutTitle": "Base Performance C - Completo",
+        "date": "2026-08-13T07:29:59.087Z",
+        "startedAt": "2026-08-13T06:38:42.876Z",
+        "endedAt": "2026-08-13T07:29:59.087Z",
+        "durationSec": 3076,
+        "durationMin": 51,
+        "loads": [
+          {
+            "exerciseId": "u2l4grr6msntmld9",
+            "load": 0
+          },
+          {
+            "exerciseId": "ibrkvll2msntnlv7",
+            "load": 0
+          },
+          {
+            "exerciseId": "nla31vmtmsntnlzo",
+            "load": 0
+          },
+          {
+            "exerciseId": "i2354s78msntnm4b",
+            "load": 0
+          },
+          {
+            "exerciseId": "o4o14vvhmsntnm8j",
+            "load": 0
+          },
+          {
+            "exerciseId": "n1qkswrpmsntnmcr",
+            "load": 20
+          },
+          {
+            "exerciseId": "z784x7tjmsntnmgz",
+            "load": 100
+          },
+          {
+            "exerciseId": "lbuqlzqmmsntnml7",
+            "load": 10
+          },
+          {
+            "exerciseId": "ieas3cx8msntnmpf",
+            "load": 0
+          }
+        ],
+        "setsLog": [
+          {
+            "exerciseId": "u2l4grr6msntmld9",
+            "exerciseName": "Air Bike | Row | Run",
+            "setIndex": 1,
+            "weight": 0,
+            "reps": 40
+          },
+          {
+            "exerciseId": "u2l4grr6msntmld9",
+            "exerciseName": "Air Bike | Row | Run",
+            "setIndex": 2,
+            "weight": 0,
+            "reps": 40
+          },
+          {
+            "exerciseId": "u2l4grr6msntmld9",
+            "exerciseName": "Air Bike | Row | Run",
+            "setIndex": 3,
+            "weight": 0,
+            "reps": 40
+          },
+          {
+            "exerciseId": "u2l4grr6msntmld9",
+            "exerciseName": "Air Bike | Row | Run",
+            "setIndex": 4,
+            "weight": 0,
+            "reps": 40
+          },
+          {
+            "exerciseId": "u2l4grr6msntmld9",
+            "exerciseName": "Air Bike | Row | Run",
+            "setIndex": 5,
+            "weight": 0,
+            "reps": 40
+          },
+          {
+            "exerciseId": "u2l4grr6msntmld9",
+            "exerciseName": "Air Bike | Row | Run",
+            "setIndex": 6,
+            "weight": 0,
+            "reps": 40
+          },
+          {
+            "exerciseId": "u2l4grr6msntmld9",
+            "exerciseName": "Air Bike | Row | Run",
+            "setIndex": 7,
+            "weight": 0,
+            "reps": 40
+          },
+          {
+            "exerciseId": "u2l4grr6msntmld9",
+            "exerciseName": "Air Bike | Row | Run",
+            "setIndex": 8,
+            "weight": 0,
+            "reps": 40
+          },
+          {
+            "exerciseId": "u2l4grr6msntmld9",
+            "exerciseName": "Air Bike | Row | Run",
+            "setIndex": 9,
+            "weight": 0,
+            "reps": 40
+          },
+          {
+            "exerciseId": "u2l4grr6msntmld9",
+            "exerciseName": "Air Bike | Row | Run",
+            "setIndex": 10,
+            "weight": 0,
+            "reps": 40
+          },
+          {
+            "exerciseId": "ibrkvll2msntnlv7",
+            "exerciseName": "Rotação de Tronco na Polia ou Elastico",
+            "setIndex": 1,
+            "weight": 0,
+            "reps": 10
+          },
+          {
+            "exerciseId": "ibrkvll2msntnlv7",
+            "exerciseName": "Rotação de Tronco na Polia ou Elastico",
+            "setIndex": 2,
+            "weight": 0,
+            "reps": 10
+          },
+          {
+            "exerciseId": "ibrkvll2msntnlv7",
+            "exerciseName": "Rotação de Tronco na Polia ou Elastico",
+            "setIndex": 3,
+            "weight": 0,
+            "reps": 10
+          },
+          {
+            "exerciseId": "nla31vmtmsntnlzo",
+            "exerciseName": "One Arm Farmer Carry KB",
+            "setIndex": 1,
+            "weight": 0,
+            "reps": 20
+          },
+          {
+            "exerciseId": "nla31vmtmsntnlzo",
+            "exerciseName": "One Arm Farmer Carry KB",
+            "setIndex": 2,
+            "weight": 0,
+            "reps": 20
+          },
+          {
+            "exerciseId": "nla31vmtmsntnlzo",
+            "exerciseName": "One Arm Farmer Carry KB",
+            "setIndex": 3,
+            "weight": 0,
+            "reps": 20
+          },
+          {
+            "exerciseId": "i2354s78msntnm4b",
+            "exerciseName": "Zombie Zrunch c/ anilha ",
+            "setIndex": 1,
+            "weight": 5,
+            "reps": 12
+          },
+          {
+            "exerciseId": "o4o14vvhmsntnm8j",
+            "exerciseName": "Zercher Hold",
+            "setIndex": 1,
+            "weight": 40,
+            "reps": 20
+          },
+          {
+            "exerciseId": "i2354s78msntnm4b",
+            "exerciseName": "Zombie Zrunch c/ anilha ",
+            "setIndex": 2,
+            "weight": 0,
+            "reps": 10
+          },
+          {
+            "exerciseId": "o4o14vvhmsntnm8j",
+            "exerciseName": "Zercher Hold",
+            "setIndex": 2,
+            "weight": 0,
+            "reps": 20
+          },
+          {
+            "exerciseId": "i2354s78msntnm4b",
+            "exerciseName": "Zombie Zrunch c/ anilha ",
+            "setIndex": 3,
+            "weight": 0,
+            "reps": 10
+          },
+          {
+            "exerciseId": "o4o14vvhmsntnm8j",
+            "exerciseName": "Zercher Hold",
+            "setIndex": 3,
+            "weight": 0,
+            "reps": 20
+          },
+          {
+            "exerciseId": "n1qkswrpmsntnmcr",
+            "exerciseName": "Clean High Pull / Power Clean",
+            "setIndex": 1,
+            "weight": 20,
+            "reps": 6
+          },
+          {
+            "exerciseId": "n1qkswrpmsntnmcr",
+            "exerciseName": "Clean High Pull / Power Clean",
+            "setIndex": 2,
+            "weight": 20,
+            "reps": 6
+          },
+          {
+            "exerciseId": "n1qkswrpmsntnmcr",
+            "exerciseName": "Clean High Pull / Power Clean",
+            "setIndex": 3,
+            "weight": 20,
+            "reps": 6
+          },
+          {
+            "exerciseId": "n1qkswrpmsntnmcr",
+            "exerciseName": "Clean High Pull / Power Clean",
+            "setIndex": 4,
+            "weight": 20,
+            "reps": 6
+          },
+          {
+            "exerciseId": "z784x7tjmsntnmgz",
+            "exerciseName": "Sumo DeadLift",
+            "setIndex": 1,
+            "weight": 100,
+            "reps": 6,
+            "rpe": 1
+          },
+          {
+            "exerciseId": "z784x7tjmsntnmgz",
+            "exerciseName": "Sumo DeadLift",
+            "setIndex": 2,
+            "weight": 100,
+            "reps": 5
+          },
+          {
+            "exerciseId": "z784x7tjmsntnmgz",
+            "exerciseName": "Sumo DeadLift",
+            "setIndex": 3,
+            "weight": 100,
+            "reps": 5
+          },
+          {
+            "exerciseId": "z784x7tjmsntnmgz",
+            "exerciseName": "Sumo DeadLift",
+            "setIndex": 4,
+            "weight": 100,
+            "reps": 5
+          },
+          {
+            "exerciseId": "lbuqlzqmmsntnml7",
+            "exerciseName": "Plate GRound to Over Head",
+            "setIndex": 1,
+            "weight": 10,
+            "reps": 12
+          },
+          {
+            "exerciseId": "ieas3cx8msntnmpf",
+            "exerciseName": "Burpees to Plate Sprints",
+            "setIndex": 1,
+            "weight": 0,
+            "reps": 12
+          },
+          {
+            "exerciseId": "lbuqlzqmmsntnml7",
+            "exerciseName": "Plate GRound to Over Head",
+            "setIndex": 2,
+            "weight": 10,
+            "reps": 12
+          },
+          {
+            "exerciseId": "ieas3cx8msntnmpf",
+            "exerciseName": "Burpees to Plate Sprints",
+            "setIndex": 2,
+            "weight": 0,
+            "reps": 12
+          },
+          {
+            "exerciseId": "lbuqlzqmmsntnml7",
+            "exerciseName": "Plate GRound to Over Head",
+            "setIndex": 3,
+            "weight": 10,
+            "reps": 12
+          },
+          {
+            "exerciseId": "ieas3cx8msntnmpf",
+            "exerciseName": "Burpees to Plate Sprints",
+            "setIndex": 3,
+            "weight": 0,
+            "reps": 12
+          }
+        ],
+        "totalVolume": 699,
+        "totalWeight": 3800,
+        "completedExercises": 9,
+        "notes": "só fiz 5 rounds no remo\nelástico roxo"
       }
     ],
     "exerciseLibrary": [
@@ -4553,257 +4914,6 @@
     "checkins": [],
     "calendar": [],
     "settings": [
-      {
-        "id": "activeWorkoutSession",
-        "value": {
-          "workoutId": "CORE+Cond",
-          "startedAt": "2026-08-13T06:38:42.876Z",
-          "exIdx": 7,
-          "setsLog": [
-            {
-              "exerciseId": "u2l4grr6msntmld9",
-              "exerciseName": "Air Bike | Row | Run",
-              "setIndex": 1,
-              "weight": 0,
-              "reps": 40
-            },
-            {
-              "exerciseId": "u2l4grr6msntmld9",
-              "exerciseName": "Air Bike | Row | Run",
-              "setIndex": 2,
-              "weight": 0,
-              "reps": 40
-            },
-            {
-              "exerciseId": "u2l4grr6msntmld9",
-              "exerciseName": "Air Bike | Row | Run",
-              "setIndex": 3,
-              "weight": 0,
-              "reps": 40
-            },
-            {
-              "exerciseId": "u2l4grr6msntmld9",
-              "exerciseName": "Air Bike | Row | Run",
-              "setIndex": 4,
-              "weight": 0,
-              "reps": 40
-            },
-            {
-              "exerciseId": "u2l4grr6msntmld9",
-              "exerciseName": "Air Bike | Row | Run",
-              "setIndex": 5,
-              "weight": 0,
-              "reps": 40
-            },
-            {
-              "exerciseId": "u2l4grr6msntmld9",
-              "exerciseName": "Air Bike | Row | Run",
-              "setIndex": 6,
-              "weight": 0,
-              "reps": 40
-            },
-            {
-              "exerciseId": "u2l4grr6msntmld9",
-              "exerciseName": "Air Bike | Row | Run",
-              "setIndex": 7,
-              "weight": 0,
-              "reps": 40
-            },
-            {
-              "exerciseId": "u2l4grr6msntmld9",
-              "exerciseName": "Air Bike | Row | Run",
-              "setIndex": 8,
-              "weight": 0,
-              "reps": 40
-            },
-            {
-              "exerciseId": "u2l4grr6msntmld9",
-              "exerciseName": "Air Bike | Row | Run",
-              "setIndex": 9,
-              "weight": 0,
-              "reps": 40
-            },
-            {
-              "exerciseId": "u2l4grr6msntmld9",
-              "exerciseName": "Air Bike | Row | Run",
-              "setIndex": 10,
-              "weight": 0,
-              "reps": 40
-            },
-            {
-              "exerciseId": "ibrkvll2msntnlv7",
-              "exerciseName": "Rotação de Tronco na Polia ou Elastico",
-              "setIndex": 1,
-              "weight": 0,
-              "reps": 10
-            },
-            {
-              "exerciseId": "ibrkvll2msntnlv7",
-              "exerciseName": "Rotação de Tronco na Polia ou Elastico",
-              "setIndex": 2,
-              "weight": 0,
-              "reps": 10
-            },
-            {
-              "exerciseId": "ibrkvll2msntnlv7",
-              "exerciseName": "Rotação de Tronco na Polia ou Elastico",
-              "setIndex": 3,
-              "weight": 0,
-              "reps": 10
-            },
-            {
-              "exerciseId": "nla31vmtmsntnlzo",
-              "exerciseName": "One Arm Farmer Carry KB",
-              "setIndex": 1,
-              "weight": 0,
-              "reps": 20
-            },
-            {
-              "exerciseId": "nla31vmtmsntnlzo",
-              "exerciseName": "One Arm Farmer Carry KB",
-              "setIndex": 2,
-              "weight": 0,
-              "reps": 20
-            },
-            {
-              "exerciseId": "nla31vmtmsntnlzo",
-              "exerciseName": "One Arm Farmer Carry KB",
-              "setIndex": 3,
-              "weight": 0,
-              "reps": 20
-            },
-            {
-              "exerciseId": "i2354s78msntnm4b",
-              "exerciseName": "Zombie Zrunch c/ anilha ",
-              "setIndex": 1,
-              "weight": 5,
-              "reps": 12
-            },
-            {
-              "exerciseId": "o4o14vvhmsntnm8j",
-              "exerciseName": "Zercher Hold",
-              "setIndex": 1,
-              "weight": 40,
-              "reps": 20
-            },
-            {
-              "exerciseId": "i2354s78msntnm4b",
-              "exerciseName": "Zombie Zrunch c/ anilha ",
-              "setIndex": 2,
-              "weight": 0,
-              "reps": 10
-            },
-            {
-              "exerciseId": "o4o14vvhmsntnm8j",
-              "exerciseName": "Zercher Hold",
-              "setIndex": 2,
-              "weight": 0,
-              "reps": 20
-            },
-            {
-              "exerciseId": "i2354s78msntnm4b",
-              "exerciseName": "Zombie Zrunch c/ anilha ",
-              "setIndex": 3,
-              "weight": 0,
-              "reps": 10
-            },
-            {
-              "exerciseId": "o4o14vvhmsntnm8j",
-              "exerciseName": "Zercher Hold",
-              "setIndex": 3,
-              "weight": 0,
-              "reps": 20
-            },
-            {
-              "exerciseId": "n1qkswrpmsntnmcr",
-              "exerciseName": "Clean High Pull / Power Clean",
-              "setIndex": 1,
-              "weight": 20,
-              "reps": 6
-            },
-            {
-              "exerciseId": "n1qkswrpmsntnmcr",
-              "exerciseName": "Clean High Pull / Power Clean",
-              "setIndex": 2,
-              "weight": 20,
-              "reps": 6
-            },
-            {
-              "exerciseId": "n1qkswrpmsntnmcr",
-              "exerciseName": "Clean High Pull / Power Clean",
-              "setIndex": 3,
-              "weight": 20,
-              "reps": 6
-            },
-            {
-              "exerciseId": "n1qkswrpmsntnmcr",
-              "exerciseName": "Clean High Pull / Power Clean",
-              "setIndex": 4,
-              "weight": 20,
-              "reps": 6
-            },
-            {
-              "exerciseId": "z784x7tjmsntnmgz",
-              "exerciseName": "Sumo DeadLift",
-              "setIndex": 1,
-              "weight": 100,
-              "reps": 6,
-              "rpe": 1
-            },
-            {
-              "exerciseId": "z784x7tjmsntnmgz",
-              "exerciseName": "Sumo DeadLift",
-              "setIndex": 2,
-              "weight": 100,
-              "reps": 5
-            },
-            {
-              "exerciseId": "z784x7tjmsntnmgz",
-              "exerciseName": "Sumo DeadLift",
-              "setIndex": 3,
-              "weight": 100,
-              "reps": 5
-            },
-            {
-              "exerciseId": "z784x7tjmsntnmgz",
-              "exerciseName": "Sumo DeadLift",
-              "setIndex": 4,
-              "weight": 100,
-              "reps": 5
-            },
-            {
-              "exerciseId": "lbuqlzqmmsntnml7",
-              "exerciseName": "Plate GRound to Over Head",
-              "setIndex": 1,
-              "weight": 10,
-              "reps": 12
-            },
-            {
-              "exerciseId": "ieas3cx8msntnmpf",
-              "exerciseName": "Burpees to Plate Sprints",
-              "setIndex": 1,
-              "weight": 0,
-              "reps": 12
-            },
-            {
-              "exerciseId": "lbuqlzqmmsntnml7",
-              "exerciseName": "Plate GRound to Over Head",
-              "setIndex": 2,
-              "weight": 10,
-              "reps": 12
-            },
-            {
-              "exerciseId": "ieas3cx8msntnmpf",
-              "exerciseName": "Burpees to Plate Sprints",
-              "setIndex": 2,
-              "weight": 0,
-              "reps": 12
-            }
-          ],
-          "notes": "só fiz 5 rounds no remo\nelástico roxo",
-          "savedAt": "2026-08-13T07:26:53.740Z"
-        }
-      },
       {
         "id": "equiv_carb",
         "value": [
