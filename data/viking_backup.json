@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "updatedAt": "2026-08-13T06:38:53.378Z",
+  "updatedAt": "2026-08-13T06:45:44.680Z",
   "stores": {
     "profile": [
       {
@@ -4558,10 +4558,81 @@
         "value": {
           "workoutId": "CORE+Cond",
           "startedAt": "2026-08-13T06:38:42.876Z",
-          "exIdx": 0,
-          "setsLog": [],
+          "exIdx": 1,
+          "setsLog": [
+            {
+              "exerciseId": "u2l4grr6msntmld9",
+              "exerciseName": "Air Bike | Row | Run",
+              "setIndex": 1,
+              "weight": 0,
+              "reps": 40
+            },
+            {
+              "exerciseId": "u2l4grr6msntmld9",
+              "exerciseName": "Air Bike | Row | Run",
+              "setIndex": 2,
+              "weight": 0,
+              "reps": 40
+            },
+            {
+              "exerciseId": "u2l4grr6msntmld9",
+              "exerciseName": "Air Bike | Row | Run",
+              "setIndex": 3,
+              "weight": 0,
+              "reps": 40
+            },
+            {
+              "exerciseId": "u2l4grr6msntmld9",
+              "exerciseName": "Air Bike | Row | Run",
+              "setIndex": 4,
+              "weight": 0,
+              "reps": 40
+            },
+            {
+              "exerciseId": "u2l4grr6msntmld9",
+              "exerciseName": "Air Bike | Row | Run",
+              "setIndex": 5,
+              "weight": 0,
+              "reps": 40
+            },
+            {
+              "exerciseId": "u2l4grr6msntmld9",
+              "exerciseName": "Air Bike | Row | Run",
+              "setIndex": 6,
+              "weight": 0,
+              "reps": 40
+            },
+            {
+              "exerciseId": "u2l4grr6msntmld9",
+              "exerciseName": "Air Bike | Row | Run",
+              "setIndex": 7,
+              "weight": 0,
+              "reps": 40
+            },
+            {
+              "exerciseId": "u2l4grr6msntmld9",
+              "exerciseName": "Air Bike | Row | Run",
+              "setIndex": 8,
+              "weight": 0,
+              "reps": 40
+            },
+            {
+              "exerciseId": "u2l4grr6msntmld9",
+              "exerciseName": "Air Bike | Row | Run",
+              "setIndex": 9,
+              "weight": 0,
+              "reps": 40
+            },
+            {
+              "exerciseId": "u2l4grr6msntmld9",
+              "exerciseName": "Air Bike | Row | Run",
+              "setIndex": 10,
+              "weight": 0,
+              "reps": 40
+            }
+          ],
           "notes": "",
-          "savedAt": "2026-08-13T06:38:42.886Z"
+          "savedAt": "2026-08-13T06:45:33.760Z"
         }
       },
       {
