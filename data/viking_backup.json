@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "updatedAt": "2026-08-13T07:09:09.698Z",
+  "updatedAt": "2026-08-13T07:12:15.869Z",
   "stores": {
     "profile": [
       {
@@ -4558,7 +4558,7 @@
         "value": {
           "workoutId": "CORE+Cond",
           "startedAt": "2026-08-13T06:38:42.876Z",
-          "exIdx": 5,
+          "exIdx": 6,
           "setsLog": [
             {
               "exerciseId": "u2l4grr6msntmld9",
@@ -4734,10 +4734,17 @@
               "setIndex": 3,
               "weight": 20,
               "reps": 6
+            },
+            {
+              "exerciseId": "n1qkswrpmsntnmcr",
+              "exerciseName": "Clean High Pull / Power Clean",
+              "setIndex": 4,
+              "weight": 20,
+              "reps": 6
             }
           ],
           "notes": "só fiz 5 rounds no remo\nelástico roxo",
-          "savedAt": "2026-08-13T07:08:59.422Z"
+          "savedAt": "2026-08-13T07:12:03.007Z"
         }
       },
       {
