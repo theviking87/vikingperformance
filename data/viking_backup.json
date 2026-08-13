@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "updatedAt": "2026-08-12T06:56:37.899Z",
+  "updatedAt": "2026-08-13T05:44:35.082Z",
   "stores": {
     "profile": [
       {
@@ -4491,6 +4491,17 @@
     "checkins": [],
     "calendar": [],
     "settings": [
+      {
+        "id": "activeWorkoutSession",
+        "value": {
+          "workoutId": "CORE+Cond",
+          "startedAt": "2026-08-13T05:43:47.799Z",
+          "exIdx": 0,
+          "setsLog": [],
+          "notes": "",
+          "savedAt": "2026-08-13T05:43:47.803Z"
+        }
+      },
       {
         "id": "equiv_carb",
         "value": [
