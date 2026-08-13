@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "updatedAt": "2026-08-13T06:37:54.245Z",
+  "updatedAt": "2026-08-13T06:38:07.527Z",
   "stores": {
     "profile": [
       {
@@ -4496,10 +4496,10 @@
         "value": {
           "workoutId": "CORE+Cond",
           "startedAt": "2026-08-13T05:43:47.799Z",
-          "exIdx": 7,
+          "exIdx": 0,
           "setsLog": [],
           "notes": "",
-          "savedAt": "2026-08-13T05:44:47.211Z"
+          "savedAt": "2026-08-13T06:37:56.658Z"
         }
       },
       {
