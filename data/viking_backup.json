@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "updatedAt": "2026-08-13T07:16:49.012Z",
+  "updatedAt": "2026-08-13T07:18:59.575Z",
   "stores": {
     "profile": [
       {
@@ -4756,10 +4756,17 @@
               "setIndex": 2,
               "weight": 100,
               "reps": 5
+            },
+            {
+              "exerciseId": "z784x7tjmsntnmgz",
+              "exerciseName": "Sumo DeadLift",
+              "setIndex": 3,
+              "weight": 100,
+              "reps": 5
             }
           ],
           "notes": "só fiz 5 rounds no remo\nelástico roxo",
-          "savedAt": "2026-08-13T07:16:37.688Z"
+          "savedAt": "2026-08-13T07:18:48.467Z"
         }
       },
       {
