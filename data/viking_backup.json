@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "updatedAt": "2026-08-15T21:51:59.976Z",
+  "updatedAt": "2026-08-15T21:52:09.101Z",
   "stores": {
     "profile": [
       {
@@ -4914,6 +4914,17 @@
     "checkins": [],
     "calendar": [],
     "settings": [
+      {
+        "id": "activeWorkoutSession",
+        "value": {
+          "workoutId": "Legs",
+          "startedAt": "2026-08-15T21:51:59.163Z",
+          "exIdx": 0,
+          "setsLog": [],
+          "notes": "",
+          "savedAt": "2026-08-15T21:51:59.168Z"
+        }
+      },
       {
         "id": "equiv_carb",
         "value": [
