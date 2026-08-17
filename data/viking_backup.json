@@ -1,6 +1,6 @@
 {
-  "version": 5,
-  "updatedAt": "2026-08-15T21:52:09.101Z",
+  "version": 6,
+  "updatedAt": "2026-08-17T16:20:21.365Z",
   "stores": {
     "profile": [
       {
@@ -3915,7 +3915,6 @@
         "updatedAt": "2026-08-11T06:33:58.977Z"
       }
     ],
-    "mobilityGroups": [],
     "mobilityLogs": [],
     "cardio": [
       {
@@ -3940,7 +3939,6 @@
         "recommendedMin": 15
       }
     ],
-    "cardioGroups": [],
     "cardioSessions": [],
     "meals": [
       {
@@ -4914,17 +4912,6 @@
     "checkins": [],
     "calendar": [],
     "settings": [
-      {
-        "id": "activeWorkoutSession",
-        "value": {
-          "workoutId": "Legs",
-          "startedAt": "2026-08-15T21:51:59.163Z",
-          "exIdx": 0,
-          "setsLog": [],
-          "notes": "",
-          "savedAt": "2026-08-15T21:51:59.168Z"
-        }
-      },
       {
         "id": "equiv_carb",
         "value": [
