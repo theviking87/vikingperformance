@@ -255,6 +255,1122 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:16px 0;}
 ::placeholder{color:var(--muted-foreground);opacity:.6;}
 .slider-range{width:100%;accent-color:var(--primary);}
 </style>
+<style id="viking-cinematic-redesign">
+/* VIKING — Visual Redesign v3
+   Presentation layer only. Existing JS, IDs, routes and data logic are preserved.
+*/
+
+:root{
+  --background:#070a09;
+  --foreground:#edf2eb;
+  --card:#0d1210;
+  --card-foreground:#edf2eb;
+  --popover:#101613;
+  --popover-foreground:#edf2eb;
+  --primary:#c8f35a;
+  --primary-foreground:#11150d;
+  --secondary:#151b18;
+  --secondary-foreground:#dfe8df;
+  --muted:#101512;
+  --muted-foreground:#7f8c82;
+  --accent:#1b271d;
+  --accent-foreground:#eff7eb;
+  --destructive:#ff6262;
+  --destructive-foreground:#fff;
+  --border:#202a23;
+  --input:#2a362d;
+  --ring:#c8f35a;
+  --radius:14px;
+}
+
+html:not(.dark){
+  --background:#f3f5f0;
+  --foreground:#172019;
+  --card:#ffffff;
+  --card-foreground:#172019;
+  --popover:#ffffff;
+  --popover-foreground:#172019;
+  --primary:#709b20;
+  --primary-foreground:#fff;
+  --secondary:#e9eee7;
+  --secondary-foreground:#253027;
+  --muted:#eef2ec;
+  --muted-foreground:#69756b;
+  --accent:#edf4df;
+  --accent-foreground:#26351b;
+  --border:#dce3da;
+  --input:#c9d3c7;
+  --ring:#709b20;
+}
+
+/* ---------- GLOBAL COMPOSITION ---------- */
+
+html,body{
+  background:var(--background);
+}
+
+body{
+  letter-spacing:-.012em;
+  font-feature-settings:"cv02","cv03","cv04","cv11";
+}
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+  background:
+    radial-gradient(800px 500px at 75% -5%,rgba(200,243,90,.055),transparent 65%),
+    linear-gradient(120deg,rgba(255,255,255,.012),transparent 40%);
+}
+
+/* ---------- NAVIGATION: compact rail ---------- */
+
+#sidebar{
+  width:78px;
+  background:#080c0a;
+  border-right:1px solid #1c251f;
+  box-shadow:14px 0 45px rgba(0,0,0,.18);
+  overflow:visible;
+}
+
+#sidebar:hover{
+  width:238px;
+  transition:width .22s ease;
+}
+
+@media(min-width:1024px){
+  #main{
+    margin-left:78px;
+    transition:margin-left .22s ease;
+  }
+  #sidebar:hover + #main{
+    margin-left:238px;
+  }
+}
+
+.sidebar-head{
+  min-height:82px;
+  padding:18px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+#sidebar:hover .sidebar-head{
+  justify-content:flex-start;
+}
+
+.brand-badge{
+  width:40px;
+  height:40px;
+  flex:0 0 40px;
+  border-radius:12px;
+  background:var(--primary);
+  color:var(--primary-foreground);
+  box-shadow:0 8px 28px rgba(200,243,90,.13);
+}
+
+.brand-copy{
+  width:0;
+  opacity:0;
+  overflow:hidden;
+  white-space:nowrap;
+  transition:opacity .12s ease,width .18s ease;
+}
+
+#sidebar:hover .brand-copy{
+  width:145px;
+  opacity:1;
+  margin-left:11px;
+}
+
+.sidebar-nav{
+  padding:14px 10px;
+}
+
+.nav-link{
+  width:100%;
+  height:46px;
+  margin:3px 0;
+  padding:0 14px;
+  border-radius:12px;
+  justify-content:center;
+  color:#718078;
+  position:relative;
+}
+
+#sidebar:hover .nav-link{
+  justify-content:flex-start;
+}
+
+.nav-link span,
+.nav-link .label{
+  max-width:0;
+  opacity:0;
+  overflow:hidden;
+  white-space:nowrap;
+  transition:max-width .18s ease,opacity .12s ease;
+}
+
+#sidebar:hover .nav-link span,
+#sidebar:hover .nav-link .label{
+  max-width:150px;
+  opacity:1;
+  margin-left:11px;
+}
+
+.nav-link.active{
+  background:linear-gradient(90deg,rgba(200,243,90,.14),rgba(200,243,90,.035));
+  color:#f1f6ef;
+  box-shadow:inset 2px 0 var(--primary);
+}
+
+.nav-link.active svg{
+  color:var(--primary);
+}
+
+.theme-toggle-btn{
+  margin:10px;
+}
+
+/* ---------- TOP BAR ---------- */
+
+#mobile-topbar{
+  backdrop-filter:blur(18px);
+}
+
+.page-wrap{
+  max-width:1500px;
+  padding:28px 22px 90px;
+}
+
+@media(min-width:1024px){
+  .page-wrap{padding:38px 48px 90px;}
+}
+
+/* Turn headers into editorial section markers */
+.page-header{
+  min-height:82px;
+  margin-bottom:30px;
+  padding:0 0 22px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+
+.page-header:after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-1px;
+  width:110px;
+  height:2px;
+  background:var(--primary);
+}
+
+.page-header h1{
+  font-size:34px;
+  line-height:1;
+  font-weight:850;
+  letter-spacing:-.06em;
+}
+
+.page-header-eyebrow{
+  color:var(--primary);
+  font-size:9px;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+}
+
+/* ---------- CARDS BECOME SURFACES, NOT BOXES ---------- */
+
+.card{
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.018),transparent 55%),
+    var(--card);
+  box-shadow:none;
+}
+
+.card:hover{
+  border-color:color-mix(in srgb,var(--primary) 22%,var(--border));
+  box-shadow:0 14px 38px rgba(0,0,0,.16);
+}
+
+.card-body{
+  padding:22px;
+}
+
+/* First card in a page becomes a visual anchor */
+.page-wrap > .card:first-of-type,
+.page-wrap > .grid:first-of-type > .card:first-child{
+  border-radius:18px;
+}
+
+/* ---------- DASHBOARD / KPI COMPOSITION ---------- */
+
+.grid{
+  gap:14px;
+}
+
+.grid-4{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+@media(max-width:1100px){
+  .grid-4{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+
+@media(max-width:620px){
+  .grid-4,.grid-3,.grid-2{grid-template-columns:1fr;}
+}
+
+/* Make KPI blocks feel like data rails */
+.stat-card{
+  min-height:118px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  background:transparent;
+  border:0;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  border-radius:0;
+  padding:18px 4px;
+}
+
+.stat-icon-box{
+  display:none;
+}
+
+.stat-value{
+  font-size:31px;
+  line-height:1;
+  font-weight:850;
+  letter-spacing:-.06em;
+}
+
+.stat-label{
+  font-size:9px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--muted-foreground);
+}
+
+/* ---------- BUTTON SYSTEM ---------- */
+
+.btn{
+  min-height:39px;
+  border-radius:9px;
+  padding:9px 14px;
+  font-size:11px;
+  font-weight:780;
+}
+
+.btn-primary{
+  background:var(--primary);
+  color:var(--primary-foreground);
+  box-shadow:none;
+}
+
+.btn-primary:hover{
+  filter:brightness(1.05);
+  transform:translateY(-1px);
+}
+
+.btn-outline{
+  background:transparent;
+  border-color:var(--border);
+}
+
+.btn-outline:hover{
+  background:var(--accent);
+  border-color:color-mix(in srgb,var(--primary) 30%,var(--border));
+}
+
+/* ---------- FORM LANGUAGE ---------- */
+
+.field-label{
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  color:var(--muted-foreground);
+}
+
+input[type=text],
+input[type=number],
+input[type=date],
+input[type=file],
+input[type=search],
+input[type=password],
+select,
+textarea{
+  min-height:40px;
+  border-radius:8px;
+  background:var(--muted);
+  border:1px solid var(--input);
+}
+
+textarea{min-height:100px;}
+
+input:focus,select:focus,textarea:focus{
+  border-color:var(--ring);
+  box-shadow:0 0 0 2px rgba(200,243,90,.10);
+}
+
+/* ---------- TABS ---------- */
+
+.tabs-list{
+  background:transparent;
+  border-bottom:1px solid var(--border);
+  border-radius:0;
+  padding:0;
+  gap:4px;
+}
+
+.tab-btn{
+  position:relative;
+  border-radius:0;
+  padding:11px 13px;
+  color:var(--muted-foreground);
+}
+
+.tab-btn.active{
+  background:transparent;
+  color:var(--foreground);
+  box-shadow:none;
+}
+
+.tab-btn.active:after{
+  content:"";
+  position:absolute;
+  left:8px;
+  right:8px;
+  bottom:-1px;
+  height:2px;
+  background:var(--primary);
+}
+
+/* ---------- TABLES ---------- */
+
+table{
+  border-collapse:collapse;
+}
+
+thead tr{
+  border-bottom:1px solid var(--border);
+}
+
+th{
+  padding:10px 12px !important;
+  font-size:8px !important;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:var(--muted-foreground);
+}
+
+td{
+  padding:13px 12px !important;
+  border-bottom:1px solid color-mix(in srgb,var(--border) 65%,transparent);
+}
+
+tbody tr:hover{
+  background:rgba(200,243,90,.025);
+}
+
+/* ---------- PROGRESS ---------- */
+
+.progress-track{
+  height:5px;
+  border-radius:99px;
+  background:var(--secondary);
+}
+
+.progress-fill{
+  background:var(--primary);
+  border-radius:99px;
+}
+
+/* ---------- CHIPS ---------- */
+
+.chip{
+  border-radius:7px;
+  padding:4px 8px;
+  background:var(--secondary);
+  border:1px solid var(--border);
+  font-size:9px;
+  font-weight:750;
+}
+
+/* ---------- CALENDAR ---------- */
+
+.cal-cell{
+  min-height:80px;
+  border-radius:8px;
+  background:transparent;
+  border-color:var(--border);
+}
+
+.cal-cell.today{
+  background:rgba(200,243,90,.055);
+  box-shadow:inset 0 0 0 1px var(--primary);
+}
+
+/* ---------- MODALS ---------- */
+
+.modal-overlay{
+  background:rgba(2,5,4,.76);
+  backdrop-filter:blur(12px);
+}
+
+.modal-box{
+  border-radius:16px;
+  border:1px solid var(--border);
+  box-shadow:0 35px 100px rgba(0,0,0,.5);
+}
+
+/* ---------- MOBILE ---------- */
+
+@media(max-width:1023px){
+  #main{margin-left:0;}
+  .page-wrap{padding:22px 18px 90px;}
+}
+
+@media(max-width:620px){
+  .page-wrap{padding:18px 13px 88px;}
+  .page-header h1{font-size:28px;}
+  .page-header{margin-bottom:22px;}
+  .card{border-radius:12px;}
+  .card-body{padding:17px;}
+  .stat-card{
+    min-height:100px;
+    padding:15px 3px;
+  }
+}
+
+/* ---------- REDUCE VISUAL NOISE ---------- */
+
+hr{
+  border-color:var(--border);
+}
+
+.icon-btn{
+  border-radius:8px;
+}
+
+::-webkit-scrollbar{
+  width:8px;
+  height:8px;
+}
+
+::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+::-webkit-scrollbar-thumb{
+  background:#28332b;
+  border-radius:99px;
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
+    scroll-behavior:auto!important;
+  }
+}
+</style>
+
+<style id="viking-button-redesign">
+/* VIKING — Button System v4
+   Visual-only. No button labels, IDs, handlers or JavaScript behavior changed.
+*/
+
+:root{
+  --vk-btn-height:40px;
+  --vk-btn-radius:9px;
+  --vk-btn-pad:0 15px;
+}
+
+/* Base */
+.btn{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-height:var(--vk-btn-height);
+  padding:var(--vk-btn-pad);
+  border-radius:var(--vk-btn-radius);
+  border:1px solid transparent;
+  font-size:11px;
+  line-height:1;
+  font-weight:800;
+  letter-spacing:.015em;
+  white-space:nowrap;
+  cursor:pointer;
+  isolation:isolate;
+  transition:
+    transform .16s ease,
+    background .16s ease,
+    border-color .16s ease,
+    color .16s ease,
+    box-shadow .16s ease,
+    opacity .16s ease;
+}
+
+.btn::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  opacity:0;
+  background:linear-gradient(180deg,rgba(255,255,255,.14),transparent 48%);
+  transition:opacity .16s ease;
+  z-index:-1;
+}
+
+.btn:hover::before{opacity:1;}
+
+.btn:active{
+  transform:translateY(1px) scale(.985);
+}
+
+.btn:focus-visible{
+  outline:none;
+  box-shadow:0 0 0 3px rgba(200,243,90,.16);
+}
+
+.btn:disabled,
+.btn[disabled]{
+  opacity:.42;
+  cursor:not-allowed;
+  transform:none;
+}
+
+/* Primary — main action */
+.btn-primary{
+  min-height:42px;
+  padding:0 17px;
+  background:var(--primary);
+  color:var(--primary-foreground);
+  border-color:color-mix(in srgb,var(--primary) 82%,#fff);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.18) inset,
+    0 7px 18px rgba(200,243,90,.10);
+}
+
+.btn-primary:hover{
+  background:color-mix(in srgb,var(--primary) 90%,#fff);
+  border-color:var(--primary);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.22) inset,
+    0 10px 26px rgba(200,243,90,.16);
+  transform:translateY(-1px);
+}
+
+/* Secondary — neutral action */
+.btn-secondary{
+  background:var(--secondary);
+  color:var(--secondary-foreground);
+  border-color:var(--border);
+}
+
+.btn-secondary:hover{
+  background:color-mix(in srgb,var(--secondary) 82%,var(--foreground));
+  border-color:color-mix(in srgb,var(--primary) 22%,var(--border));
+  transform:translateY(-1px);
+}
+
+/* Outline — low emphasis */
+.btn-outline{
+  background:transparent;
+  color:var(--foreground);
+  border-color:var(--border);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.01);
+}
+
+.btn-outline:hover{
+  background:var(--accent);
+  color:var(--accent-foreground);
+  border-color:color-mix(in srgb,var(--primary) 34%,var(--border));
+  transform:translateY(-1px);
+}
+
+/* Ghost — toolbar/navigation action */
+.btn-ghost{
+  background:transparent;
+  color:var(--muted-foreground);
+  border-color:transparent;
+}
+
+.btn-ghost:hover{
+  background:var(--secondary);
+  color:var(--foreground);
+}
+
+/* Destructive */
+.btn-destructive{
+  background:rgba(255,98,98,.08);
+  color:var(--destructive);
+  border-color:rgba(255,98,98,.22);
+}
+
+.btn-destructive:hover{
+  background:rgba(255,98,98,.14);
+  border-color:rgba(255,98,98,.38);
+}
+
+/* Compact/icon buttons */
+.btn-sm{
+  min-height:34px;
+  padding:0 11px;
+  border-radius:8px;
+  font-size:10px;
+}
+
+.btn-lg{
+  min-height:46px;
+  padding:0 20px;
+  border-radius:10px;
+  font-size:12px;
+}
+
+.icon-btn{
+  width:38px;
+  height:38px;
+  min-width:38px;
+  padding:0;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:var(--secondary);
+  color:var(--muted-foreground);
+  transition:transform .16s ease,background .16s ease,border-color .16s ease,color .16s ease;
+}
+
+.icon-btn:hover{
+  background:var(--accent);
+  border-color:color-mix(in srgb,var(--primary) 28%,var(--border));
+  color:var(--foreground);
+  transform:translateY(-1px);
+}
+
+.icon-btn:active{
+  transform:translateY(1px) scale(.97);
+}
+
+.icon-btn svg{
+  width:16px;
+  height:16px;
+}
+
+/* Buttons containing icons */
+.btn svg{
+  width:15px;
+  height:15px;
+  flex:0 0 auto;
+}
+
+.btn-primary svg{
+  color:currentColor;
+}
+
+.btn .lucide-plus,
+.btn .icon-plus{
+  stroke-width:2.6;
+}
+
+/* Button groups */
+.btn-group{
+  display:inline-flex;
+  align-items:stretch;
+  gap:1px;
+  padding:2px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:var(--secondary);
+}
+
+.btn-group .btn{
+  border:0;
+  border-radius:8px;
+  box-shadow:none;
+}
+
+.btn-group .btn:hover{
+  transform:none;
+}
+
+.btn-group .btn.active,
+.btn-group .btn[aria-pressed="true"]{
+  background:var(--card);
+  color:var(--foreground);
+  box-shadow:0 2px 8px rgba(0,0,0,.16);
+}
+
+/* Header/action toolbars */
+.page-header .btn-primary{
+  min-height:40px;
+}
+
+.page-header .btn-outline,
+.page-header .btn-secondary{
+  min-height:40px;
+}
+
+/* Floating / prominent action buttons */
+.fab,
+.floating-action{
+  border-radius:12px;
+  box-shadow:0 14px 34px rgba(0,0,0,.25);
+}
+
+/* Small status/action controls */
+button.chip,
+.chip[role="button"]{
+  cursor:pointer;
+  transition:background .15s ease,border-color .15s ease,color .15s ease;
+}
+
+button.chip:hover,
+.chip[role="button"]:hover{
+  background:var(--accent);
+  border-color:color-mix(in srgb,var(--primary) 26%,var(--border));
+}
+
+/* Mobile */
+@media(max-width:620px){
+  .btn{
+    min-height:42px;
+  }
+
+  .btn-sm{
+    min-height:36px;
+  }
+
+  .btn-group{
+    width:100%;
+  }
+
+  .btn-group .btn{
+    flex:1;
+  }
+
+  .page-header .btn{
+    min-height:40px;
+  }
+}
+</style>
+
+
+<style id="viking-mobile-timer-fix">
+/* Responsive behaviour:
+   - Desktop rail only when there is enough horizontal space.
+   - Tablet/mobile use the existing top + bottom navigation.
+   - Prevent the compact rail from consuming content width on narrow screens.
+*/
+@media (min-width:1200px){
+  #sidebar{display:flex !important;width:78px;}
+  #main{margin-left:78px !important;min-width:0;width:auto;}
+  #mobile-topbar,#mobile-bottom-nav{display:none !important;}
+
+  /* Expanded rail overlays instead of pushing/reflowing the page. */
+  #sidebar:hover{width:238px;}
+  #sidebar:hover + #main{margin-left:78px !important;}
+}
+
+@media (max-width:1199px){
+  #sidebar{display:none !important;}
+  #main{
+    margin-left:0 !important;
+    width:100% !important;
+    min-width:0 !important;
+  }
+  #mobile-topbar{display:flex !important;}
+  #mobile-bottom-nav{display:block !important;}
+  .page-wrap{
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden;
+  }
+}
+
+/* Extra protection against horizontal clipping. */
+html,body,#main{max-width:100%;overflow-x:hidden;}
+.page-wrap{box-sizing:border-box;}
+
+/* Dashboard stopwatch */
+.vk-dashboard-timer{
+  margin-top:16px;
+  min-height:124px;
+  display:grid;
+  grid-template-columns:minmax(160px,1fr) auto auto;
+  align-items:center;
+  gap:26px;
+  padding:20px 22px;
+  border:1px solid var(--border);
+  border-radius:16px;
+  background:
+    radial-gradient(480px 150px at 88% 50%,rgba(200,243,90,.075),transparent 62%),
+    linear-gradient(100deg,rgba(255,255,255,.02),transparent 55%),
+    var(--card);
+}
+
+.vk-timer-eyebrow{
+  font-size:9px;
+  font-weight:850;
+  letter-spacing:.22em;
+  color:var(--primary);
+}
+
+.vk-timer-title{
+  margin-top:5px;
+  font-size:18px;
+  font-weight:820;
+  letter-spacing:-.03em;
+}
+
+.vk-timer-status{
+  margin-top:6px;
+  font-size:11px;
+  color:var(--muted-foreground);
+}
+
+.vk-timer-display{
+  min-width:260px;
+  font-size:38px;
+  line-height:1;
+  font-weight:850;
+  letter-spacing:.04em;
+  font-variant-numeric:tabular-nums;
+  text-align:center;
+}
+
+.vk-timer-actions{
+  display:flex;
+  gap:8px;
+  justify-content:flex-end;
+}
+
+.vk-dashboard-timer.is-running{
+  border-color:color-mix(in srgb,var(--primary) 42%,var(--border));
+}
+
+.vk-dashboard-timer.is-running .vk-timer-status{
+  color:var(--primary);
+}
+
+@media(max-width:760px){
+  .page-wrap{padding-left:14px;padding-right:14px;}
+
+  .vk-dashboard-timer{
+    grid-template-columns:1fr;
+    gap:14px;
+    padding:18px;
+    text-align:center;
+  }
+
+  .vk-timer-display{
+    min-width:0;
+    font-size:42px;
+    order:-1;
+  }
+
+  .vk-timer-actions{
+    justify-content:center;
+  }
+
+  .vk-timer-actions .btn{
+    flex:1;
+  }
+}
+</style>
+
+
+<style id="viking-v6-rail-timer-fix">
+/* Desktop rail: hide every textual element explicitly while collapsed.
+   The original brand markup does not use .brand-copy, therefore target the actual DOM. */
+@media (min-width:1200px){
+  #sidebar{
+    width:78px !important;
+    overflow:hidden !important;
+    transition:width .22s ease;
+  }
+
+  #sidebar:hover{
+    width:238px !important;
+    overflow:visible !important;
+  }
+
+  #main{
+    margin-left:78px !important;
+    width:calc(100% - 78px) !important;
+    min-width:0 !important;
+  }
+
+  #sidebar .sidebar-head{
+    justify-content:center !important;
+    gap:0 !important;
+    overflow:hidden;
+  }
+
+  #sidebar .sidebar-head > div:not(.brand-badge){
+    width:0 !important;
+    max-width:0 !important;
+    margin:0 !important;
+    opacity:0 !important;
+    overflow:hidden !important;
+    white-space:nowrap !important;
+    transition:opacity .12s ease, max-width .18s ease, margin .18s ease;
+  }
+
+  #sidebar:hover .sidebar-head{
+    justify-content:flex-start !important;
+    gap:11px !important;
+  }
+
+  #sidebar:hover .sidebar-head > div:not(.brand-badge){
+    width:auto !important;
+    max-width:145px !important;
+    opacity:1 !important;
+  }
+
+  #sidebar .nav-link{
+    justify-content:center !important;
+    padding-left:0 !important;
+    padding-right:0 !important;
+    gap:0 !important;
+    overflow:hidden !important;
+  }
+
+  #sidebar .nav-link > span{
+    display:block !important;
+    width:0 !important;
+    max-width:0 !important;
+    margin-left:0 !important;
+    opacity:0 !important;
+    overflow:hidden !important;
+    white-space:nowrap !important;
+    pointer-events:none !important;
+    transition:opacity .12s ease,max-width .18s ease,margin-left .18s ease;
+  }
+
+  #sidebar:hover .nav-link{
+    justify-content:flex-start !important;
+    padding-left:14px !important;
+    padding-right:14px !important;
+  }
+
+  #sidebar:hover .nav-link > span{
+    width:auto !important;
+    max-width:155px !important;
+    margin-left:11px !important;
+    opacity:1 !important;
+  }
+
+  /* Never move the page when the rail expands. */
+  #sidebar:hover + #main{
+    margin-left:78px !important;
+  }
+}
+
+/* Timer: dual mode */
+.vk-timer-copy{
+  min-width:0;
+}
+
+.vk-timer-mode{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:13px;
+}
+
+.vk-timer-mode-btn{
+  min-height:30px;
+  padding:0 10px;
+  border:1px solid var(--border);
+  border-radius:7px;
+  background:transparent;
+  color:var(--muted-foreground);
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.03em;
+  cursor:pointer;
+}
+
+.vk-timer-mode-btn:hover{
+  color:var(--foreground);
+  border-color:color-mix(in srgb,var(--primary) 35%,var(--border));
+}
+
+.vk-timer-mode-btn.active{
+  background:var(--accent);
+  border-color:color-mix(in srgb,var(--primary) 35%,var(--border));
+  color:var(--primary);
+}
+
+.vk-timer-set{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  margin-top:10px;
+  color:var(--muted-foreground);
+  font-size:10px;
+}
+
+.vk-timer-set label{
+  margin-right:2px;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.vk-timer-set input{
+  width:58px;
+  min-height:31px;
+  padding:4px 7px;
+  text-align:center;
+  font-variant-numeric:tabular-nums;
+}
+
+.vk-timer-set[hidden]{
+  display:none !important;
+}
+
+.vk-dashboard-timer.is-countdown .vk-timer-display{
+  color:var(--primary);
+}
+
+@media(max-width:760px){
+  .vk-timer-mode{
+    justify-content:center;
+  }
+
+  .vk-timer-set{
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+}
+</style>
+
+
+<style id="viking-timer-alert">
+@keyframes vkTimerFinished{
+  0%,100%{box-shadow:0 0 0 0 rgba(200,243,90,0)}
+  30%,70%{box-shadow:0 0 0 5px rgba(200,243,90,.10),0 0 32px rgba(200,243,90,.10)}
+}
+.vk-dashboard-timer.is-finished{
+  animation:vkTimerFinished 1.4s ease 1;
+  border-color:var(--primary);
+}
+</style>
+
 </head>
 <body>
 <div id="toast-root"></div>
@@ -4669,6 +5785,29 @@ async function renderDashboard(root){
       stat('calendar','Último treino', lastWorkout?lastWorkout.title:'—', lastSession?fmtDateShort(lastSession.date):'Sem treinos') +
       stat('trophy','Próxima competição', nextComp?nextComp.name:'—', nextComp?fmtDate(nextComp.date,true):'Sem agenda') +
     '</div>'+
+    '<div class="vk-dashboard-timer" id="vk-dashboard-timer">'+
+      '<div class="vk-timer-copy">'+
+        '<div class="vk-timer-eyebrow">TEMPORIZADOR</div>'+
+        '<div class="vk-timer-title">Tempo de treino</div>'+
+        '<div class="vk-timer-status" id="vk-timer-status">Pronto</div>'+
+        '<div class="vk-timer-mode" role="group" aria-label="Modo do temporizador">'+
+          '<button type="button" class="vk-timer-mode-btn active" id="vk-timer-mode-up">Cronómetro</button>'+
+          '<button type="button" class="vk-timer-mode-btn" id="vk-timer-mode-down">Contagem decrescente</button>'+
+        '</div>'+
+        '<div class="vk-timer-set" id="vk-timer-set">'+
+          '<label for="vk-timer-minutes">Duração</label>'+
+          '<input id="vk-timer-minutes" type="number" min="0" max="999" value="10" inputmode="numeric">'+
+          '<span>min</span>'+
+          '<input id="vk-timer-seconds" type="number" min="0" max="59" value="0" inputmode="numeric">'+
+          '<span>seg</span>'+
+        '</div>'+
+      '</div>'+
+      '<div class="vk-timer-display" id="vk-timer-display">00:00:00</div>'+
+      '<div class="vk-timer-actions">'+
+        '<button type="button" class="btn btn-primary" id="vk-timer-start">Iniciar</button>'+
+        '<button type="button" class="btn btn-outline" id="vk-timer-reset">Repor</button>'+
+      '</div>'+
+    '</div>'+
     '<div class="grid lg-grid-2 mt-6">'+
       '<div class="card"><div class="card-body">'+
         '<div class="flex items-center justify-between mb-3"><div class="text-sm font-bold">Treinos da semana</div><a href="#/treinos" class="link-primary">ver todos</a></div>'+
@@ -4689,6 +5828,259 @@ async function renderDashboard(root){
         : '<p class="text-sm text-muted">Ainda sem registos.</p>')+
       '</div></div>'+
     '</div>';
+
+  // Temporizador do dashboard: cronómetro + contagem decrescente.
+  // Persistência em localStorage, sem interferir com IndexedDB ou sessões existentes.
+  (function initDashboardTimer(){
+    const display = root.querySelector('#vk-timer-display');
+    const status = root.querySelector('#vk-timer-status');
+    const startBtn = root.querySelector('#vk-timer-start');
+    const resetBtn = root.querySelector('#vk-timer-reset');
+    const modeUpBtn = root.querySelector('#vk-timer-mode-up');
+    const modeDownBtn = root.querySelector('#vk-timer-mode-down');
+    const minutesInput = root.querySelector('#vk-timer-minutes');
+    const secondsInput = root.querySelector('#vk-timer-seconds');
+    const setBox = root.querySelector('#vk-timer-set');
+    const timerBox = root.querySelector('#vk-dashboard-timer');
+    if(!display || !status || !startBtn || !resetBtn || !modeUpBtn || !modeDownBtn || !minutesInput || !secondsInput) return;
+
+    const KEY = 'viking.dashboard.timer.v2';
+    let timerId = null;
+
+    const defaults = {
+      mode:'up',
+      elapsed:0,
+      duration:600000,
+      running:false,
+      startedAt:null,
+      remaining:600000
+    };
+
+    function load(){
+      try{
+        const parsed = JSON.parse(localStorage.getItem(KEY));
+        return Object.assign({}, defaults, parsed || {});
+      }catch(e){
+        return Object.assign({}, defaults);
+      }
+    }
+
+    function save(state){
+      localStorage.setItem(KEY, JSON.stringify(state));
+    }
+
+    function format(ms){
+      const total = Math.max(0, Math.ceil(ms / 1000));
+      const h = Math.floor(total / 3600);
+      const min = Math.floor((total % 3600) / 60);
+      const sec = total % 60;
+      return [h,min,sec].map(v=>String(v).padStart(2,'0')).join(':');
+    }
+
+    function totalDurationFromInputs(){
+      const min = Math.max(0, Math.min(999, parseInt(minutesInput.value || '0',10) || 0));
+      const sec = Math.max(0, Math.min(59, parseInt(secondsInput.value || '0',10) || 0));
+      minutesInput.value = min;
+      secondsInput.value = sec;
+      return (min * 60 + sec) * 1000;
+    }
+
+    function currentValue(state){
+      if(!state.running || !state.startedAt){
+        return state.mode === 'down' ? state.remaining : state.elapsed;
+      }
+      const delta = Date.now() - state.startedAt;
+      return state.mode === 'down'
+        ? Math.max(0, state.remaining - delta)
+        : state.elapsed + delta;
+    }
+
+    function paint(){
+      const state = load();
+      const value = currentValue(state);
+      const isDown = state.mode === 'down';
+
+      display.textContent = format(value);
+      modeUpBtn.classList.toggle('active', !isDown);
+      modeDownBtn.classList.toggle('active', isDown);
+      setBox.hidden = !isDown;
+
+      if(state.running){
+        status.textContent = isDown ? 'Contagem em curso' : 'Em curso';
+        startBtn.textContent = 'Pausar';
+      }else if(isDown && state.remaining <= 0){
+        status.textContent = 'Concluído';
+        startBtn.textContent = 'Repor';
+      }else if(isDown && state.remaining < state.duration){
+        status.textContent = 'Em pausa';
+        startBtn.textContent = 'Retomar';
+      }else if(!isDown && state.elapsed > 0){
+        status.textContent = 'Em pausa';
+        startBtn.textContent = 'Retomar';
+      }else{
+        status.textContent = 'Pronto';
+        startBtn.textContent = 'Iniciar';
+      }
+
+      timerBox.classList.toggle('is-running', !!state.running);
+      timerBox.classList.toggle('is-countdown', isDown);
+      timerBox.classList.toggle('is-finished', isDown && !state.running && state.remaining <= 0);
+    }
+
+    function playTimerAlert(){
+      // Web Audio API: no external audio file required.
+      // The alert is triggered by the user's prior interaction with the timer.
+      try{
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if(!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const pattern = [
+          [880, 0.00, 0.14],
+          [880, 0.20, 0.14],
+          [1320, 0.40, 0.28]
+        ];
+        pattern.forEach(([freq, start, duration])=>{
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.0001, ctx.currentTime + start);
+          gain.gain.exponentialRampToValueAtTime(0.22, ctx.currentTime + start + 0.015);
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + start + duration);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + start);
+          osc.stop(ctx.currentTime + start + duration + 0.03);
+        });
+        setTimeout(()=>ctx.close().catch(()=>{}), 1000);
+      }catch(e){
+        // Silently fail if the browser blocks audio.
+      }
+    }
+
+    function stopLoop(){
+      if(timerId){
+        cancelAnimationFrame(timerId);
+        timerId = null;
+      }
+    }
+
+    function tick(){
+      const state = load();
+
+      if(!state.running){
+        timerId = null;
+        paint();
+        return;
+      }
+
+      if(state.mode === 'down'){
+        const value = currentValue(state);
+        if(value <= 0){
+          state.remaining = 0;
+          state.running = false;
+          state.startedAt = null;
+          save(state);
+          timerId = null;
+          playTimerAlert();
+          paint();
+          return;
+        }
+      }
+
+      paint();
+      timerId = requestAnimationFrame(tick);
+    }
+
+    function setMode(mode){
+      stopLoop();
+      const state = load();
+      const duration = totalDurationFromInputs() || state.duration || 600000;
+      state.mode = mode;
+      state.running = false;
+      state.startedAt = null;
+
+      if(mode === 'down'){
+        state.duration = duration;
+        state.remaining = duration;
+      }else{
+        state.elapsed = 0;
+      }
+
+      save(state);
+      paint();
+    }
+
+    function applyDuration(){
+      const state = load();
+      if(state.mode !== 'down' || state.running) return;
+      const duration = totalDurationFromInputs();
+      state.duration = duration;
+      state.remaining = duration;
+      save(state);
+      paint();
+    }
+
+    modeUpBtn.addEventListener('click', ()=>setMode('up'));
+    modeDownBtn.addEventListener('click', ()=>setMode('down'));
+    minutesInput.addEventListener('change', applyDuration);
+    secondsInput.addEventListener('change', applyDuration);
+
+    startBtn.addEventListener('click', ()=>{
+      const state = load();
+
+      if(state.mode === 'down' && !state.running && state.remaining <= 0){
+        const duration = totalDurationFromInputs();
+        state.duration = duration;
+        state.remaining = duration;
+      }
+
+      if(state.mode === 'down' && !state.running && state.remaining <= 0){
+        paint();
+        return;
+      }
+
+      if(state.running){
+        const value = currentValue(state);
+        if(state.mode === 'down') state.remaining = value;
+        else state.elapsed = value;
+        state.running = false;
+        state.startedAt = null;
+        save(state);
+        stopLoop();
+        paint();
+      }else{
+        state.running = true;
+        state.startedAt = Date.now();
+        save(state);
+        tick();
+      }
+    });
+
+    resetBtn.addEventListener('click', ()=>{
+      stopLoop();
+      const state = load();
+      state.running = false;
+      state.startedAt = null;
+
+      if(state.mode === 'down'){
+        const duration = totalDurationFromInputs() || state.duration;
+        state.duration = duration;
+        state.remaining = duration;
+      }else{
+        state.elapsed = 0;
+      }
+
+      save(state);
+      paint();
+    });
+
+    const initial = load();
+    minutesInput.value = Math.floor(initial.duration / 60000);
+    secondsInput.value = Math.floor((initial.duration % 60000) / 1000);
+    paint();
+    if(initial.running) tick();
+  })();
 }
 
 /* ---------------------------------------------------------------
