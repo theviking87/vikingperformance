@@ -1,6 +1,6 @@
 {
   "version": 6,
-  "updatedAt": "2026-09-02T18:32:08.164Z",
+  "updatedAt": "2026-09-02T18:32:17.115Z",
   "stores": {
     "profile": [
       {
@@ -5060,6 +5060,17 @@
     "checkins": [],
     "calendar": [],
     "settings": [
+      {
+        "id": "activeWorkoutSession",
+        "value": {
+          "workoutId": "BJJ_C",
+          "startedAt": "2026-09-02T18:32:07.112Z",
+          "exIdx": 0,
+          "setsLog": [],
+          "notes": "",
+          "savedAt": "2026-09-02T18:32:07.121Z"
+        }
+      },
       {
         "id": "equiv_carb",
         "value": [
