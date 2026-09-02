@@ -1,6 +1,6 @@
 {
   "version": 6,
-  "updatedAt": "2026-09-02T18:32:33.488Z",
+  "updatedAt": "2026-09-02T18:32:54.944Z",
   "stores": {
     "profile": [
       {
@@ -408,7 +408,7 @@
             "history": [],
             "muscleGroup": "",
             "groupId": "",
-            "objective": "",
+            "objective": "Aquecimento",
             "execution": "KB, Braço esticado, subir e sentar. ",
             "commonMistakes": "",
             "coachTips": ""
@@ -441,7 +441,7 @@
             "notes": "",
             "history": [],
             "muscleGroup": "",
-            "groupId": "ss-pd0ci72bmtkfnmg4",
+            "groupId": "ss-ozs8onsrmtkfoln3",
             "objective": "",
             "execution": "",
             "commonMistakes": "",
@@ -458,7 +458,7 @@
             "notes": "",
             "history": [],
             "muscleGroup": "",
-            "groupId": "ss-pd0ci72bmtkfnmg4",
+            "groupId": "ss-ozs8onsrmtkfoln3",
             "objective": "",
             "execution": "",
             "commonMistakes": "",
@@ -475,7 +475,7 @@
             "notes": "",
             "history": [],
             "muscleGroup": "",
-            "groupId": "ss-mhkdi184mtkfnmg4",
+            "groupId": "ss-j31owanqmtkfoln3",
             "objective": "",
             "execution": "",
             "commonMistakes": "",
@@ -492,7 +492,7 @@
             "notes": "",
             "history": [],
             "muscleGroup": "",
-            "groupId": "ss-mhkdi184mtkfnmg4",
+            "groupId": "ss-j31owanqmtkfoln3",
             "objective": "",
             "execution": "",
             "commonMistakes": "",
@@ -509,7 +509,7 @@
             "notes": "",
             "history": [],
             "muscleGroup": "",
-            "groupId": "ss-mhkdi184mtkfnmg4",
+            "groupId": "ss-j31owanqmtkfoln3",
             "objective": "",
             "execution": "",
             "commonMistakes": "",
@@ -5109,6 +5109,17 @@
     "checkins": [],
     "calendar": [],
     "settings": [
+      {
+        "id": "activeWorkoutSession",
+        "value": {
+          "workoutId": "BJJ_C",
+          "startedAt": "2026-09-02T18:32:44.640Z",
+          "exIdx": 0,
+          "setsLog": [],
+          "notes": "",
+          "savedAt": "2026-09-02T18:32:44.641Z"
+        }
+      },
       {
         "id": "equiv_carb",
         "value": [
