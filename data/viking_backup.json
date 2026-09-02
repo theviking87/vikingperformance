@@ -1,6 +1,6 @@
 {
   "version": 6,
-  "updatedAt": "2026-09-02T18:32:54.944Z",
+  "updatedAt": "2026-09-02T18:33:09.435Z",
   "stores": {
     "profile": [
       {
@@ -5114,10 +5114,10 @@
         "value": {
           "workoutId": "BJJ_C",
           "startedAt": "2026-09-02T18:32:44.640Z",
-          "exIdx": 0,
+          "exIdx": 4,
           "setsLog": [],
           "notes": "",
-          "savedAt": "2026-09-02T18:32:44.641Z"
+          "savedAt": "2026-09-02T18:32:59.284Z"
         }
       },
       {
