@@ -1,6 +1,6 @@
 {
   "version": 6,
-  "updatedAt": "2026-09-02T18:26:04.365Z",
+  "updatedAt": "2026-09-02T18:26:19.270Z",
   "stores": {
     "profile": [
       {
@@ -1659,6 +1659,13 @@
       }
     ],
     "workoutGroups": [
+      {
+        "id": "cl7xdtgemtkffusc",
+        "name": "BJJ Outubro",
+        "archived": false,
+        "order": 1788373555356,
+        "createdAt": "2026-09-02T18:25:55.356Z"
+      },
       {
         "id": "i6fiotshmsoabqqf",
         "name": "Base Training",
