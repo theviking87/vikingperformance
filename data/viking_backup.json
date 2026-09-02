@@ -1,6 +1,6 @@
 {
   "version": 6,
-  "updatedAt": "2026-09-02T18:26:19.270Z",
+  "updatedAt": "2026-09-02T18:28:12.301Z",
   "stores": {
     "profile": [
       {
@@ -385,6 +385,35 @@
         "kind": "exercises",
         "archived": true,
         "updatedAt": "2026-08-10T22:34:01.309Z"
+      },
+      {
+        "id": "BJJ_C",
+        "name": "Treino C",
+        "title": "Treino C",
+        "focus": "Força e Potência",
+        "description": "",
+        "category": "Força e Potência",
+        "groupId": "cl7xdtgemtkffusc",
+        "order": 1788373570739,
+        "exercises": [
+          {
+            "id": "s6slijrsmtkfg6nn",
+            "name": "TGU",
+            "sets": 3,
+            "reps": "5/5",
+            "rest": "60s",
+            "autoTimer": true,
+            "currentLoad": 0,
+            "notes": "",
+            "history": [],
+            "muscleGroup": "",
+            "groupId": "",
+            "objective": "",
+            "execution": "KB, Braço esticado, subir e sentar. ",
+            "commonMistakes": "",
+            "coachTips": ""
+          }
+        ]
       },
       {
         "id": "C",
