@@ -1,6 +1,6 @@
 {
   "version": 6,
-  "updatedAt": "2026-09-02T18:33:09.435Z",
+  "updatedAt": "2026-09-02T18:33:21.811Z",
   "stores": {
     "profile": [
       {
@@ -2925,6 +2925,55 @@
         "notes": ""
       },
       {
+        "id": "m0n851ohmtkfp7e7",
+        "workoutId": "BJJ_C",
+        "workoutTitle": "Treino C",
+        "date": "2026-09-02T18:33:11.589Z",
+        "startedAt": "2026-09-02T18:32:44.640Z",
+        "endedAt": "2026-09-02T18:33:11.589Z",
+        "durationSec": 27,
+        "durationMin": 0,
+        "loads": [
+          {
+            "exerciseId": "s6slijrsmtkfg6nn",
+            "load": 0
+          },
+          {
+            "exerciseId": "gfvsmo94mtkfiod3",
+            "load": 0
+          },
+          {
+            "exerciseId": "g9bvneasmtkfiou1",
+            "load": 0
+          },
+          {
+            "exerciseId": "9ul1nietmtkfipuv",
+            "load": 0
+          },
+          {
+            "exerciseId": "gmlmrhojmtkfky9y",
+            "load": 0
+          },
+          {
+            "exerciseId": "wwyj6ootmtkfl1rq",
+            "load": 0
+          },
+          {
+            "exerciseId": "fi79otikmtkfl49c",
+            "load": 0
+          },
+          {
+            "exerciseId": "9b4uglszmtkfmxpf",
+            "load": 0
+          }
+        ],
+        "setsLog": [],
+        "totalVolume": 0,
+        "totalWeight": 0,
+        "completedExercises": 0,
+        "notes": ""
+      },
+      {
         "id": "nimnltf0msr5ct41",
         "workoutId": "CORE+Cond",
         "workoutTitle": "Base Performance C - Completo",
@@ -5109,17 +5158,6 @@
     "checkins": [],
     "calendar": [],
     "settings": [
-      {
-        "id": "activeWorkoutSession",
-        "value": {
-          "workoutId": "BJJ_C",
-          "startedAt": "2026-09-02T18:32:44.640Z",
-          "exIdx": 4,
-          "setsLog": [],
-          "notes": "",
-          "savedAt": "2026-09-02T18:32:59.284Z"
-        }
-      },
       {
         "id": "equiv_carb",
         "value": [
